@@ -1,0 +1,132 @@
+<!-- Search Suggestions Dropdown -->
+<div *ngIf="isVisible" 
+     class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 
+            z-50 max-h-[70vh] overflow-y-auto">
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="p-4">
+    <div class="flex items-center gap-3 animate-pulse" *ngFor="let i of [1,2,3]">
+      <div class="w-12 h-12 bg-gray-200 rounded"></div>
+      <div class="flex-1 space-y-2">
+        <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+        <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Query State - Show Recent & Trending -->
+  <ng-container *ngIf="!query && !isLoading">
+    <!-- Recent Searches -->
+    <div *ngIf="recentSearches.length > 0" class="border-b border-gray-100">
+      <div class="flex items-center justify-between px-4 py-2 bg-gray-50">
+        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Recent Searches</span>
+        <button (click)="onClearRecent()" 
+                class="text-xs text-gray-400 hover:text-red-500 transition-colors">
+          Clear All
+        </button>
+      </div>
+      <div class="py-2">
+        <button *ngFor="let term of recentSearches"
+                (click)="onRecentClick(term)"
+                class="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-left">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span class="text-gray-700">{{ term }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Trending Searches -->
+    <div *ngIf="trendingSearches.length > 0">
+      <div class="px-4 py-2 bg-gray-50">
+        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Trending Now</span>
+      </div>
+      <div class="py-2">
+        <button *ngFor="let term of trendingSearches; let i = index"
+                (click)="onTrendingClick(term)"
+                class="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-left">
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.684 3.603c-.521-.659-1.19-.603-1.19-.603l-5.5 4.603V3.546L9.23 3.2C8.662 2.93 8 3.357 8 4.01v15.98c0 .653.663 1.08 1.23.81l1.764-.817V14.4l5.5 4.6s.669.056 1.19-.603c.52-.659.521-1.603.521-1.603V5.206s0-.944-.521-1.603z"/>
+          </svg>
+          <span class="text-gray-700">{{ term }}</span>
+          <span class="ml-auto text-xs text-gray-400">#{{ i + 1 }}</span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Search Results -->
+  <ng-container *ngIf="query && !isLoading">
+    <!-- No Results -->
+    <div *ngIf="suggestions.length === 0" class="p-6 text-center">
+      <svg class="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <p class="text-gray-500">No results found for "{{ query }}"</p>
+      <p class="text-sm text-gray-400 mt-1">Try searching for something else</p>
+    </div>
+
+    <!-- Suggestions List -->
+    <div *ngIf="suggestions.length > 0" class="py-2">
+      <!-- Product Suggestions -->
+      <ng-container *ngFor="let suggestion of suggestions">
+        <button (click)="onSuggestionClick(suggestion)"
+                class="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors text-left">
+          
+          <!-- Product Type -->
+          <ng-container *ngIf="suggestion.type === 'product'">
+            <img *ngIf="suggestion.image" 
+                 [src]="suggestion.image" 
+                 [alt]="suggestion.text"
+                 class="w-12 h-12 object-cover rounded-lg">
+            <div *ngIf="!suggestion.image" 
+                 class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-gray-800 truncate" [innerHTML]="highlightMatch(suggestion.text)"></p>
+              <p *ngIf="suggestion.category" class="text-xs text-gray-500">{{ suggestion.category }}</p>
+            </div>
+            <span *ngIf="suggestion.price" class="text-sm font-semibold text-yellow-600">
+              ₹{{ suggestion.price | number }}
+            </span>
+          </ng-container>
+
+          <!-- Category Type -->
+          <ng-container *ngIf="suggestion.type === 'category'">
+            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm text-gray-800" [innerHTML]="highlightMatch(suggestion.text)"></p>
+              <p class="text-xs text-gray-500">Category</p>
+            </div>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </ng-container>
+        </button>
+      </ng-container>
+
+      <!-- View All Results -->
+      <div class="border-t border-gray-100 mt-2 pt-2">
+        <button class="w-full flex items-center justify-center gap-2 px-4 py-3 
+                       text-yellow-600 hover:bg-yellow-50 transition-colors font-medium">
+          <span>View all results for "{{ query }}"</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

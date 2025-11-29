@@ -1,0 +1,85 @@
+<section class="py-8 bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-semibold text-gray-800">{{ categoryName || 'All Products' }}</h1>
+        <p class="text-gray-500 mt-1">{{ totalProducts }} products found</p>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <!-- Mobile Filter Toggle -->
+        <button (click)="showMobileFilters = true" 
+                class="lg:hidden flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          Filters
+        </button>
+        
+        <app-sort-dropdown (sortChanged)="onSortChange($event)"></app-sort-dropdown>
+      </div>
+    </div>
+
+    <div class="flex gap-8">
+      <!-- Desktop Filter Panel -->
+      <div class="hidden lg:block flex-shrink-0">
+        <app-filter-panel (filterChanged)="onFilterChange($event)"></app-filter-panel>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="flex-1">
+        <app-product-grid 
+          [products]="products"
+          (wishlistToggle)="onWishlistToggle($event)"
+          (cartAdd)="onAddToCart($event)"
+          (quickViewOpen)="openQuickView($event)">
+        </app-product-grid>
+
+        <!-- Pagination -->
+        <div *ngIf="totalPages > 1" class="flex justify-center mt-8 gap-2">
+          <button (click)="goToPage(currentPage - 1)" 
+                  [disabled]="currentPage === 1"
+                  class="p-2 rounded-lg border border-gray-300 hover:border-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button *ngFor="let page of visiblePages"
+                  (click)="goToPage(page)"
+                  [class.bg-yellow-600]="page === currentPage"
+                  [class.text-white]="page === currentPage"
+                  class="w-10 h-10 rounded-lg border border-gray-300 hover:border-yellow-500 transition">
+            {{ page }}
+          </button>
+          
+          <button (click)="goToPage(currentPage + 1)" 
+                  [disabled]="currentPage === totalPages"
+                  class="p-2 rounded-lg border border-gray-300 hover:border-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Filter Overlay -->
+  <div *ngIf="showMobileFilters" 
+       class="fixed inset-0 z-50 lg:hidden">
+    <div class="absolute inset-0 bg-black/50" (click)="showMobileFilters = false"></div>
+    <div class="absolute left-0 top-0 h-full w-80 max-w-full bg-white overflow-y-auto">
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 class="font-semibold text-lg">Filters</h3>
+        <button (click)="showMobileFilters = false" class="p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <app-filter-panel (filterChanged)="onFilterChange($event)"></app-filter-panel>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,90 @@
+<div class="space-y-4">
+  <!-- Quantity Selector -->
+  <div class="flex items-center gap-4">
+    <span class="text-sm font-medium text-gray-700">Quantity:</span>
+    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+      <button (click)="decrementQuantity()" 
+              [disabled]="quantity <= 1"
+              class="px-3 py-2 text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+        </svg>
+      </button>
+      <span class="px-4 py-2 font-medium text-gray-800 min-w-[3rem] text-center">{{ quantity }}</span>
+      <button (click)="incrementQuantity()" 
+              [disabled]="quantity >= maxQuantity"
+              class="px-3 py-2 text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row gap-3">
+    <button (click)="addToCart()" 
+            [disabled]="!inStock"
+            class="flex-1 btn-primary py-3 text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      Add to Cart
+    </button>
+    <button (click)="buyNow()" 
+            [disabled]="!inStock"
+            class="flex-1 bg-yellow-800 hover:bg-yellow-900 text-white py-3 rounded-lg font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed transition">
+      Buy Now
+    </button>
+  </div>
+
+  <!-- Delivery Check -->
+  <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+    <h4 class="font-medium text-gray-700">Check Delivery</h4>
+    <div class="flex gap-2">
+      <input type="text" 
+             [(ngModel)]="pincode" 
+             placeholder="Enter Pincode"
+             maxlength="6"
+             class="input-field flex-1">
+      <button (click)="checkDelivery()" 
+              [disabled]="pincode.length !== 6"
+              class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
+        Check
+      </button>
+    </div>
+
+    <!-- Delivery Result -->
+    <div *ngIf="deliveryInfo" class="text-sm">
+      <div *ngIf="deliveryInfo.available" class="text-green-600">
+        <p class="font-medium">✓ Delivery available</p>
+        <p class="text-gray-600 mt-1">
+          Expected delivery: {{ deliveryInfo.estimatedDate }}
+        </p>
+        <p *ngIf="deliveryInfo.codAvailable" class="text-gray-600">
+          Cash on Delivery available
+        </p>
+      </div>
+      <div *ngIf="!deliveryInfo.available" class="text-red-600">
+        <p class="font-medium">✗ Delivery not available</p>
+        <p class="text-gray-600 mt-1">Sorry, we don't deliver to this pincode yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offers -->
+  <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+    <h4 class="font-medium text-gray-800 mb-2 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+      </svg>
+      Available Offers
+    </h4>
+    <ul class="space-y-2 text-sm text-gray-600">
+      <li *ngFor="let offer of offers" class="flex items-start gap-2">
+        <span class="text-green-500 mt-0.5">•</span>
+        <span>{{ offer }}</span>
+      </li>
+    </ul>
+  </div>
+</div>

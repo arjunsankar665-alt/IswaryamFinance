@@ -1,0 +1,98 @@
+<div class="space-y-6">
+  <h3 class="text-lg font-medium text-gray-800">Review Your Order</h3>
+
+  <!-- Order Items -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4">
+    <div class="flex justify-between items-center mb-3">
+      <h4 class="font-medium text-gray-700">Items ({{ items.length }})</h4>
+    </div>
+    <div class="divide-y divide-gray-100">
+      <div *ngFor="let item of items" class="flex gap-3 py-3">
+        <img [src]="item.image" [alt]="item.name" class="w-16 h-16 object-cover rounded">
+        <div class="flex-1">
+          <p class="font-medium text-gray-800">{{ item.name }}</p>
+          <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
+        </div>
+        <p class="font-medium text-gray-800">₹{{ (item.price * item.quantity) | number }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delivery Address -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4">
+    <div class="flex justify-between items-center mb-2">
+      <h4 class="font-medium text-gray-700">Delivery Address</h4>
+      <button (click)="onEditStep(0)" class="text-sm text-yellow-600 hover:text-yellow-700">Edit</button>
+    </div>
+    <div *ngIf="address" class="text-sm text-gray-600">
+      <p class="font-medium text-gray-800">{{ address.name }}</p>
+      <p>{{ address.phone }}</p>
+      <p>{{ address.addressLine1 }}</p>
+      <p *ngIf="address.addressLine2">{{ address.addressLine2 }}</p>
+      <p>{{ address.city }}, {{ address.state }} - {{ address.pincode }}</p>
+    </div>
+  </div>
+
+  <!-- Delivery Option -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4">
+    <div class="flex justify-between items-center mb-2">
+      <h4 class="font-medium text-gray-700">Delivery Option</h4>
+      <button (click)="onEditStep(1)" class="text-sm text-yellow-600 hover:text-yellow-700">Edit</button>
+    </div>
+    <div *ngIf="delivery" class="text-sm text-gray-600">
+      <p class="font-medium text-gray-800">{{ delivery.name }}</p>
+      <p>{{ delivery.description }}</p>
+    </div>
+  </div>
+
+  <!-- Payment Method -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4">
+    <div class="flex justify-between items-center mb-2">
+      <h4 class="font-medium text-gray-700">Payment Method</h4>
+      <button (click)="onEditStep(2)" class="text-sm text-yellow-600 hover:text-yellow-700">Edit</button>
+    </div>
+    <div *ngIf="payment" class="text-sm text-gray-600">
+      <p class="font-medium text-gray-800">{{ getPaymentMethodLabel() }}</p>
+      <p *ngIf="payment.method === 'card'">{{ getMaskedCardNumber() }}</p>
+      <p *ngIf="payment.method === 'upi'">{{ payment.upiId }}</p>
+      <p *ngIf="payment.method === 'netbanking'">{{ payment.bank }}</p>
+    </div>
+  </div>
+
+  <!-- Price Summary -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4">
+    <h4 class="font-medium text-gray-700 mb-3">Price Details</h4>
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between">
+        <span class="text-gray-600">Subtotal</span>
+        <span>₹{{ subtotal | number }}</span>
+      </div>
+      <div class="flex justify-between text-green-600">
+        <span>Discount</span>
+        <span>-₹{{ discounts | number }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Shipping</span>
+        <span>{{ shipping === 0 ? 'FREE' : '₹' + shipping }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Taxes (GST)</span>
+        <span>₹{{ taxes | number }}</span>
+      </div>
+      <div class="flex justify-between font-semibold text-lg pt-2 border-t border-gray-200">
+        <span>Total</span>
+        <span class="text-yellow-700">₹{{ total | number }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Place Order Button -->
+  <button (click)="onPlaceOrder()" 
+          class="w-full btn-primary py-3 text-lg font-semibold">
+    Place Order - ₹{{ total | number }}
+  </button>
+
+  <p class="text-center text-xs text-gray-500">
+    By placing this order, you agree to our Terms of Service and Privacy Policy
+  </p>
+</div>

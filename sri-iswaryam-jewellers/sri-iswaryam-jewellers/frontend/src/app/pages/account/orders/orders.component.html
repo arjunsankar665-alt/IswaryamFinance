@@ -1,0 +1,138 @@
+<!-- My Orders Page -->
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">My Orders</h1>
+      <p class="text-gray-600">Track and manage your orders</p>
+    </div>
+    
+    <!-- Filter -->
+    <select [(ngModel)]="selectedFilter" 
+            (change)="onFilterChange()"
+            class="px-4 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+      <option *ngFor="let option of filterOptions" [value]="option.value">{{ option.label }}</option>
+    </select>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="space-y-4">
+    <div *ngFor="let i of [1,2,3]" class="bg-white rounded-xl p-6 animate-pulse">
+      <div class="flex justify-between mb-4">
+        <div class="h-4 bg-gray-200 rounded w-32"></div>
+        <div class="h-6 bg-gray-200 rounded w-24"></div>
+      </div>
+      <div class="flex gap-4">
+        <div class="w-20 h-20 bg-gray-200 rounded-lg"></div>
+        <div class="flex-1 space-y-2">
+          <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredOrders.length === 0" class="bg-white rounded-xl p-12 text-center">
+    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+      </svg>
+    </div>
+    <h2 class="text-xl font-bold text-gray-800 mb-2">No orders found</h2>
+    <p class="text-gray-600 mb-6">
+      {{ selectedFilter === 'all' ? "You haven't placed any orders yet." : 'No orders with this status.' }}
+    </p>
+    <a href="/products" 
+       class="inline-flex items-center gap-2 px-6 py-3 bg-yellow-600 text-white font-semibold rounded-lg hover:bg-yellow-700 transition-colors">
+      Start Shopping
+    </a>
+  </div>
+
+  <!-- Orders List -->
+  <div *ngIf="!isLoading && filteredOrders.length > 0" class="space-y-4">
+    <div *ngFor="let order of filteredOrders" class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <!-- Order Header -->
+      <div class="p-4 bg-gray-50 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center gap-4 text-sm">
+          <div>
+            <span class="text-gray-500">Order </span>
+            <span class="font-semibold text-gray-800">{{ order.orderNumber }}</span>
+          </div>
+          <span class="text-gray-300">|</span>
+          <span class="text-gray-600">{{ formatDate(order.date) }}</span>
+        </div>
+        <span class="px-3 py-1 text-sm font-medium rounded-full" [ngClass]="getStatusClass(order.status)">
+          {{ order.status | titlecase }}
+        </span>
+      </div>
+
+      <!-- Order Items -->
+      <div class="p-4">
+        <div *ngFor="let item of order.items; let last = last" 
+             class="flex gap-4 py-3" 
+             [class.border-b]="!last"
+             [class.border-gray-100]="!last">
+          <!-- Item Image -->
+          <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+            <img [src]="item.image" [alt]="item.name" 
+                 class="w-full h-full object-cover"
+                 onerror="this.src='assets/images/placeholder.jpg'">
+          </div>
+          
+          <!-- Item Details -->
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-gray-800 truncate">{{ item.name }}</h3>
+            <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
+            <p class="text-sm font-semibold text-yellow-600 mt-1">₹{{ item.price | number }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Footer -->
+      <div class="p-4 bg-gray-50 border-t border-gray-100">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <!-- Total -->
+          <div>
+            <span class="text-gray-600">Total: </span>
+            <span class="text-lg font-bold text-gray-800">₹{{ order.total | number }}</span>
+            <span class="text-sm text-gray-500 ml-2">{{ order.paymentMethod }}</span>
+          </div>
+          
+          <!-- Actions -->
+          <div class="flex flex-wrap gap-2">
+            <button (click)="viewOrder(order.id)"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 
+                           rounded-lg hover:bg-gray-100 transition-colors">
+              View Details
+            </button>
+            
+            <button *ngIf="order.status === 'shipped'"
+                    (click)="trackOrder(order)"
+                    class="px-4 py-2 text-sm font-medium text-yellow-600 border border-yellow-600 
+                           rounded-lg hover:bg-yellow-50 transition-colors">
+              Track Order
+            </button>
+            
+            <button *ngIf="order.status === 'delivered'"
+                    (click)="downloadInvoice(order)"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 
+                           rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Invoice
+            </button>
+            
+            <button *ngIf="order.status === 'delivered'"
+                    (click)="reorder(order)"
+                    class="px-4 py-2 text-sm font-medium text-white bg-yellow-600 
+                           rounded-lg hover:bg-yellow-700 transition-colors">
+              Reorder
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

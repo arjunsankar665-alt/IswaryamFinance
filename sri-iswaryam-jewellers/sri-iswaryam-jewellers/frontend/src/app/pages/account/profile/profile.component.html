@@ -1,0 +1,154 @@
+<!-- Profile Page -->
+<div class="max-w-2xl mx-auto">
+  <!-- Profile Header -->
+  <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+    <div class="flex flex-col sm:flex-row items-center gap-6">
+      <!-- Avatar -->
+      <div class="relative">
+        <div *ngIf="!user.avatar" 
+             class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center">
+          <span class="text-3xl font-bold text-yellow-600">{{ initials }}</span>
+        </div>
+        <img *ngIf="user.avatar" [src]="user.avatar" [alt]="user.firstName"
+             class="w-24 h-24 rounded-full object-cover">
+        <button class="absolute bottom-0 right-0 w-8 h-8 bg-yellow-600 rounded-full 
+                       flex items-center justify-center text-white hover:bg-yellow-700 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- User Info -->
+      <div class="text-center sm:text-left flex-1">
+        <h1 class="text-2xl font-bold text-gray-800">{{ user.firstName }} {{ user.lastName }}</h1>
+        <p class="text-gray-600">{{ user.email }}</p>
+        <div class="flex items-center justify-center sm:justify-start gap-2 mt-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+            Gold Member
+          </span>
+          <span class="text-sm text-gray-500">Since Jan 2023</span>
+        </div>
+      </div>
+      
+      <!-- Edit Button -->
+      <button (click)="toggleEdit()"
+              class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium
+                     hover:bg-gray-50 transition-colors flex items-center gap-2">
+        <svg *ngIf="!isEditing" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+        <svg *ngIf="isEditing" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        {{ isEditing ? 'Cancel' : 'Edit Profile' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Profile Form -->
+  <div class="bg-white rounded-xl shadow-sm p-6">
+    <h2 class="text-lg font-bold text-gray-800 mb-6">Personal Information</h2>
+    
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Name Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">
+            First Name
+          </label>
+          <input type="text" id="firstName" formControlName="firstName"
+                 [readonly]="!isEditing"
+                 class="w-full px-4 py-2.5 border rounded-lg transition-colors"
+                 [class.bg-gray-50]="!isEditing"
+                 [class.border-red-500]="isInvalid('firstName')"
+                 [class.focus:ring-2]="isEditing"
+                 [class.focus:ring-yellow-500]="isEditing">
+          <p *ngIf="isInvalid('firstName')" class="mt-1 text-xs text-red-500">{{ getError('firstName') }}</p>
+        </div>
+        
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">
+            Last Name
+          </label>
+          <input type="text" id="lastName" formControlName="lastName"
+                 [readonly]="!isEditing"
+                 class="w-full px-4 py-2.5 border rounded-lg transition-colors"
+                 [class.bg-gray-50]="!isEditing"
+                 [class.border-red-500]="isInvalid('lastName')">
+          <p *ngIf="isInvalid('lastName')" class="mt-1 text-xs text-red-500">{{ getError('lastName') }}</p>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+          Email Address
+        </label>
+        <input type="email" id="email" formControlName="email"
+               class="w-full px-4 py-2.5 border rounded-lg bg-gray-50 cursor-not-allowed">
+        <p class="mt-1 text-xs text-gray-500">Email cannot be changed</p>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+          Phone Number
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">+91</span>
+          <input type="tel" id="phone" formControlName="phone"
+                 [readonly]="!isEditing"
+                 class="w-full pl-12 pr-4 py-2.5 border rounded-lg transition-colors"
+                 [class.bg-gray-50]="!isEditing"
+                 [class.border-red-500]="isInvalid('phone')">
+        </div>
+        <p *ngIf="isInvalid('phone')" class="mt-1 text-xs text-red-500">{{ getError('phone') }}</p>
+      </div>
+
+      <!-- DOB & Gender Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="dateOfBirth" class="block text-sm font-medium text-gray-700 mb-1">
+            Date of Birth
+          </label>
+          <input type="date" id="dateOfBirth" formControlName="dateOfBirth"
+                 [readonly]="!isEditing"
+                 class="w-full px-4 py-2.5 border rounded-lg transition-colors"
+                 [class.bg-gray-50]="!isEditing">
+        </div>
+        
+        <div>
+          <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">
+            Gender
+          </label>
+          <select id="gender" formControlName="gender"
+                  [attr.disabled]="!isEditing ? true : null"
+                  class="w-full px-4 py-2.5 border rounded-lg bg-white transition-colors"
+                  [class.bg-gray-50]="!isEditing">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div *ngIf="isEditing" class="pt-4">
+        <button type="submit"
+                [disabled]="isSubmitting || profileForm.invalid"
+                class="w-full px-6 py-3 bg-yellow-600 text-white font-semibold rounded-lg
+                       hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-colors flex items-center justify-center gap-2">
+          <svg *ngIf="isSubmitting" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

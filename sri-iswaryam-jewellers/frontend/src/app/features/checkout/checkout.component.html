@@ -1,0 +1,86 @@
+<section class="py-8 bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Checkout</h1>
+
+    <!-- Stepper -->
+    <div class="flex items-center justify-center mb-8">
+      <div *ngFor="let step of steps; let i = index" class="flex items-center">
+        <div class="flex flex-col items-center">
+          <div (click)="goToStep(i)"
+               [class.bg-yellow-600]="i <= currentStep"
+               [class.text-white]="i <= currentStep"
+               [class.bg-gray-200]="i > currentStep"
+               [class.text-gray-500]="i > currentStep"
+               [class.cursor-pointer]="i <= currentStep"
+               class="w-10 h-10 rounded-full flex items-center justify-center font-medium transition">
+            <span *ngIf="i < currentStep">✓</span>
+            <span *ngIf="i >= currentStep">{{ i + 1 }}</span>
+          </div>
+          <span class="text-xs mt-1 text-gray-600 hidden sm:block">{{ step }}</span>
+        </div>
+        <div *ngIf="i < steps.length - 1" 
+             [class.bg-yellow-600]="i < currentStep"
+             [class.bg-gray-200]="i >= currentStep"
+             class="w-12 sm:w-24 h-1 mx-2"></div>
+      </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto">
+      <!-- Step 0: Address Selection -->
+      <div *ngIf="currentStep === 0">
+        <app-address-selection
+          (addressSelected)="onAddressSelected($event)"
+          (validityChange)="onAddressValidity($event)">
+        </app-address-selection>
+      </div>
+
+      <!-- Step 1: Delivery Options -->
+      <div *ngIf="currentStep === 1">
+        <app-delivery-options
+          (optionSelected)="onDeliverySelected($event)"
+          (validityChange)="onDeliveryValidity($event)">
+        </app-delivery-options>
+      </div>
+
+      <!-- Step 2: Payment Methods -->
+      <div *ngIf="currentStep === 2">
+        <app-payment-methods
+          (paymentSelected)="onPaymentSelected($event)"
+          (validityChange)="onPaymentValidity($event)">
+        </app-payment-methods>
+      </div>
+
+      <!-- Step 3: Order Review -->
+      <div *ngIf="currentStep === 3">
+        <app-order-review
+          [items]="cartItems"
+          [address]="selectedAddress"
+          [delivery]="selectedDelivery"
+          [payment]="selectedPayment"
+          [subtotal]="subtotal"
+          [discounts]="discounts"
+          [shipping]="shipping"
+          [taxes]="taxes"
+          (placeOrder)="onPlaceOrder()"
+          (editStep)="onEditStep($event)">
+        </app-order-review>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div *ngIf="currentStep < 3" class="flex justify-between mt-8">
+        <button (click)="prevStep()" 
+                *ngIf="currentStep > 0"
+                class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+          Back
+        </button>
+        <div *ngIf="currentStep === 0"></div>
+        
+        <button (click)="nextStep()" 
+                [disabled]="!canProceed()"
+                class="px-6 py-2 btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

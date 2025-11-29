@@ -1,0 +1,75 @@
+<!-- Basic Skeleton -->
+<ng-container *ngIf="type === 'text' || type === 'rect'">
+  <div *ngFor="let item of skeletonItems; let last = last"
+       class="bg-gray-200 rounded"
+       [ngStyle]="getStyles()"
+       [class.animate-pulse]="animated"
+       [class.mb-2]="!last">
+  </div>
+</ng-container>
+
+<!-- Circle / Avatar Skeleton -->
+<ng-container *ngIf="type === 'circle' || type === 'avatar'">
+  <div class="bg-gray-200 rounded-full"
+       [ngStyle]="getStyles()"
+       [class.animate-pulse]="animated">
+  </div>
+</ng-container>
+
+<!-- Button Skeleton -->
+<ng-container *ngIf="type === 'button'">
+  <div class="bg-gray-200 rounded-lg h-10"
+       [ngStyle]="{ width: width }"
+       [class.animate-pulse]="animated">
+  </div>
+</ng-container>
+
+<!-- Card Skeleton -->
+<ng-container *ngIf="type === 'card'">
+  <div *ngFor="let item of skeletonItems"
+       class="bg-white rounded-lg shadow-sm p-4 space-y-3"
+       [class.animate-pulse]="animated">
+    <!-- Image placeholder -->
+    <div class="bg-gray-200 rounded-lg h-48 w-full"></div>
+    <!-- Title -->
+    <div class="bg-gray-200 rounded h-5 w-3/4"></div>
+    <!-- Subtitle -->
+    <div class="bg-gray-200 rounded h-4 w-1/2"></div>
+    <!-- Description lines -->
+    <div class="space-y-2">
+      <div class="bg-gray-200 rounded h-3 w-full"></div>
+      <div class="bg-gray-200 rounded h-3 w-5/6"></div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Product Card Skeleton -->
+<ng-container *ngIf="type === 'product'">
+  <div *ngFor="let item of skeletonItems"
+       class="bg-white rounded-xl shadow-sm overflow-hidden"
+       [class.animate-pulse]="animated">
+    <!-- Product Image -->
+    <div class="bg-gray-200 aspect-square w-full"></div>
+    
+    <!-- Product Details -->
+    <div class="p-4 space-y-3">
+      <!-- Category badge -->
+      <div class="bg-gray-200 rounded-full h-5 w-20"></div>
+      <!-- Product name -->
+      <div class="bg-gray-200 rounded h-5 w-full"></div>
+      <div class="bg-gray-200 rounded h-5 w-3/4"></div>
+      <!-- Price -->
+      <div class="flex items-center gap-2">
+        <div class="bg-gray-200 rounded h-6 w-24"></div>
+        <div class="bg-gray-200 rounded h-4 w-16"></div>
+      </div>
+      <!-- Rating -->
+      <div class="flex items-center gap-1">
+        <div class="bg-gray-200 rounded h-4 w-4" *ngFor="let star of [1,2,3,4,5]"></div>
+        <div class="bg-gray-200 rounded h-4 w-12 ml-2"></div>
+      </div>
+      <!-- Button -->
+      <div class="bg-gray-200 rounded-lg h-10 w-full mt-2"></div>
+    </div>
+  </div>
+</ng-container>

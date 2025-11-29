@@ -1,0 +1,13 @@
+<svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Malaysia flag">
+  <rect width="24" height="16" fill="#DA1515"/>
+  <rect y="2" width="24" height="2" fill="#FFFFFF"/>
+  <rect y="4" width="24" height="2" fill="#DA1515"/>
+  <rect y="6" width="24" height="2" fill="#FFFFFF"/>
+  <rect y="8" width="24" height="2" fill="#DA1515"/>
+  <rect y="10" width="24" height="2" fill="#FFFFFF"/>
+  <rect y="12" width="24" height="2" fill="#DA1515"/>
+  <rect y="14" width="24" height="2" fill="#FFFFFF"/>
+  <rect width="9.6" height="8.8" fill="#012169"/>
+  <path d="M4.8 4.4C4.8 5.83292 3.63291 7 2.2 7C0.767085 7 -0.4 5.83292 -0.4 4.4C-0.4 2.96708 0.767085 1.8 2.2 1.8C3.63291 1.8 4.8 2.96708 4.8 4.4Z" fill="#FEC310" transform="translate(2 0.8)"/>
+  <path d="M8.3 5.2L7.3 5.8L7.5 4.7L6.8 3.9L7.9 3.8L8.3 2.8L8.7 3.8L9.8 3.9L9.1 4.7L9.3 5.8Z" fill="#FEC310" transform="translate(-0.8,0.4)"/>
+</svg>
