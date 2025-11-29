@@ -1,38 +1,52 @@
-<section class="relative h-[70vh] md:h-[80vh] overflow-hidden">
-  <!-- Background Image -->
-  <div class="absolute inset-0 bg-gradient-to-r from-amber-900/80 to-yellow-700/60">
-    <img 
-      src="assets/images/hero-banner.jpg" 
-      alt="Sri Iswaryam Jewellers" 
-      class="w-full h-full object-cover mix-blend-overlay"
-    />
-  </div>
-  
-  <!-- Content -->
-  <div class="relative z-10 container mx-auto px-4 h-full flex items-center">
-    <div class="max-w-2xl text-white">
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4">
-        Timeless Elegance, <br/>
-        <span class="text-yellow-300">Crafted with Love</span>
-      </h1>
-      <p class="text-lg md:text-xl mb-8 text-gray-100">
-        Discover exquisite handcrafted jewellery that celebrates tradition and modern elegance.
+<section class="hero">
+  <div class="hero__background" aria-hidden="true"></div>
+  <div class="hero__orbit hero__orbit--left" aria-hidden="true"></div>
+  <div class="hero__orbit hero__orbit--right" aria-hidden="true"></div>
+
+  <div class="container mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+    <div class="hero__content">
+      <p class="hero__eyebrow" aria-label="Modern classic jewellery">
+        <span class="hero__eyebrow-line" aria-hidden="true"></span>
+        <span class="hero__eyebrow-text">Modern Classic Jewellery</span>
+        <span class="hero__eyebrow-line hero__eyebrow-line--right" aria-hidden="true"></span>
       </p>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a routerLink="/collections" class="btn-primary text-center px-8 py-3 text-lg">
-          Explore Collections
-        </a>
-        <a routerLink="/offers" class="btn-outline border-white text-white hover:bg-white hover:text-amber-900 text-center px-8 py-3 text-lg">
-          View Offers
-        </a>
+      <span class="hero__since">Since 1974</span>
+
+      <h1 class="hero__title">
+        Timeless pieces for the <br class="hidden md:block" /> modern muse
+      </h1>
+
+      <p class="hero__subtitle">
+        Experience heirloom craftsmanship blended with contemporary silhouettes. Discover bespoke bridal sets,
+        statement diamonds and everyday gold essentials curated for every celebration.
+      </p>
+
+      <div class="hero__actions">
+        <a routerLink="/collections" class="hero__cta hero__cta--primary">Explore Collections</a>
+        <a routerLink="/boutique" class="hero__cta hero__cta--secondary">Visit Boutique</a>
+      </div>
+
+      <div class="hero__stats">
+        <div class="hero__stat">
+          <span class="hero__stat-value">250+</span>
+          <span class="hero__stat-label">Custom bridal creations</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">ISO</span>
+          <span class="hero__stat-label">Hallmarked gold purity</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">24/7</span>
+          <span class="hero__stat-label">Concierge assistance</span>
+        </div>
       </div>
     </div>
   </div>
-  
-  <!-- Scroll Indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+
+  <div class="hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5" />
     </svg>
   </div>
 </section>

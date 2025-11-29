@@ -1,0 +1,34 @@
+<section class="showcase">
+  <div class="container mx-auto px-6 md:px-10 lg:px-16">
+    <div class="showcase__wrapper" (mouseenter)="pauseAutoSlide()" (mouseleave)="resumeAutoSlide()">
+      <button type="button" class="showcase__nav showcase__nav--left" (click)="previous()" aria-label="Previous slide">
+        <span>&larr;</span>
+      </button>
+
+      <div class="showcase__device">
+        <div class="showcase__screen">
+          <img [src]="activeSlide.image" [alt]="activeSlide.title" />
+        </div>
+      </div>
+
+      <button type="button" class="showcase__nav showcase__nav--right" (click)="next()" aria-label="Next slide">
+        <span>&rarr;</span>
+      </button>
+    </div>
+
+    <div class="showcase__meta" aria-live="polite">
+      <div>
+        <p class="showcase__eyebrow">Boutique Spotlight</p>
+        <h2>{{ activeSlide.title }}</h2>
+        <p class="showcase__description">{{ activeSlide.description }}</p>
+      </div>
+      <div class="showcase__dots">
+        <button type="button" *ngFor="let slide of slides; index as i"
+          (click)="goTo(i)"
+          [class.active]="i === activeIndex"
+          [attr.aria-label]="'Show slide ' + (i + 1)">
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

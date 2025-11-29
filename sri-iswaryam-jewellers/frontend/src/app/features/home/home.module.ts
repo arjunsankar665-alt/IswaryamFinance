@@ -8,6 +8,7 @@ import { HeroBannerComponent } from './components/hero-banner/hero-banner.compon
 import { CategoryGridComponent } from './components/category-grid/category-grid.component';
 import { TrendingProductsComponent } from './components/trending-products/trending-products.component';
 import { TrustHighlightsComponent } from './components/trust-highlights/trust-highlights.component';
+import { ShowcaseCarouselComponent } from './components/showcase-carousel/showcase-carousel.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { TrustHighlightsComponent } from './components/trust-highlights/trust-hi
     HeroBannerComponent,
     CategoryGridComponent,
     TrendingProductsComponent,
-    TrustHighlightsComponent
+    TrustHighlightsComponent,
+    ShowcaseCarouselComponent
   ],
   imports: [
     CommonModule,
