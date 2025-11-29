@@ -24,10 +24,11 @@ export class HeaderComponent implements OnDestroy {
   private subscriptions = new Subscription();
 
   accountItems: AccountMenuItem[] = [
-    { icon: '⟳', label: 'Order History', routerLink: '/account' },
-    { icon: '🎁', label: 'Gift Card Balance', routerLink: '/account' },
-    { icon: '📦', label: 'Track Order', routerLink: '/account' },
-    { icon: '💬', label: 'Contact Us', routerLink: '/support/contact-us' },
+    { icon: '📦', label: 'Orders & Returns', description: 'History, invoices, reorders', routerLink: '/account/orders' },
+    { icon: '🎯', label: 'Track Order', description: 'Live courier updates', routerLink: '/account/order-tracking' },
+    { icon: '❤️', label: 'Wishlist', description: 'Saved favourites', routerLink: '/wishlist' },
+    { icon: '👤', label: 'Profile & Settings', description: 'Details and alerts', routerLink: '/account/profile' },
+    { icon: '💬', label: 'Customer Support', routerLink: '/support/contact-us' },
     { icon: '⏻', label: 'Log Out', action: 'logout' as const }
   ];
 

@@ -1,1 +1,41 @@
-<p>account works!</p>
+<section class="bg-slate-50 py-10">
+	<div class="max-w-6xl mx-auto px-4 lg:px-0 space-y-8">
+		<header class="space-y-2">
+			<p class="text-sm font-semibold tracking-[0.2em] uppercase text-yellow-600">My Account</p>
+			<h1 class="text-3xl lg:text-4xl font-serif text-slate-900">Welcome back to Sri Iswaryam</h1>
+			<p class="text-slate-600">Manage purchases, follow deliveries, and keep your profile up to date from one elegant hub.</p>
+		</header>
+
+		<div class="grid gap-6 lg:grid-cols-[260px,1fr]">
+			<aside class="bg-white border border-slate-100 rounded-[28px] shadow-sm p-4 lg:p-6 h-fit">
+				<nav class="flex flex-col gap-2">
+					<a *ngFor="let item of navItems"
+						 [routerLink]="item.route"
+						 routerLinkActive="account-nav__item--active"
+						 class="account-nav__item">
+						<div class="account-nav__icon">{{ item.icon }}</div>
+						<div>
+							<p class="account-nav__label">{{ item.label }}</p>
+							<p class="account-nav__description">{{ item.description }}</p>
+						</div>
+					</a>
+				</nav>
+
+				<div class="mt-8 p-4 rounded-2xl bg-yellow-50 border border-yellow-100">
+					<p class="text-sm font-semibold text-yellow-800">Need assistance?</p>
+					<p class="text-sm text-yellow-900/70 mb-3">Our concierge team is available 10 AM – 8 PM IST.</p>
+					<a routerLink="/support/contact-us" class="inline-flex items-center gap-2 text-sm font-semibold text-yellow-900">
+						Talk to us
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						</svg>
+					</a>
+				</div>
+			</aside>
+
+			<div class="bg-white border border-slate-100 rounded-[32px] shadow-sm p-4 sm:p-6 lg:p-8">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</div>
+</section>

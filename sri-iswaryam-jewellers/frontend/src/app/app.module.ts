@@ -20,10 +20,6 @@ import { CartComponent } from './pages/cart/cart.component';
 import { AddressComponent } from './pages/checkout/address/address.component';
 import { PaymentComponent } from './pages/checkout/payment/payment.component';
 import { ReviewComponent } from './pages/checkout/review/review.component';
-import { ProfileComponent } from './pages/account/profile/profile.component';
-import { OrdersComponent } from './pages/account/orders/orders.component';
-import { SettingsComponent } from './pages/account/settings/settings.component';
-import { OrderTrackingComponent } from './pages/account/order-tracking/order-tracking.component';
 import { FaqComponent } from './pages/support/faq/faq.component';
 import { ContactUsComponent } from './pages/support/contact-us/contact-us.component';
 import { StoreLocatorComponent } from './pages/support/store-locator/store-locator.component';
@@ -48,10 +44,6 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AddressComponent,
     PaymentComponent,
     ReviewComponent,
-    ProfileComponent,
-    OrdersComponent,
-    SettingsComponent,
-    OrderTrackingComponent,
     FaqComponent,
     ContactUsComponent,
     StoreLocatorComponent,

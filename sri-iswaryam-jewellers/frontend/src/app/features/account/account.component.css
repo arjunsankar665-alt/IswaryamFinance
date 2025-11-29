@@ -1,0 +1,39 @@
+.account-nav__item {
+	display: flex;
+	gap: 0.75rem;
+	padding: 0.85rem 1rem;
+	border-radius: 1.25rem;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	text-decoration: none;
+	background: #fff;
+	transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+	color: #0f172a;
+}
+
+.account-nav__item:hover {
+	border-color: rgba(234, 179, 8, 0.7);
+	box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+	transform: translateY(-1px);
+}
+
+.account-nav__item--active {
+	border-color: rgba(234, 179, 8, 1);
+	background: #fff7ed;
+	box-shadow: 0 12px 45px rgba(245, 158, 11, 0.25);
+}
+
+.account-nav__icon {
+	font-size: 1.35rem;
+	line-height: 1;
+}
+
+.account-nav__label {
+	font-weight: 600;
+	margin-bottom: 0.2rem;
+}
+
+.account-nav__description {
+	font-size: 0.85rem;
+	color: rgba(15, 23, 42, 0.65);
+	margin: 0;
+}

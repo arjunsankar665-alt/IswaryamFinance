@@ -1,0 +1,113 @@
+.tracking-card {
+	border-radius: 1.75rem;
+	padding: 1.5rem;
+	background: #fff;
+	border: 1px solid rgba(15, 23, 42, 0.06);
+	box-shadow: 0 20px 45px rgba(15, 23, 42, 0.04);
+}
+
+.tracking-card__label {
+	text-transform: uppercase;
+	letter-spacing: 0.3em;
+	font-size: 0.7rem;
+	color: rgba(15, 23, 42, 0.55);
+	margin-bottom: 0.5rem;
+}
+
+.tracking-card__value {
+	margin: 0;
+	font-size: 1.35rem;
+	font-weight: 600;
+	color: #0f172a;
+}
+
+.tracking-card__muted {
+	margin: 0.2rem 0 0;
+	color: rgba(15, 23, 42, 0.6);
+}
+
+.tracking-timeline {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tracking-step {
+	position: relative;
+	padding-left: 2.75rem;
+	padding-bottom: 1.75rem;
+}
+
+.tracking-step:last-child {
+	padding-bottom: 0;
+}
+
+.tracking-step::after {
+	content: '';
+	position: absolute;
+	left: 1.2rem;
+	top: 1.2rem;
+	bottom: -0.5rem;
+	width: 2px;
+	background: rgba(226, 232, 240, 0.9);
+}
+
+.tracking-step:last-child::after {
+	display: none;
+}
+
+.tracking-step__marker {
+	position: absolute;
+	top: 0.4rem;
+	left: 0.9rem;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 999px;
+	border: 2px solid #e2e8f0;
+	background: #fff;
+}
+
+.tracking-step--completed .tracking-step__marker {
+	border-color: #f59e0b;
+	background: #f59e0b;
+}
+
+.tracking-step--current .tracking-step__marker {
+	border-color: #eab308;
+	background: #fff;
+	box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.25);
+}
+
+.tracking-step__content {
+	border-radius: 1.25rem;
+	padding: 1rem 1.25rem;
+	background: #f8fafc;
+}
+
+.tracking-step--completed .tracking-step__content {
+	background: #fff9eb;
+	border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.tracking-step--current .tracking-step__content {
+	background: #fff7ed;
+	border: 1px solid rgba(234, 179, 8, 0.5);
+	box-shadow: 0 20px 45px rgba(245, 158, 11, 0.2);
+}
+
+.tracking-step__title {
+	margin: 0;
+	font-weight: 600;
+	color: #0f172a;
+}
+
+.tracking-step__date {
+	font-size: 0.85rem;
+	color: rgba(15, 23, 42, 0.6);
+}
+
+.tracking-step__description {
+	margin: 0.35rem 0 0;
+	color: rgba(15, 23, 42, 0.7);
+	font-size: 0.95rem;
+}

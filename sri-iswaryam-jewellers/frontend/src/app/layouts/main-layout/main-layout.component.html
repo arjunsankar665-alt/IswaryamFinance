@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <!-- Header -->
-  <app-header></app-header>
+  <app-header (toggleMobileNav)="onToggleMobileNav()"></app-header>
   
   <!-- Main Content -->
   <main class="flex-grow">
@@ -9,4 +9,10 @@
   
   <!-- Footer -->
   <app-footer></app-footer>
+
+  <!-- Mobile Navigation -->
+  <app-mobile-nav
+    [isOpen]="isMobileNavOpen"
+    (closeNav)="closeMobileNav()"
+  ></app-mobile-nav>
 </div>

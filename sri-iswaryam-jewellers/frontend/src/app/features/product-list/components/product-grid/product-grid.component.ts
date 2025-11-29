@@ -5,6 +5,7 @@ export interface Product {
   name: string;
   image: string;
   category: string;
+  metal?: string;
   price: number;
   originalPrice?: number;
   discount?: number;

@@ -1,65 +1,102 @@
-<aside class="w-full lg:w-64 bg-white rounded-xl shadow-sm p-6">
-  <div class="flex justify-between items-center mb-6">
-    <h3 class="font-semibold text-lg">Filters</h3>
-    <button class="text-sm text-yellow-600 hover:text-yellow-700">Clear All</button>
+<aside class="w-full lg:w-72 bg-white rounded-[28px] border border-slate-100 shadow-lg p-6 space-y-6">
+  <div class="flex items-center justify-between gap-3">
+    <div>
+      <p class="text-[11px] tracking-[0.3em] text-slate-400 uppercase">Filters</p>
+      <h3 class="text-xl font-serif text-slate-900">Refine Selection</h3>
+    </div>
+    <button type="button"
+            class="text-sm font-semibold text-amber-600 disabled:text-slate-300"
+            [disabled]="!hasActiveFilters"
+            (click)="clearAllFilters()">
+      Clear
+    </button>
+  </div>
+
+  <div *ngIf="hasActiveFilters" class="flex flex-wrap gap-2">
+    <button type="button"
+            *ngFor="let tag of activeFilterTags"
+            class="filter-chip"
+            (click)="removeFilterTag(tag)">
+      {{ tag.label }}
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
   </div>
 
   <!-- Category Filter -->
-  <div class="mb-6">
-    <h4 class="font-medium mb-3">Category</h4>
+  <section class="filter-section">
+    <div class="filter-section__header">
+      <h4>Category</h4>
+      <span>{{ categories.length }} options</span>
+    </div>
     <div class="space-y-2">
-      <label *ngFor="let cat of categories" class="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" [value]="cat.id" (change)="onFilterChange('category', cat.id)" 
-               class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
-        <span class="text-sm text-gray-700">{{ cat.name }}</span>
-        <span class="text-xs text-gray-400 ml-auto">({{ cat.count }})</span>
+      <label *ngFor="let cat of categories" class="filter-option" [class.filter-option--active]="isSelected('category', cat.id)">
+        <input type="checkbox" [checked]="isSelected('category', cat.id)" (change)="onFilterChange('category', cat.id)">
+        <div>
+          <p>{{ cat.name }}</p>
+          <small>{{ cat.count }} pieces</small>
+        </div>
       </label>
     </div>
-  </div>
+  </section>
 
   <!-- Price Range -->
-  <div class="mb-6">
-    <h4 class="font-medium mb-3">Price Range</h4>
-    <div class="flex gap-2">
-      <input type="number" placeholder="Min" [(ngModel)]="priceMin"
-             class="input-field text-sm py-1.5">
-      <span class="text-gray-400">-</span>
-      <input type="number" placeholder="Max" [(ngModel)]="priceMax"
-             class="input-field text-sm py-1.5">
+  <section class="filter-section">
+    <div class="filter-section__header">
+      <h4>Price Range</h4>
+      <span>INR</span>
     </div>
-    <button (click)="applyPriceFilter()" class="mt-2 w-full btn-primary py-1.5 text-sm">Apply</button>
-  </div>
+    <div class="grid grid-cols-2 gap-3">
+      <input type="number" placeholder="Min" [(ngModel)]="priceMin" class="filter-input" min="0">
+      <input type="number" placeholder="Max" [(ngModel)]="priceMax" class="filter-input" min="0">
+    </div>
+    <button type="button" class="w-full filter-cta" (click)="applyPriceFilter()">Apply Range</button>
+  </section>
 
   <!-- Metal Type -->
-  <div class="mb-6">
-    <h4 class="font-medium mb-3">Metal Type</h4>
-    <div class="space-y-2">
-      <label *ngFor="let metal of metalTypes" class="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" [value]="metal" (change)="onFilterChange('metal', metal)"
-               class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
-        <span class="text-sm text-gray-700">{{ metal }}</span>
-      </label>
+  <section class="filter-section">
+    <div class="filter-section__header">
+      <h4>Metal Type</h4>
+      <span>{{ metalTypes.length }} options</span>
     </div>
-  </div>
+    <div class="flex flex-wrap gap-2">
+      <button type="button"
+              *ngFor="let metal of metalTypes"
+              class="filter-pill"
+              [class.filter-pill--active]="isSelected('metal', metal)"
+              (click)="onFilterChange('metal', metal)">
+        {{ metal }}
+      </button>
+    </div>
+  </section>
 
   <!-- Weight Range -->
-  <div class="mb-6">
-    <h4 class="font-medium mb-3">Weight (grams)</h4>
+  <section class="filter-section">
+    <div class="filter-section__header">
+      <h4>Weight (grams)</h4>
+      <span>Single select</span>
+    </div>
     <div class="space-y-2">
-      <label *ngFor="let range of weightRanges" class="flex items-center gap-2 cursor-pointer">
-        <input type="radio" name="weight" [value]="range.value" (change)="onFilterChange('weight', range.value)"
-               class="border-gray-300 text-yellow-600 focus:ring-yellow-500">
-        <span class="text-sm text-gray-700">{{ range.label }}</span>
+      <label *ngFor="let range of weightRanges" class="filter-option" [class.filter-option--active]="isSelected('weight', range.value)">
+        <input type="radio" [attr.name]="weightGroupName" [checked]="isSelected('weight', range.value)" (change)="onFilterChange('weight', range.value)">
+        <div>
+          <p>{{ range.label }}</p>
+          <small>Curated picks</small>
+        </div>
       </label>
     </div>
-  </div>
+  </section>
 
   <!-- Availability -->
-  <div class="mb-6">
-    <label class="flex items-center gap-2 cursor-pointer">
-      <input type="checkbox" [(ngModel)]="inStockOnly" (change)="onFilterChange('inStock', inStockOnly)"
-             class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
-      <span class="text-sm text-gray-700">In Stock Only</span>
+  <section class="filter-section">
+    <div class="flex items-center justify-between">
+      <h4 class="text-base font-semibold text-slate-800">Availability</h4>
+      <span class="text-xs uppercase tracking-[0.2em] text-slate-400">Live</span>
+    </div>
+    <label class="flex items-center gap-3 mt-3">
+      <input type="checkbox" [(ngModel)]="inStockOnly" (change)="onStockToggle()" class="h-5 w-5 rounded border-slate-300 text-amber-500 focus:ring-amber-200">
+      <span class="text-sm text-slate-700">Show only in-stock pieces</span>
     </label>
-  </div>
+  </section>
 </aside>
