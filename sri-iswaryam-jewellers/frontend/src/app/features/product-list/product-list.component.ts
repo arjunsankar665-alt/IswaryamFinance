@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from '../../core/services/cart.service';
+import { WishlistService } from '../../core/services/wishlist.service';
 import { Product } from './components/product-grid/product-grid.component';
 
 @Component({
@@ -17,7 +19,11 @@ export class ProductListComponent implements OnInit {
   totalPages = 5;
   itemsPerPage = 12;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly cartService: CartService,
+    private readonly wishlistService: WishlistService
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -89,14 +95,41 @@ export class ProductListComponent implements OnInit {
     // Implement filter logic
   }
 
-  onWishlistToggle(product: Product): void {
-    console.log('Wishlist toggle:', product.name);
-    // Implement wishlist toggle
+  async onWishlistToggle(product: Product): Promise<void> {
+    try {
+      if (product.isWishlisted) {
+        await this.wishlistService.addItem({
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          slug: this.slugify(product.name),
+          category: product.category,
+          inStock: product.inStock
+        });
+      } else {
+        await this.wishlistService.remove(product.id);
+      }
+    } catch (error) {
+      product.isWishlisted = !product.isWishlisted;
+      console.error('Wishlist error', error);
+    }
   }
 
-  onAddToCart(product: Product): void {
-    console.log('Add to cart:', product.name);
-    // Implement add to cart
+  async onAddToCart(product: Product): Promise<void> {
+    try {
+      await this.cartService.addItem({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        slug: this.slugify(product.name),
+        inStock: product.inStock,
+        category: product.category
+      });
+    } catch (error) {
+      console.error('Cart error', error);
+    }
   }
 
   openQuickView(product: Product): void {
@@ -109,5 +142,9 @@ export class ProductListComponent implements OnInit {
       this.currentPage = page;
       this.loadProducts();
     }
+  }
+
+  private slugify(name: string): string {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   }
 }

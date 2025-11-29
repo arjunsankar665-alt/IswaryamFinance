@@ -1,1 +1,81 @@
-<p>wishlist works!</p>
+<section class="py-10 bg-gray-50 min-h-screen">
+	<div class="container mx-auto px-4">
+		<div class="flex items-center justify-between mb-6">
+			<div>
+				<p class="text-sm uppercase tracking-wide text-gray-500">Saved items</p>
+				<h1 class="text-3xl font-semibold text-gray-900">Your Wishlist</h1>
+			</div>
+		</div>
+
+		<ng-container *ngIf="(isAuthenticated$ | async); else guestState">
+			<ng-container *ngIf="(items$ | async) as items">
+				<div *ngIf="items.length > 0; else emptyState">
+					<div class="grid gap-4 md:grid-cols-2">
+						<article *ngFor="let item of items; trackBy: trackByProductId" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex gap-4">
+							<img
+								class="w-28 h-28 rounded-lg object-cover"
+								[src]="item.image || 'assets/images/placeholders/product.jpg'"
+								[alt]="item.name"
+							/>
+
+							<div class="flex-1 flex flex-col justify-between">
+								<div>
+									<p class="text-xs uppercase tracking-wide text-amber-600" *ngIf="item.category">{{ item.category }}</p>
+									<h3 class="text-lg font-medium text-gray-900">{{ item.name }}</h3>
+									<p class="text-sm text-gray-500" *ngIf="item.slug">SKU: {{ item.slug }}</p>
+								</div>
+
+								<div class="flex items-center justify-between mt-3">
+									<div class="text-xl font-semibold text-gray-900">
+										<ng-container *ngIf="item.price !== undefined && item.price !== null; else priceUnknown">
+											{{ item.price | currency: 'INR':'symbol':'1.0-0' }}
+										</ng-container>
+										<ng-template #priceUnknown>
+											<span class="text-sm text-gray-500">Contact for price</span>
+										</ng-template>
+									</div>
+
+									<div class="flex gap-2">
+										<button
+											class="px-3 py-2 text-sm font-medium border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50"
+											(click)="onRemove(item.productId)"
+											[disabled]="isBusy"
+										>
+											Remove
+										</button>
+										<button
+											class="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-500 disabled:opacity-50"
+											(click)="onMoveToCart(item)"
+											[disabled]="isBusy"
+										>
+											Move to Cart
+										</button>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+				<ng-template #emptyState>
+					<div class="bg-white rounded-2xl shadow-sm border border-dashed border-gray-200 p-10 text-center">
+						<p class="text-lg font-medium text-gray-800 mb-2">Your wishlist is empty</p>
+						<p class="text-gray-500 mb-6">Save your favourite pieces to compare later or purchase faster.</p>
+						<a routerLink="/collections" class="inline-flex items-center px-5 py-2 rounded-full bg-gray-900 text-white text-sm font-medium">
+							Browse Collections
+						</a>
+					</div>
+				</ng-template>
+			</ng-container>
+		</ng-container>
+
+		<ng-template #guestState>
+			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
+				<p class="text-lg font-semibold text-gray-900 mb-2">Sign in to access your wishlist</p>
+				<p class="text-gray-500 mb-6">Create an account or log in to save items for later.</p>
+				<button class="px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-500 text-white font-semibold" (click)="promptLogin()">
+					Sign in to continue
+				</button>
+			</div>
+		</ng-template>
+	</div>
+</section>

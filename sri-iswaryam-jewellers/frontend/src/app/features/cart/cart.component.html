@@ -1,25 +1,60 @@
-<section class="py-8 bg-gray-50 min-h-screen">
+<section class="py-10 bg-gray-50 min-h-screen">
 	<div class="container mx-auto px-4">
-		<h1 class="text-2xl font-semibold mb-6">Your Cart</h1>
-
-		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-			<div class="lg:col-span-2 space-y-4">
-				<app-cart-item *ngFor="let it of items"
-											 [item]="it"
-											 (quantityChange)="onQuantityChange($event)"
-											 (remove)="onRemove($event)"
-											 (moveToWishlist)="onMoveToWishlist($event)">
-				</app-cart-item>
-
-				<div *ngIf="items.length === 0" class="text-center py-12">
-					<p class="text-gray-600">Your cart is empty.</p>
-					<a routerLink="/products" class="btn-primary mt-4 inline-block">Shop Products</a>
-				</div>
-			</div>
-
-			<div class="lg:col-span-1">
-				<app-price-summary [subtotal]="subtotal" [discounts]="discounts" [shipping]="shipping" [taxes]="taxes" (checkout)="onCheckout()"></app-price-summary>
+		<div class="flex items-center justify-between mb-6">
+			<div>
+				<p class="text-sm uppercase tracking-wide text-gray-500">Shopping bag</p>
+				<h1 class="text-3xl font-semibold text-gray-900">Your Cart</h1>
 			</div>
 		</div>
+
+		<ng-container *ngIf="(isAuthenticated$ | async); else guestState">
+			<ng-container *ngIf="(cart$ | async) as cart">
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+					<div class="lg:col-span-2 space-y-4">
+						<ng-container *ngIf="cart.items.length > 0; else emptyCart">
+							<app-cart-item
+								*ngFor="let item of cart.items; trackBy: trackByProductId"
+								[item]="item"
+								[disabled]="isBusy"
+								(quantityChange)="onQuantityChange($event)"
+								(remove)="onRemove($event)"
+								(moveToWishlist)="onMoveToWishlist($event)"
+							></app-cart-item>
+						</ng-container>
+						<ng-template #emptyCart>
+							<div class="bg-white rounded-2xl shadow-sm border border-dashed border-gray-200 p-10 text-center">
+								<p class="text-lg font-medium text-gray-800 mb-2">Your cart is empty</p>
+								<p class="text-gray-500 mb-6">Add products to place your first order.</p>
+								<a routerLink="/collections" class="inline-flex items-center px-5 py-2 rounded-full bg-gray-900 text-white text-sm font-medium">
+									Explore Collections
+								</a>
+							</div>
+						</ng-template>
+					</div>
+
+					<div class="lg:col-span-1" *ngIf="cart as currentCart">
+						<ng-container *ngIf="summary(currentCart) as totals">
+							<app-price-summary
+								[subtotal]="totals.subtotal"
+								[discounts]="totals.discounts"
+								[shipping]="totals.shipping"
+								[taxes]="totals.taxes"
+								(checkout)="onCheckout()"
+							></app-price-summary>
+						</ng-container>
+					</div>
+				</div>
+			</ng-container>
+		</ng-container>
+
+		<ng-template #guestState>
+			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
+				<p class="text-lg font-semibold text-gray-900 mb-2">Sign in to access your cart</p>
+				<p class="text-gray-500 mb-6">Please login to view and manage items saved for you.</p>
+				<button class="px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-500 text-white font-semibold" (click)="promptLogin()">
+					Sign in to continue
+				</button>
+			</div>
+		</ng-template>
 	</div>
 </section>

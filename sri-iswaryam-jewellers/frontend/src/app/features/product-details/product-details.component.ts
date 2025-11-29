@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductImage } from './components/image-gallery/image-gallery.component';
 import { ProductDetails } from './components/product-info/product-info.component';
 import { Specification, Review } from './components/specifications-table/specifications-table.component';
+import { CartService } from '../../core/services/cart.service';
+import { WishlistService } from '../../core/services/wishlist.service';
 
 @Component({
   selector: 'app-product-details',
@@ -23,8 +25,10 @@ export class ProductDetailsComponent implements OnInit {
   relatedProducts: { id: string; name: string; image: string; price: number }[] = [];
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly cartService: CartService,
+    private readonly wishlistService: WishlistService
   ) {}
 
   ngOnInit(): void {
@@ -107,19 +111,52 @@ export class ProductDetailsComponent implements OnInit {
     }, 500);
   }
 
-  toggleWishlist(): void {
-    this.isWishlisted = !this.isWishlisted;
-    // Call wishlist service
+  async toggleWishlist(): Promise<void> {
+    if (!this.product) {
+      return;
+    }
+    const nextState = !this.isWishlisted;
+    try {
+      if (nextState) {
+        await this.wishlistService.addItem({
+          productId: this.product.id,
+          name: this.product.name,
+          price: this.product.price,
+          slug: this.product.category.slug,
+          category: this.product.category.name,
+          inStock: this.product.inStock
+        });
+      } else {
+        await this.wishlistService.remove(this.product.id);
+      }
+      this.isWishlisted = nextState;
+    } catch (error) {
+      console.error('Wishlist update failed', error);
+    }
   }
 
   onSizeSelect(size: string): void {
     this.selectedSize = size;
   }
 
-  addToCart(quantity: number): void {
-    if (!this.product) return;
-    console.log(`Adding ${quantity} of ${this.product.name} to cart`);
-    // Call cart service
+  async addToCart(quantity: number): Promise<void> {
+    if (!this.product) {
+      return;
+    }
+    try {
+      await this.cartService.addItem({
+        productId: this.product.id,
+        name: this.product.name,
+        price: this.product.price,
+        quantity,
+        slug: this.product.category.slug,
+        image: this.productImages[0]?.full,
+        inStock: this.product.inStock,
+        category: this.product.category.name
+      });
+    } catch (error) {
+      console.error('Cart update failed', error);
+    }
   }
 
   buyNow(quantity: number): void {

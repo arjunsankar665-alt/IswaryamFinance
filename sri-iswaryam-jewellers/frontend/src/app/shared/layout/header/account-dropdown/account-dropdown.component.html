@@ -1,0 +1,26 @@
+<div class="account-dropdown" *ngIf="open">
+  <div class="account-dropdown__panel">
+    <div class="account-dropdown__profile">
+      <div class="account-dropdown__avatar">
+        {{ user?.name?.charAt(0) || user?.email?.charAt(0) || 'S' }}
+      </div>
+      <div>
+        <p class="account-dropdown__name">{{ user?.name || 'Guest' }}</p>
+        <p class="account-dropdown__sub">{{ user?.email || 'Sri Iswaryam Member' }}</p>
+      </div>
+    </div>
+
+    <div class="account-dropdown__items">
+      <button *ngFor="let item of items; trackBy: trackByLabel"
+              type="button"
+              class="account-dropdown__item"
+              (click)="onSelect(item)">
+        <span class="account-dropdown__icon">{{ item.icon }}</span>
+        <div>
+          <p>{{ item.label }}</p>
+          <small *ngIf="item.description">{{ item.description }}</small>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

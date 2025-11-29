@@ -5,6 +5,7 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
+import { ContactUsComponent } from './pages/support/contact-us/contact-us.component';
 
 const routes: Routes = [
   // Main Layout Routes
@@ -64,6 +65,10 @@ const routes: Routes = [
       { 
         path: 'feedback', 
         loadChildren: () => import('./features/feedback/feedback.module').then(m => m.FeedbackModule) 
+      },
+      {
+        path: 'support/contact-us',
+        component: ContactUsComponent
       }
     ]
   },

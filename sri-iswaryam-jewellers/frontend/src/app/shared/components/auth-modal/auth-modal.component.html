@@ -1,0 +1,87 @@
+<div class="auth-modal" *ngIf="open">
+  <div class="auth-modal__backdrop" (click)="close()"></div>
+  <div class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="auth-modal__close" (click)="close()" aria-label="Close">
+      &times;
+    </button>
+
+    <div class="auth-modal__header">
+      <h2 id="authTitle">{{ mode === 'login' ? 'Welcome back' : 'Create an account' }}</h2>
+      <p>{{ mode === 'login' ? 'Sign in to access orders, wishlist and loyalty rewards.' : 'Join Sri Iswaryam to track orders and unlock member-only perks.' }}</p>
+    </div>
+
+    <div class="auth-modal__tabs">
+      <button type="button"
+              class="auth-modal__tab"
+              [class.auth-modal__tab--active]="mode === 'login'"
+              (click)="switchMode('login')">
+        Sign in
+      </button>
+      <button type="button"
+              class="auth-modal__tab"
+              [class.auth-modal__tab--active]="mode === 'register'"
+              (click)="switchMode('register')">
+        Register
+      </button>
+    </div>
+
+    <form *ngIf="mode === 'login'"
+          class="auth-modal__form"
+          [formGroup]="loginForm"
+          (ngSubmit)="submitLogin()"
+          novalidate>
+      <div class="auth-modal__field">
+        <label for="login-email">Email address</label>
+        <input id="login-email"
+               type="email"
+               formControlName="email"
+               placeholder="you@example.com" />
+      </div>
+      <div class="auth-modal__field">
+        <label for="login-password">Password</label>
+        <input id="login-password"
+               type="password"
+               formControlName="password"
+               placeholder="Enter your password" />
+      </div>
+      <button type="submit" class="auth-modal__primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Signing in…' : 'Sign in' }}
+      </button>
+      <p class="auth-modal__hint">Forgot password? Contact support to reset your account.</p>
+    </form>
+
+    <form *ngIf="mode === 'register'"
+          class="auth-modal__form"
+          [formGroup]="registerForm"
+          (ngSubmit)="submitRegister()"
+          novalidate>
+      <div class="auth-modal__field">
+        <label for="register-name">Full name</label>
+        <input id="register-name"
+               type="text"
+               formControlName="name"
+               placeholder="Sri Iswaryam Member" />
+      </div>
+      <div class="auth-modal__field">
+        <label for="register-email">Email address</label>
+        <input id="register-email"
+               type="email"
+               formControlName="email"
+               placeholder="you@example.com" />
+      </div>
+      <div class="auth-modal__field">
+        <label for="register-password">Password</label>
+        <input id="register-password"
+               type="password"
+               formControlName="password"
+               placeholder="Minimum 6 characters" />
+      </div>
+      <button type="submit" class="auth-modal__primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Creating account…' : 'Create account' }}
+      </button>
+      <p class="auth-modal__hint">By continuing you agree to receive order alerts and account updates.</p>
+    </form>
+
+    <div class="auth-modal__error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  </div>
+</div>

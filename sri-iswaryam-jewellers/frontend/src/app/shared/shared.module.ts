@@ -26,6 +26,8 @@ import { ToastComponent } from './ui/toast/toast.component';
 import { SkeletonComponent } from './ui/skeleton/skeleton.component';
 import { SearchSuggestionsComponent } from './ui/search-suggestions/search-suggestions.component';
 import { NewsletterComponent } from './ui/newsletter/newsletter.component';
+import { AuthModalComponent } from './components/auth-modal/auth-modal.component';
+import { AccountDropdownComponent } from './layout/header/account-dropdown/account-dropdown.component';
 
 
 
@@ -54,7 +56,9 @@ import { NewsletterComponent } from './ui/newsletter/newsletter.component';
     ToastComponent,
     SkeletonComponent,
     SearchSuggestionsComponent,
-    NewsletterComponent
+    NewsletterComponent,
+    AuthModalComponent,
+    AccountDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -90,7 +94,9 @@ import { NewsletterComponent } from './ui/newsletter/newsletter.component';
     ToastComponent,
     SkeletonComponent,
     SearchSuggestionsComponent,
-    NewsletterComponent
+    NewsletterComponent,
+    AuthModalComponent,
+    AccountDropdownComponent
   ]
 })
 export class SharedModule { }

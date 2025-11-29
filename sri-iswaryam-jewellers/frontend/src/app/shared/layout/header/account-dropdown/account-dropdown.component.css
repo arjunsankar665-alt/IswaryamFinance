@@ -1,0 +1,75 @@
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  z-index: 40;
+}
+
+.account-dropdown__panel {
+  width: 270px;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.18);
+  padding: 1.25rem 1rem;
+}
+
+.account-dropdown__profile {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  background: linear-gradient(90deg, #e57a88, #f7b681);
+  border-radius: 1rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.25rem;
+  color: #fff;
+}
+
+.account-dropdown__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.account-dropdown__name {
+  font-weight: 600;
+}
+
+.account-dropdown__sub {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.account-dropdown__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.account-dropdown__item {
+  width: 100%;
+  border: 1px solid rgba(180, 150, 130, 0.3);
+  border-radius: 1rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  transition: border 150ms ease, box-shadow 150ms ease;
+}
+
+.account-dropdown__item:hover {
+  border-color: rgba(180, 150, 130, 0.6);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.account-dropdown__icon {
+  font-size: 1.2rem;
+  color: #8c5c4a;
+}
