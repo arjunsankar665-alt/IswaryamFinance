@@ -1,1 +1,94 @@
-<p>collections works!</p>
+<section class="collections">
+	<div class="collections__hero">
+		<div class="collections__hero-content">
+			<p class="eyebrow">Curated Luxury</p>
+			<h1>Discover Jewellery Stories for Every Ceremony</h1>
+			<p>
+				From temple heirlooms hand-carved in Chennai to contemporary diamonds crafted for everyday brilliance,
+				explore our complete universe of collections.
+			</p>
+			<div class="collections__hero-cta">
+				<a routerLink="/products/necklaces" class="btn btn--primary">Shop Necklaces</a>
+				<a routerLink="/support/contact-us" class="btn btn--ghost">Book a virtual appointment</a>
+			</div>
+			<div class="collections__hero-stats">
+				<div *ngFor="let stat of heroStats">
+					<p class="value">{{ stat.value }}</p>
+					<p class="label">{{ stat.label }}</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="collections__hero-visual">
+			<img src="assets/hero-banner.png" alt="Sri Iswaryam collection moodboard">
+			<div class="collections__hero-note">Shot at the Sri Iswaryam atelier · Oct 2025</div>
+		</div>
+	</div>
+
+	<section class="collections__grid">
+		<header class="section-heading">
+			<div>
+				<p class="eyebrow">All Categories</p>
+				<h2>Browse every collection crafted in our studio</h2>
+			</div>
+			<span class="hint">Tap a card to jump directly into that category</span>
+		</header>
+
+		<div class="grid">
+			<article *ngFor="let category of categories; trackBy: trackByCategory"
+							 class="category-card"
+							 [style.--accent]="category.accent">
+				<div class="category-card__media">
+					<img [src]="category.image" [alt]="category.name" loading="lazy">
+					<span class="pill">{{ category.pieces }} pieces</span>
+				</div>
+				<div class="category-card__body">
+					<h3>{{ category.name }}</h3>
+					<p>{{ category.description }}</p>
+					<a [routerLink]="['/products', category.slug]">Explore {{ category.name }} →</a>
+				</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="spotlight">
+		<header class="section-heading">
+			<div>
+				<p class="eyebrow">Spotlight Capsules</p>
+				<h2>Limited-run edits from our creative studio</h2>
+			</div>
+		</header>
+
+		<div class="spotlight__grid">
+			<article *ngFor="let set of spotlightSets; trackBy: trackBySpotlight" class="spotlight-card">
+				<div class="spotlight-card__image">
+					<img [src]="set.image" [alt]="set.title" loading="lazy">
+				</div>
+				<div class="spotlight-card__body">
+					<h3>{{ set.title }}</h3>
+					<p>{{ set.summary }}</p>
+					<div class="tags">
+						<span *ngFor="let tag of set.tags">{{ tag }}</span>
+					</div>
+				</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="services">
+		<header class="section-heading">
+			<div>
+				<p class="eyebrow">Concierge Services</p>
+				<h2>Personalise your Sri Iswaryam experience</h2>
+			</div>
+		</header>
+
+		<div class="services__grid">
+			<article *ngFor="let service of services; trackBy: trackByService" class="service-card">
+				<div class="icon">{{ service.icon }}</div>
+				<h3>{{ service.title }}</h3>
+				<p>{{ service.description }}</p>
+			</article>
+		</div>
+	</section>
+</section>

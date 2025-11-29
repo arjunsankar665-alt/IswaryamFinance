@@ -4,6 +4,7 @@ import { Address } from './components/address-selection/address-selection.compon
 import { DeliveryOption } from './components/delivery-options/delivery-options.component';
 import { PaymentDetails } from './components/payment-methods/payment-methods.component';
 import { OrderItem } from './components/order-review/order-review.component';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-checkout',
@@ -34,7 +35,10 @@ export class CheckoutComponent implements OnInit {
   shipping = 0;
   taxes = 0;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.calculatePrices();
@@ -109,7 +113,7 @@ export class CheckoutComponent implements OnInit {
       total: this.subtotal - this.discounts + this.shipping + this.taxes
     });
     // TODO: Call order API
-    alert('Order placed successfully!');
+    this.notificationService.success('Order placed', 'Thank you for shopping with Sri Iswaryam.');
     this.router.navigate(['/account/orders']);
   }
 }

@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { ContactUsComponent } from './pages/support/contact-us/contact-us.component';
+import { AdminAccessComponent } from './pages/admin-access/admin-access.component';
 
 const routes: Routes = [
   // Main Layout Routes
@@ -69,6 +70,11 @@ const routes: Routes = [
       {
         path: 'support/contact-us',
         component: ContactUsComponent
+      },
+      {
+        path: 'admin-access',
+        component: AdminAccessComponent,
+        canActivate: [authGuard]
       }
     ]
   },

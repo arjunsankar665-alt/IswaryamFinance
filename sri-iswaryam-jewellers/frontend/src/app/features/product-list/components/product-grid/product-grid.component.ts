@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export interface Product {
   id: string;
   name: string;
+  slug: string;
   image: string;
   category: string;
   metal?: string;
@@ -30,7 +31,6 @@ export class ProductGridComponent {
   @Output() quickViewOpen = new EventEmitter<Product>();
 
   addToWishlist(product: Product): void {
-    product.isWishlisted = !product.isWishlisted;
     this.wishlistToggle.emit(product);
   }
 

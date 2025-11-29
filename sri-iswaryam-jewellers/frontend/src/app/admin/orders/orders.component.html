@@ -1,1 +1,86 @@
-<p>orders works!</p>
+<section class="orders-shell">
+	<header class="orders-header">
+		<div>
+			<p class="eyebrow">Logistics & Fulfilment</p>
+			<h1>Active Orders</h1>
+			<p class="subtle">Monitor journey from placement to doorstep and unblock stalled shipments.</p>
+		</div>
+
+		<div class="filters">
+			<label>
+				<span>Status</span>
+				<select [(ngModel)]="selectedStatus" (change)="applyFilter()">
+					<option *ngFor="let status of statuses" [ngValue]="status">{{ status | titlecase }}</option>
+				</select>
+			</label>
+			<div class="stat-card">
+				<p class="stat-label">Orders in flight</p>
+				<p class="stat-value">{{ filteredOrders.length }}</p>
+			</div>
+		</div>
+	</header>
+
+	<div class="orders-grid">
+		<article class="order-card" *ngFor="let order of filteredOrders; trackBy: trackByOrder">
+			<div class="order-head">
+				<div>
+					<p class="order-id">{{ order.id }}</p>
+					<h2>{{ order.customerName }}</h2>
+					<p class="order-email">{{ order.customerEmail }}</p>
+				</div>
+				<div class="order-meta">
+					<span class="badge" [attr.data-status]="order.status">{{ order.status | titlecase }}</span>
+					<p>{{ order.channel }} • ₹{{ order.total | number: '1.0-0' }}</p>
+					<p>Placed {{ order.placedAt | date:'mediumDate' }}</p>
+				</div>
+			</div>
+
+			<div class="items">
+				<div class="item" *ngFor="let item of order.items">
+					<div>
+						<p class="item-name">{{ item.name }}</p>
+						<p class="item-meta">{{ item.category | titlecase }} • Qty {{ item.quantity }}</p>
+					</div>
+					<span>₹{{ item.price | number: '1.0-0' }}</span>
+				</div>
+			</div>
+
+			<div class="logistics">
+				<div>
+					<p class="logistics-label">Dispatch ETA</p>
+					<p>{{ order.expectedDispatch | date:'mediumDate' }}</p>
+				</div>
+				<div>
+					<p class="logistics-label">Courier</p>
+					<p>{{ order.shippingProvider }}</p>
+				</div>
+				<div>
+					<p class="logistics-label">Tracking</p>
+					<p>{{ order.trackingId }}</p>
+				</div>
+			</div>
+
+			<div class="status-timeline">
+				<div class="step" *ngFor="let step of statusFlow" [class.active]="isStepActive(order.status, step)">
+					<span class="dot"></span>
+					<span class="label">{{ step | titlecase }}</span>
+				</div>
+			</div>
+
+			<div class="actions">
+				<label>
+					Update Status
+					<select [ngModel]="order.status" (ngModelChange)="updateStatus(order, $event)">
+						<option *ngFor="let status of statusFlow" [ngValue]="status">{{ status | titlecase }}</option>
+					</select>
+				</label>
+				<button class="ghost">Contact Client</button>
+				<button>Mark Priority</button>
+			</div>
+		</article>
+	</div>
+
+	<p *ngIf="!filteredOrders.length" class="empty-state">
+		No orders match this filter right now.
+	</p>
+</section>

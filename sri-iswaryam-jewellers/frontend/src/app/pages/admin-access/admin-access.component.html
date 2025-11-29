@@ -1,0 +1,63 @@
+<section class="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-amber-50 via-white to-rose-50 px-4 py-16">
+  <div class="w-full max-w-lg">
+    <div class="bg-white/80 backdrop-blur rounded-3xl shadow-xl border border-amber-100 p-10">
+      <div class="flex items-center gap-4 mb-8">
+        <div class="h-14 w-14 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl font-serif text-amber-700">
+          SI
+        </div>
+        <div>
+          <p class="text-sm uppercase tracking-[0.35em] text-amber-500 font-semibold">Admin Entry</p>
+          <h1 class="text-3xl font-serif text-gray-900 mt-1">Control Room Passcode</h1>
+        </div>
+      </div>
+
+      <p class="text-gray-600 mb-8 leading-relaxed">
+        For your security, the admin studio requires the latest access passcode. Please enter the password shared by the leadership team to continue.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
+        <div>
+          <label for="admin-password" class="block text-sm font-medium text-gray-700 mb-2">
+            Admin Password
+          </label>
+          <div class="relative">
+            <input
+              id="admin-password"
+              type="password"
+              formControlName="password"
+              autocomplete="off"
+              class="w-full rounded-2xl border px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500/60 focus:border-amber-400 transition shadow-inner"
+              [class.border-red-400]="passwordInvalid"
+              placeholder="Enter secure password" />
+            <div class="absolute inset-y-0 right-4 flex items-center text-gray-400">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+          </div>
+          <p *ngIf="passwordInvalid" class="text-sm text-red-500 mt-2">
+            Please provide the admin password that was shared with you.
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-semibold shadow-lg shadow-amber-200 hover:shadow-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="loading">
+          <span *ngIf="!loading">Unlock Admin Panel</span>
+          <span *ngIf="loading" class="flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke-width="4"></circle>
+              <path class="opacity-75" stroke-width="4" d="M4 12a8 8 0 018-8" stroke-linecap="round"></path>
+            </svg>
+            Verifying...
+          </span>
+        </button>
+
+        <p class="text-sm text-center text-gray-500">
+          Need assistance? Contact the super admin to reset the passcode.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>

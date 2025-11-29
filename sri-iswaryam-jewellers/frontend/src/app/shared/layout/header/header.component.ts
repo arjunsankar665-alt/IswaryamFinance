@@ -45,6 +45,12 @@ export class HeaderComponent implements OnDestroy {
     this.subscriptions.add(
       this.wishlistService.count$.subscribe((count) => (this.wishlistCount = count))
     );
+    this.subscriptions.add(
+      this.authService.loginPrompt$.subscribe(() => {
+        this.showAuthModal = true;
+        this.closeAccountDropdown();
+      })
+    );
   }
 
   navLinks = [

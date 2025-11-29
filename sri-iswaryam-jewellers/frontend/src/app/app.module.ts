@@ -27,6 +27,7 @@ import { NotFoundComponent } from './pages/error/not-found/not-found.component';
 import { ServerErrorComponent } from './pages/error/server-error/server-error.component';
 import { CompareComponent } from './pages/compare/compare.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { AdminAccessComponent } from './pages/admin-access/admin-access.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     StoreLocatorComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    CompareComponent
+    CompareComponent,
+    AdminAccessComponent
   ],
   imports: [
     BrowserModule,

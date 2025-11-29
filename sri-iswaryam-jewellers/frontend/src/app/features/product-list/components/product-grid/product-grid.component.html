@@ -3,38 +3,41 @@
            class="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
     <!-- Product Image -->
     <div class="relative aspect-square overflow-hidden">
-      <img [src]="product.image" [alt]="product.name" 
-           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-      
-      <!-- Badges -->
-      <div class="absolute top-2 left-2 flex flex-col gap-1">
-        <span *ngIf="product.isNew" class="bg-green-500 text-white text-xs px-2 py-0.5 rounded">New</span>
-        <span *ngIf="product.discount" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded">
-          {{ product.discount }}% OFF
-        </span>
-      </div>
+      <a [routerLink]="['/product', product.id]"
+         class="block h-full">
+        <img [src]="product.image" [alt]="product.name" 
+             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        
+        <!-- Badges -->
+        <div class="absolute top-2 left-2 flex flex-col gap-1">
+          <span *ngIf="product.isNew" class="bg-green-500 text-white text-xs px-2 py-0.5 rounded">New</span>
+          <span *ngIf="product.discount" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded">
+            {{ product.discount }}% OFF
+          </span>
+        </div>
+
+        <!-- Out of Stock Overlay -->
+        <div *ngIf="!product.inStock" class="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <span class="text-white font-semibold">Out of Stock</span>
+        </div>
+      </a>
 
       <!-- Quick Actions -->
-      <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div class="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
         <button (click)="addToWishlist(product)" 
-                class="p-2 bg-white rounded-full shadow-md hover:bg-yellow-50 transition"
+                class="p-2 bg-white rounded-full shadow-md hover:bg-yellow-50 transition pointer-events-auto"
                 [class.text-red-500]="product.isWishlisted">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" [attr.fill]="product.isWishlisted ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
         </button>
         <button (click)="quickView(product)" 
-                class="p-2 bg-white rounded-full shadow-md hover:bg-yellow-50 transition">
+                class="p-2 bg-white rounded-full shadow-md hover:bg-yellow-50 transition pointer-events-auto">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
           </svg>
         </button>
-      </div>
-
-      <!-- Out of Stock Overlay -->
-      <div *ngIf="!product.inStock" class="absolute inset-0 bg-black/50 flex items-center justify-center">
-        <span class="text-white font-semibold">Out of Stock</span>
       </div>
     </div>
 
@@ -42,7 +45,7 @@
     <div class="p-4">
       <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">{{ product.category }}</p>
       <h3 class="font-medium text-gray-800 line-clamp-2 mb-2 min-h-[2.5rem]">
-        <a [routerLink]="['/products', product.id]" class="hover:text-yellow-600 transition">
+        <a [routerLink]="['/product', product.id]" class="hover:text-yellow-600 transition">
           {{ product.name }}
         </a>
       </h3>

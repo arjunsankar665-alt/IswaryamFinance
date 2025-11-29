@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { ADMIN_ACCESS_STORAGE_KEY } from './admin-access.service';
 
 export interface AuthUser {
   id: string;
@@ -82,9 +83,13 @@ export class AuthService {
         return response.data.user;
       }
       return null;
-    } catch {
-      this.clearSession();
-      return null;
+    } catch (error) {
+      if (this.shouldInvalidateSession(error)) {
+        this.clearSession();
+      } else {
+        console.warn('Profile refresh failed, keeping cached session.', error);
+      }
+      return this.userSubject.value;
     }
   }
 
@@ -160,7 +165,15 @@ export class AuthService {
   private clearSession(): void {
     localStorage.removeItem(this.tokenStorageKey);
     localStorage.removeItem(this.userStorageKey);
+    localStorage.removeItem(ADMIN_ACCESS_STORAGE_KEY);
     this.userSubject.next(null);
+  }
+
+  private shouldInvalidateSession(error: unknown): boolean {
+    if (error instanceof HttpErrorResponse) {
+      return error.status === 401 || error.status === 403;
+    }
+    return false;
   }
 
   private extractErrorMessage(error: unknown): string {

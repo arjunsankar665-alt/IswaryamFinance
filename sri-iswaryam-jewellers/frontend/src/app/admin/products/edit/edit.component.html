@@ -1,1 +1,50 @@
-<p>edit works!</p>
+<section *ngIf="product" class="max-w-3xl space-y-8">
+	<header>
+		<p class="text-xs uppercase tracking-[0.4em] text-amber-500">Edit listing</p>
+		<h1 class="text-3xl font-serif text-slate-900 mt-2">{{ product.name }}</h1>
+		<p class="text-sm text-slate-500">SKU {{ product.sku }} • {{ product.category | titlecase }}</p>
+	</header>
+
+	<form [formGroup]="form" (ngSubmit)="save()" class="space-y-6">
+		<label class="form-field">
+			<span>Name</span>
+			<input type="text" formControlName="name">
+		</label>
+
+		<div class="grid gap-6 md:grid-cols-3">
+			<label class="form-field">
+				<span>Price (₹)</span>
+				<input type="number" formControlName="price">
+			</label>
+			<label class="form-field">
+				<span>MRP (₹)</span>
+				<input type="number" formControlName="mrp">
+			</label>
+			<label class="form-field">
+				<span>Stock</span>
+				<input type="number" formControlName="stock">
+			</label>
+		</div>
+
+		<label class="form-field">
+			<span>Hero image</span>
+			<input type="text" formControlName="heroImage">
+		</label>
+
+		<label class="form-field">
+			<span>Description</span>
+			<textarea rows="4" formControlName="description"></textarea>
+		</label>
+
+		<div class="flex gap-3">
+			<button type="submit" [disabled]="submitting" class="px-6 py-3 rounded-2xl bg-slate-900 text-white shadow-lg disabled:opacity-50">
+				{{ submitting ? 'Saving...' : 'Save changes' }}
+			</button>
+			<a routerLink="/admin/products" class="px-6 py-3 rounded-2xl border border-slate-200">Back to list</a>
+		</div>
+	</form>
+</section>
+
+<div *ngIf="!product" class="text-center py-16 text-slate-500">
+	Product not found.
+</div>

@@ -1,1 +1,90 @@
-<p>add works!</p>
+<section class="max-w-4xl mx-auto space-y-8">
+	<header>
+		<p class="text-xs uppercase tracking-[0.4em] text-amber-500">Product upload</p>
+		<h1 class="text-3xl font-serif text-slate-900 mt-2">Craft a new listing</h1>
+		<p class="text-sm text-slate-500">Populate the essentials and we will sync it with the storefront instantly.</p>
+	</header>
+
+	<form [formGroup]="form" (ngSubmit)="save()" class="space-y-6">
+		<div class="grid gap-6 md:grid-cols-2">
+			<label class="form-field">
+				<span>Name</span>
+				<input type="text" formControlName="name" placeholder="Eg. Megha Temple Haar">
+				<small *ngIf="form.get('name')?.invalid && form.get('name')?.touched">Provide a descriptive name.</small>
+			</label>
+			<label class="form-field">
+				<span>SKU</span>
+				<input type="text" formControlName="sku" placeholder="PROD-NEC-12">
+			</label>
+		</div>
+
+		<div class="grid gap-6 md:grid-cols-3">
+			<label class="form-field">
+				<span>Category</span>
+				<select formControlName="category">
+					<option *ngFor="let category of categoryOptions" [value]="category">{{ category | titlecase }}</option>
+				</select>
+			</label>
+			<label class="form-field">
+				<span>Purity</span>
+				<select formControlName="purity">
+					<option *ngFor="let purity of purityOptions" [value]="purity">{{ purity }}</option>
+				</select>
+			</label>
+			<label class="form-field">
+				<span>Weight (g)</span>
+				<input type="number" formControlName="weight">
+			</label>
+		</div>
+
+		<div class="grid gap-6 md:grid-cols-3">
+			<label class="form-field">
+				<span>Price (₹)</span>
+				<input type="number" formControlName="price">
+			</label>
+			<label class="form-field">
+				<span>MRP (₹)</span>
+				<input type="number" formControlName="mrp">
+			</label>
+			<label class="form-field">
+				<span>Inventory (pcs)</span>
+				<input type="number" formControlName="stock">
+			</label>
+		</div>
+
+		<div class="grid gap-6 md:grid-cols-2">
+			<label class="form-field">
+				<span>Hero image</span>
+				<select formControlName="heroImage">
+					<option *ngFor="let image of heroImageOptions" [value]="image">{{ image }}</option>
+				</select>
+			</label>
+			<label class="form-field">
+				<span>Gallery (comma separated)</span>
+				<input type="text" formControlName="gallery">
+			</label>
+		</div>
+
+		<label class="form-field">
+			<span>Tags</span>
+			<input type="text" formControlName="tags" placeholder="Wedding, Bestseller">
+		</label>
+
+		<label class="form-field">
+			<span>Description</span>
+			<textarea rows="4" formControlName="description" placeholder="Tell the story behind this piece..."></textarea>
+		</label>
+
+		<label class="inline-flex items-center gap-3">
+			<input type="checkbox" formControlName="featured">
+			<span class="text-sm text-slate-600">Highlight on homepage hero strip</span>
+		</label>
+
+		<div class="flex gap-3">
+			<button type="submit" [disabled]="submitting" class="px-6 py-3 rounded-2xl bg-slate-900 text-white shadow-lg disabled:opacity-50">
+				{{ submitting ? 'Saving...' : 'Save product' }}
+			</button>
+			<a routerLink="/admin/products" class="px-6 py-3 rounded-2xl border border-slate-200">Cancel</a>
+		</div>
+	</form>
+</section>

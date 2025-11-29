@@ -17,10 +17,33 @@ interface TrendingProduct {
   styleUrls: ['./trending-products.component.css']
 })
 export class TrendingProductsComponent {
-  trendingProducts: TrendingProduct[] = [
-    { id: '1', name: 'Temple Gold Necklace', image: 'assets/images/products/trending-1.jpg', price: 185000, originalPrice: 200000, rating: 4.8, category: 'Necklaces', discount: 7 },
-    { id: '2', name: 'Diamond Jhumkas', image: 'assets/images/products/trending-2.jpg', price: 65000, rating: 4.9, category: 'Earrings' },
-    { id: '3', name: 'Bridal Bangles Set', image: 'assets/images/products/trending-3.jpg', price: 125000, originalPrice: 140000, rating: 4.7, category: 'Bangles', discount: 10 },
-    { id: '4', name: 'Platinum Ring', image: 'assets/images/products/trending-4.jpg', price: 45000, rating: 4.6, category: 'Rings' }
-  ];
+  readonly trendingProducts: TrendingProduct[] = this.buildTrendingCollection();
+
+  private buildTrendingCollection(): TrendingProduct[] {
+    const heroNames = [
+      'Sunrise Polki Choker',
+      'Rajam Bridal Cascade',
+      'Lotus Filigree Mala',
+      'Emerald Rajputi Set',
+      'Classic Temple Rows',
+      'Contemporary Cuff Set',
+      'Zuri Heritage Collar',
+      'Ivory Heirloom Layers'
+    ];
+
+    return heroNames.map((name, index) => {
+      const price = 185000 + index * 18000;
+      const originalPrice = Math.round(price * 1.08);
+      return {
+        id: `special-${index + 1}`,
+        name,
+        image: `assets/Special/item${index + 1}.webp`,
+        price,
+        originalPrice,
+        rating: 4.5 + (index % 3) * 0.1,
+        category: 'Special Editions',
+        discount: Math.max(5, Math.round((1 - price / originalPrice) * 100))
+      } as TrendingProduct;
+    });
+  }
 }

@@ -39,15 +39,14 @@ export class FilterPanelComponent {
   private readonly numberFormatter = new Intl.NumberFormat('en-IN');
 
   categories: Category[] = [
-    { id: 'necklaces', name: 'Necklaces', count: 45 },
-    { id: 'earrings', name: 'Earrings', count: 78 },
-    { id: 'bangles', name: 'Bangles', count: 56 },
-    { id: 'rings', name: 'Rings', count: 92 },
-    { id: 'chains', name: 'Chains', count: 34 },
-    { id: 'pendants', name: 'Pendants', count: 41 }
+    { id: 'necklaces', name: 'Necklaces', count: 10 },
+    { id: 'earrings', name: 'Earrings', count: 11 },
+    { id: 'bangles', name: 'Bangles', count: 10 },
+    { id: 'rings', name: 'Rings', count: 15 },
+    { id: 'special', name: 'Special Editions', count: 8 }
   ];
 
-  metalTypes: string[] = ['Gold', 'Silver', 'Platinum', 'Rose Gold'];
+  metalTypes: string[] = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'Polki'];
 
   weightRanges: WeightRange[] = [
     { label: '0-5g', value: '0-5' },

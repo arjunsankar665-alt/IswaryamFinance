@@ -1,0 +1,35 @@
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	font-size: 0.875rem;
+	color: #475569;
+}
+
+.form-field span {
+	font-weight: 600;
+	color: #0f172a;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+	border-radius: 1rem;
+	border: 1px solid #e2e8f0;
+	padding: 0.9rem 1.1rem;
+	font-size: 0.95rem;
+	color: #0f172a;
+	transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+	outline: none;
+	border-color: #fbbf24;
+	box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+}
+
+.form-field small {
+	color: #f97316;
+}
