@@ -10,6 +10,7 @@ import { AddComponent } from './products/add/add.component';
 import { EditComponent } from './products/edit/edit.component';
 import { BannersComponent } from './marketing/banners/banners.component';
 import { CouponsComponent } from './marketing/coupons/coupons.component';
+import { MenuManagerComponent } from './navigation/menu-manager/menu-manager.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'inventory', component: InventoryComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'marketing/banners', component: BannersComponent },
-  { path: 'marketing/coupons', component: CouponsComponent }
+  { path: 'marketing/coupons', component: CouponsComponent },
+  { path: 'navigation/menus', component: MenuManagerComponent }
 ];
 
 @NgModule({

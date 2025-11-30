@@ -1,17 +1,19 @@
-import { Component, Output, EventEmitter, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { AccountMenuItem } from './account-dropdown/account-dropdown.component';
 import { CartService } from '../../../core/services/cart.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
+import { CategoryService, StorefrontCategory } from '../../../core/services/category.service';
+import { MenuService, StorefrontMenu } from '../../../core/services/menu.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
   @Output() toggleMobileNav = new EventEmitter<void>();
   
   isSearchOpen = false;
@@ -22,6 +24,9 @@ export class HeaderComponent implements OnDestroy {
   user$ = this.authService.user$;
   isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
   private subscriptions = new Subscription();
+  readonly menus$ = this.menuService.menus$;
+  readonly categories$ = this.categoryService.categories$;
+  collectionsMenuOpen = false;
 
   accountItems: AccountMenuItem[] = [
     { icon: '📦', label: 'Orders & Returns', description: 'History, invoices, reorders', routerLink: '/account/orders' },
@@ -37,7 +42,9 @@ export class HeaderComponent implements OnDestroy {
 	private readonly router: Router,
 	private readonly elementRef: ElementRef,
 	private readonly cartService: CartService,
-	private readonly wishlistService: WishlistService
+  private readonly wishlistService: WishlistService,
+  private readonly categoryService: CategoryService,
+  private readonly menuService: MenuService
   ) {
     this.subscriptions.add(
       this.cartService.itemCount$.subscribe((count) => (this.cartCount = count))
@@ -53,15 +60,22 @@ export class HeaderComponent implements OnDestroy {
     );
   }
 
-  navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Collections', path: '/collections' },
-    { label: 'Necklaces', path: '/products/necklaces' },
-    { label: 'Bangles', path: '/products/bangles' },
-    { label: 'Earrings', path: '/products/earrings' },
-    { label: 'Rings', path: '/products/rings' },
-    { label: 'Bridal', path: '/products/bridal' }
+  navFallback: StorefrontMenu[] = [
+    { id: 'home', label: 'Home', slug: 'home', url: '/', display: 'link' },
+    { id: 'collections', label: 'Collections', slug: 'collections', url: '/collections', display: 'categories' },
+    { id: 'necklaces', label: 'Necklaces', slug: 'necklaces', url: '/products/necklaces', display: 'link' },
+    { id: 'bangles', label: 'Bangles', slug: 'bangles', url: '/products/bangles', display: 'link' },
+    { id: 'earrings', label: 'Earrings', slug: 'earrings', url: '/products/earrings', display: 'link' },
+    { id: 'rings', label: 'Rings', slug: 'rings', url: '/products/rings', display: 'link' },
+    { id: 'bridal', label: 'Bridal', slug: 'bridal', url: '/products/bridal', display: 'link' }
   ];
+
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.categoryService.preload().catch(() => undefined),
+      this.menuService.preload().catch(() => undefined)
+    ]);
+  }
 
   onMenuClick(): void {
     this.toggleMobileNav.emit();
@@ -82,6 +96,14 @@ export class HeaderComponent implements OnDestroy {
 
   toggleAccountDropdown(): void {
     this.showAccountDropdown = !this.showAccountDropdown;
+  }
+
+  openCollections(): void {
+    this.collectionsMenuOpen = true;
+  }
+
+  closeCollections(): void {
+    this.collectionsMenuOpen = false;
   }
 
   closeAccountDropdown(): void {

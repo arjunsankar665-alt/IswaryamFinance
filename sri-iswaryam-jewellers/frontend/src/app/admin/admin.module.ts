@@ -13,6 +13,7 @@ import { AddComponent } from './products/add/add.component';
 import { EditComponent } from './products/edit/edit.component';
 import { BannersComponent } from './marketing/banners/banners.component';
 import { CouponsComponent } from './marketing/coupons/coupons.component';
+import { MenuManagerComponent } from './navigation/menu-manager/menu-manager.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { CouponsComponent } from './marketing/coupons/coupons.component';
     AddComponent,
     EditComponent,
     BannersComponent,
-    CouponsComponent
+    CouponsComponent,
+    MenuManagerComponent
   ],
   imports: [
     CommonModule,

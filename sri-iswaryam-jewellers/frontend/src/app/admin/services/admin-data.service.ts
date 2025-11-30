@@ -83,6 +83,18 @@ export interface UploadedAsset {
   category: string;
 }
 
+export interface AdminMenu {
+  id: string;
+  label: string;
+  slug: string;
+  url: string;
+  display: 'link' | 'categories';
+  isActive: boolean;
+  sortOrder: number;
+  icon?: string;
+  updatedAt?: string;
+}
+
 interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -97,11 +109,13 @@ export class AdminDataService {
   private readonly ordersSubject = new BehaviorSubject<AdminOrder[]>([]);
   private readonly usersSubject = new BehaviorSubject<AdminUser[]>([]);
   private readonly categoriesSubject = new BehaviorSubject<AdminCategory[]>([]);
+  private readonly menusSubject = new BehaviorSubject<AdminMenu[]>([]);
 
   readonly products$ = this.productsSubject.asObservable();
   readonly orders$ = this.ordersSubject.asObservable();
   readonly users$ = this.usersSubject.asObservable();
   readonly categories$ = this.categoriesSubject.asObservable();
+  readonly menus$ = this.menusSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {
     void this.refreshAll();
@@ -112,7 +126,8 @@ export class AdminDataService {
       this.refreshProducts(),
       this.refreshOrders(),
       this.refreshUsers(),
-      this.refreshCategories()
+      this.refreshCategories(),
+      this.refreshMenus()
     ]);
   }
 
@@ -161,6 +176,18 @@ export class AdminDataService {
       this.categoriesSubject.next(categories);
     } catch (error) {
       console.error('Failed to load categories', error);
+    }
+  }
+
+  async refreshMenus(): Promise<void> {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<ApiResponse<unknown[]>>(`${this.baseUrl}/menus`)
+      );
+      const menus = (response.data || []).map(doc => this.normalizeMenu(doc));
+      this.menusSubject.next(menus);
+    } catch (error) {
+      console.error('Failed to load menus', error);
     }
   }
 
@@ -238,6 +265,36 @@ export class AdminDataService {
   async deleteCategory(id: string): Promise<void> {
     await firstValueFrom(this.http.delete<ApiResponse<unknown>>(`${this.baseUrl}/categories/${id}`));
     this.categoriesSubject.next(this.categoriesSubject.value.filter(category => category.id !== id));
+  }
+
+  async addMenu(payload: Partial<AdminMenu>): Promise<AdminMenu> {
+    const response = await firstValueFrom(
+      this.http.post<ApiResponse<unknown>>(`${this.baseUrl}/menus`, payload)
+    );
+    const menu = this.normalizeMenu(response.data);
+    this.menusSubject.next([menu, ...this.menusSubject.value]);
+    return menu;
+  }
+
+  async updateMenu(id: string, payload: Partial<AdminMenu>): Promise<AdminMenu> {
+    const response = await firstValueFrom(
+      this.http.put<ApiResponse<unknown>>(`${this.baseUrl}/menus/${id}`, payload)
+    );
+    const menu = this.normalizeMenu(response.data);
+    const list = this.menusSubject.value.slice();
+    const index = list.findIndex(entry => entry.id === id);
+    if (index === -1) {
+      list.unshift(menu);
+    } else {
+      list[index] = menu;
+    }
+    this.menusSubject.next(list);
+    return menu;
+  }
+
+  async deleteMenu(id: string): Promise<void> {
+    await firstValueFrom(this.http.delete<ApiResponse<unknown>>(`${this.baseUrl}/menus/${id}`));
+    this.menusSubject.next(this.menusSubject.value.filter(menu => menu.id !== id));
   }
 
   async uploadImage(file: File, category: string): Promise<UploadedAsset> {
@@ -335,6 +392,20 @@ export class AdminDataService {
       heroImage: doc.heroImage ?? '',
       isActive: doc.isActive ?? true,
       sortOrder: doc.sortOrder ?? 0,
+      updatedAt: doc.updatedAt ?? new Date().toISOString()
+    };
+  }
+
+  private normalizeMenu(doc: any): AdminMenu {
+    return {
+      id: doc._id ?? doc.id,
+      label: doc.label ?? 'Menu',
+      slug: doc.slug ?? 'menu',
+      url: doc.url ?? '/',
+      display: doc.display ?? 'link',
+      isActive: doc.isActive ?? true,
+      sortOrder: doc.sortOrder ?? 0,
+      icon: doc.icon ?? '',
       updatedAt: doc.updatedAt ?? new Date().toISOString()
     };
   }

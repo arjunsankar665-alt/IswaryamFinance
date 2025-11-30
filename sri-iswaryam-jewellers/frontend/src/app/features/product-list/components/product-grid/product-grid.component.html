@@ -11,9 +11,6 @@
         <!-- Badges -->
         <div class="absolute top-2 left-2 flex flex-col gap-1">
           <span *ngIf="product.isNew" class="bg-green-500 text-white text-xs px-2 py-0.5 rounded">New</span>
-          <span *ngIf="product.discount" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded">
-            {{ product.discount }}% OFF
-          </span>
         </div>
 
         <!-- Out of Stock Overlay -->

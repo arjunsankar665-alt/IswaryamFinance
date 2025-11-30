@@ -1,6 +1,7 @@
 import Product from '../models/product.model.js';
 import Order from '../models/order.model.js';
 import Category from '../models/category.model.js';
+import Menu from '../models/menu.model.js';
 
 const baseCategories = [
   { name: 'Necklaces', slug: 'necklaces', description: 'Neck adornments' },
@@ -49,10 +50,24 @@ const sampleProducts = [
   }
 ];
 
+const baseMenus = [
+  { label: 'Home', slug: 'home', url: '/', display: 'link', sortOrder: 0 },
+  { label: 'Collections', slug: 'collections', url: '/collections', display: 'categories', sortOrder: 1 },
+  { label: 'Necklaces', slug: 'necklaces-link', url: '/products/necklaces', display: 'link', sortOrder: 2 },
+  { label: 'Bangles', slug: 'bangles-link', url: '/products/bangles', display: 'link', sortOrder: 3 },
+  { label: 'Earrings', slug: 'earrings-link', url: '/products/earrings', display: 'link', sortOrder: 4 },
+  { label: 'Rings', slug: 'rings-link', url: '/products/rings', display: 'link', sortOrder: 5 }
+];
+
 export async function seedAdminData() {
   const categoryCount = await Category.countDocuments();
   if (categoryCount === 0) {
     await Category.insertMany(baseCategories);
+  }
+
+  const menuCount = await Menu.countDocuments();
+  if (menuCount === 0) {
+    await Menu.insertMany(baseMenus);
   }
 
   const productCount = await Product.countDocuments();

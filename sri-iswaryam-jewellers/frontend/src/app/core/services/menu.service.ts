@@ -3,23 +3,22 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-export interface StorefrontCategory {
+export interface StorefrontMenu {
   id: string;
-  name: string;
+  label: string;
   slug: string;
-  description?: string;
-  heroImage?: string;
+  url: string;
+  display: 'link' | 'categories';
+  icon?: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CategoryService {
-  private readonly baseUrl = `${environment.apiUrl}/categories`;
-  private readonly categoriesSubject = new BehaviorSubject<StorefrontCategory[]>([]);
+@Injectable({ providedIn: 'root' })
+export class MenuService {
+  private readonly baseUrl = `${environment.apiUrl}/menus`;
+  private readonly menusSubject = new BehaviorSubject<StorefrontMenu[]>([]);
   private isLoaded = false;
 
-  readonly categories$ = this.categoriesSubject.asObservable();
+  readonly menus$ = this.menusSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {}
 
@@ -28,9 +27,9 @@ export class CategoryService {
       return;
     }
     const response = await firstValueFrom(
-      this.http.get<ApiResponse<StorefrontCategory[]>>(this.baseUrl)
+      this.http.get<ApiResponse<StorefrontMenu[]>>(this.baseUrl)
     );
-    this.categoriesSubject.next(response.data ?? []);
+    this.menusSubject.next(response.data ?? []);
     this.isLoaded = true;
   }
 }

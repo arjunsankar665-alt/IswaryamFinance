@@ -1,0 +1,86 @@
+<section class="menu-manager">
+  <header class="panel">
+    <div>
+      <p class="eyebrow">Navigation</p>
+      <h1>{{ editingId ? 'Edit menu item' : 'Create menu item' }}</h1>
+      <p>Control which sections show up on the storefront header.</p>
+    </div>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="form-card">
+    <div class="grid">
+      <label>
+        <span>Label</span>
+        <input type="text" formControlName="label" placeholder="Collections" />
+      </label>
+      <label>
+        <span>URL</span>
+        <input type="text" formControlName="url" placeholder="/collections" />
+      </label>
+    </div>
+    <div class="grid">
+      <label>
+        <span>Display type</span>
+        <select formControlName="display">
+          <option value="link">Plain link</option>
+          <option value="categories">Collections dropdown</option>
+        </select>
+      </label>
+      <label>
+        <span>Sort order</span>
+        <input type="number" formControlName="sortOrder" min="0" />
+      </label>
+    </div>
+    <div class="grid">
+      <label>
+        <span>Icon (optional)</span>
+        <input type="text" formControlName="icon" placeholder="ti ti-diamond" />
+      </label>
+      <label class="toggle">
+        <input type="checkbox" formControlName="isActive" />
+        <span>Visible on site</span>
+      </label>
+    </div>
+    <div class="actions">
+      <button type="submit" [disabled]="submitting">
+        {{ submitting ? 'Saving…' : editingId ? 'Update menu' : 'Add menu' }}
+      </button>
+      <button type="button" class="ghost" (click)="resetForm()">Reset</button>
+    </div>
+  </form>
+
+  <section class="list-card">
+    <header>
+      <h2>Current menu items</h2>
+      <p>Toggle visibility or rearrange with sort order.</p>
+    </header>
+    <div class="table">
+      <div class="table__head">
+        <span>Label</span>
+        <span>URL</span>
+        <span>Display</span>
+        <span>Status</span>
+        <span>Sort</span>
+        <span></span>
+      </div>
+      <div class="table__row" *ngFor="let menu of menus$ | async">
+        <span>
+          <strong>{{ menu.label }}</strong>
+          <small>{{ menu.slug }}</small>
+        </span>
+        <span>{{ menu.url }}</span>
+        <span>{{ menu.display | titlecase }}</span>
+        <span>
+          <span class="pill" [class.pill--muted]="!menu.isActive">
+            {{ menu.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </span>
+        <span>{{ menu.sortOrder }}</span>
+        <span class="row-actions">
+          <button type="button" (click)="edit(menu)">Edit</button>
+          <button type="button" class="danger" (click)="delete(menu)">Delete</button>
+        </span>
+      </div>
+    </div>
+  </section>
+</section>

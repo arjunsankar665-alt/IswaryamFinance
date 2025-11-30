@@ -14,6 +14,12 @@ import {
 	listAdminCategories,
 	updateCategory
 } from '../controllers/admin/category.controller.js';
+import {
+	createMenu,
+	deleteMenu,
+	listAdminMenus,
+	updateMenu
+} from '../controllers/admin/menu.controller.js';
 import { imageUpload } from '../middleware/upload.middleware.js';
 import { handleImageUpload } from '../controllers/admin/upload.controller.js';
 
@@ -69,6 +75,12 @@ router.patch('/orders/:id/status', updateOrderStatus);
 
 // Users
 router.get('/users', listUsers);
+
+// Menus
+router.get('/menus', listAdminMenus);
+router.post('/menus', createMenu);
+router.put('/menus/:id', updateMenu);
+router.delete('/menus/:id', deleteMenu);
 
 // Uploads
 router.post('/uploads/images', imageUpload.single('file'), handleImageUpload);

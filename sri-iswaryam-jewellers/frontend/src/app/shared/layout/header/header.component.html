@@ -24,13 +24,53 @@
 
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center gap-1">
-        <a *ngFor="let link of navLinks"
-           [routerLink]="link.path"
-           routerLinkActive="text-yellow-600 bg-yellow-50"
-           [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
-          {{ link.label }}
-        </a>
+        <ng-container *ngIf="(menus$ | async) as menus; else fallbackNav">
+          <ng-container *ngFor="let link of menus">
+            <ng-container [ngSwitch]="link.display">
+              <div *ngSwitchCase="'categories'"
+                   class="relative"
+                   (mouseenter)="openCollections()"
+                   (mouseleave)="closeCollections()">
+                <a [routerLink]="link.url"
+                   class="px-3 py-2 text-sm font-medium flex items-center gap-1 text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+                  {{ link.label }}
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </a>
+                <div class="mega-menu" *ngIf="collectionsMenuOpen">
+                  <div class="mega-menu__grid" *ngIf="(categories$ | async) as categories; else emptyCollections">
+                    <a *ngFor="let category of categories"
+                       [routerLink]="['/products', category.slug]"
+                       class="mega-menu__item">
+                      <span class="mega-menu__label">{{ category.name }}</span>
+                      <span class="mega-menu__sub">{{ category.description || 'Explore now' }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <a *ngSwitchDefault
+                 [routerLink]="link.url"
+                 routerLinkActive="text-yellow-600 bg-yellow-50"
+                 [routerLinkActiveOptions]="{ exact: link.url === '/' }"
+                 class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+                {{ link.label }}
+              </a>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-template #fallbackNav>
+          <a *ngFor="let link of navFallback"
+             [routerLink]="link.url"
+             routerLinkActive="text-yellow-600 bg-yellow-50"
+             [routerLinkActiveOptions]="{ exact: link.url === '/' }"
+             class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+            {{ link.label }}
+          </a>
+        </ng-template>
+        <ng-template #emptyCollections>
+          <div class="mega-menu__empty">Categories will appear here once configured.</div>
+        </ng-template>
       </nav>
 
       <!-- Right Actions -->

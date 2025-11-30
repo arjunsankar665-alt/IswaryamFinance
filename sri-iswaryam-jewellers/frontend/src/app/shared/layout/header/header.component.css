@@ -1,0 +1,60 @@
+.mega-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #fff;
+	border-radius: 1.25rem;
+	box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+	padding: 1.5rem;
+	min-width: 480px;
+	transform-origin: top;
+	animation: fadeDown 150ms ease;
+	z-index: 40;
+}
+
+.mega-menu__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 1rem;
+}
+
+.mega-menu__item {
+	padding: 0.75rem 1rem;
+	border-radius: 0.9rem;
+	border: 1px solid #f1f5f9;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	color: #0f172a;
+	transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.mega-menu__item:hover {
+	border-color: #fbbf24;
+	transform: translateY(-2px);
+}
+
+.mega-menu__label {
+	font-weight: 600;
+}
+
+.mega-menu__sub {
+	font-size: 0.85rem;
+	color: #64748b;
+}
+
+.mega-menu__empty {
+	color: #94a3b8;
+	font-size: 0.9rem;
+}
+
+@keyframes fadeDown {
+	from {
+		opacity: 0;
+		transform: translateY(-5px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

@@ -15,7 +15,12 @@
 		<aside class="preview-card">
 			<p class="label">Live preview</p>
 			<div class="image-wrap">
-				<img [src]="form.value.heroImage" [alt]="form.value.name || 'Preview product'">
+				<img *ngIf="form.value.heroImage; else emptyPreview" [src]="form.value.heroImage" [alt]="form.value.name || 'Preview product'">
+				<ng-template #emptyPreview>
+					<div class="image-placeholder">
+						<p>Upload a hero image to see the card preview.</p>
+					</div>
+				</ng-template>
 			</div>
 			<div class="details">
 				<h3>{{ form.value.name || 'Untitled masterpiece' }}</h3>
@@ -53,7 +58,9 @@
 					<label class="form-field">
 						<span>Category</span>
 						<select formControlName="category">
-							<option *ngFor="let category of categoryOptions" [value]="category">{{ category | titlecase }}</option>
+								<ng-container *ngIf="(categories$ | async) as categories; else fallbackCategories">
+									<option *ngFor="let category of categories" [value]="category.slug">{{ category.name }}</option>
+								</ng-container>
 						</select>
 					</label>
 					<label class="form-field">
@@ -107,17 +114,52 @@
 						<span>Weight (g)</span>
 						<input type="number" formControlName="weight">
 					</label>
-					<label class="form-field">
+					<label class="form-field media-field">
 						<span>Hero image</span>
-						<select formControlName="heroImage">
-							<option *ngFor="let image of heroImageOptions" [value]="image">{{ image }}</option>
-						</select>
+						<input type="hidden" formControlName="heroImage">
+						<div class="media-card" [class.has-image]="!!form.value.heroImage">
+							<ng-container *ngIf="form.value.heroImage; else heroEmptyState">
+								<div class="media-preview">
+									<img [src]="form.value.heroImage" [alt]="form.value.name || 'Hero image'">
+									<p>{{ heroImageName }}</p>
+								</div>
+							</ng-container>
+							<ng-template #heroEmptyState>
+								<div class="empty-state">
+									<p>No hero image yet</p>
+									<small>Upload a fresh hero visual for the storefront card.</small>
+								</div>
+							</ng-template>
+							<div class="media-actions">
+								<button type="button" class="ghost" (click)="heroInput.click()" [disabled]="uploadingHero">
+									{{ uploadingHero ? 'Uploading…' : form.value.heroImage ? 'Replace image' : 'Upload hero image' }}
+								</button>
+								<button type="button" class="text-link" *ngIf="form.value.heroImage && !uploadingHero" (click)="clearHeroImage()">Remove</button>
+							</div>
+						</div>
+						<input #heroInput type="file" accept="image/*" (change)="onHeroImageSelected($event)" hidden>
 					</label>
 				</div>
-				<label class="form-field">
-					<span>Gallery (comma separated)</span>
-					<input type="text" formControlName="gallery">
+				<label class="form-field media-field">
+					<span>Gallery</span>
+					<input type="hidden" formControlName="gallery">
+					<div class="gallery-chips" *ngIf="galleryImages.length; else galleryEmptyState">
+						<div class="gallery-chip" *ngFor="let image of galleryImages">
+							<span>{{ displayName(image) }}</span>
+							<button type="button" (click)="removeGalleryImage(image)" aria-label="Remove image">&times;</button>
+						</div>
+					</div>
+					<ng-template #galleryEmptyState>
+						<p class="empty-state">No gallery images yet. Upload multiple angles to help shoppers explore.</p>
+					</ng-template>
+					<div class="media-actions">
+						<button type="button" class="ghost" (click)="galleryInput.click()" [disabled]="uploadingGallery">
+							{{ uploadingGallery ? 'Uploading…' : 'Upload gallery images' }}
+						</button>
+					</div>
+					<input #galleryInput type="file" accept="image/*" multiple (change)="onGallerySelected($event)" hidden>
 				</label>
+							<small class="hint" *ngIf="uploadingGallery || uploadingHero">Uploads automatically save inside the selected category folder.</small>
 			</section>
 
 			<section>
@@ -137,3 +179,11 @@
 		</form>
 	</div>
 </section>
+
+<ng-template #fallbackCategories>
+	<option value="necklaces">Necklaces</option>
+	<option value="earrings">Earrings</option>
+	<option value="bangles">Bangles</option>
+	<option value="rings">Rings</option>
+	<option value="special">Special</option>
+</ng-template>
