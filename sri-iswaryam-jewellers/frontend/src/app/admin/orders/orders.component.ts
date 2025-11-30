@@ -34,8 +34,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.filteredOrders = this.orders.filter(order => this.selectedStatus === 'all' || order.status === this.selectedStatus);
   }
 
-  updateStatus(order: AdminOrder, status: OrderStatus): void {
-    this.adminData.updateOrderStatus(order.id, status);
+  async updateStatus(order: AdminOrder, status: OrderStatus): Promise<void> {
+    await this.adminData.updateOrderStatus(order.id, status);
   }
 
   trackByOrder(_: number, order: AdminOrder): string {

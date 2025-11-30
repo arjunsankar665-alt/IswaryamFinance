@@ -1,48 +1,94 @@
-<section *ngIf="product" class="max-w-3xl space-y-8">
-	<header>
-		<p class="text-xs uppercase tracking-[0.4em] text-amber-500">Edit listing</p>
-		<h1 class="text-3xl font-serif text-slate-900 mt-2">{{ product.name }}</h1>
-		<p class="text-sm text-slate-500">SKU {{ product.sku }} • {{ product.category | titlecase }}</p>
+<section *ngIf="product" class="edit-shell">
+	<header class="page-header">
+		<div>
+			<p class="eyebrow">Edit listing</p>
+			<h1>{{ product.name }}</h1>
+			<p>SKU {{ product.sku }} • {{ product.category | titlecase }}</p>
+		</div>
+		<div class="meta">
+			<p>Last updated</p>
+			<strong>{{ product.updatedAt | date:'medium' }}</strong>
+		</div>
 	</header>
 
-	<form [formGroup]="form" (ngSubmit)="save()" class="space-y-6">
-		<label class="form-field">
-			<span>Name</span>
-			<input type="text" formControlName="name">
-		</label>
+	<div class="content-grid">
+		<aside class="snapshot">
+			<figure>
+				<img [src]="form.value.heroImage || product.heroImage" [alt]="product.name">
+				<figcaption>
+					<p class="title">{{ form.value.name || product.name }}</p>
+					<p class="sku">SKU {{ product.sku }}</p>
+				</figcaption>
+			</figure>
+			<dl>
+				<div>
+					<dt>Category</dt>
+					<dd>{{ product.category | titlecase }}</dd>
+				</div>
+				<div>
+					<dt>MRP</dt>
+					<dd>₹{{ form.value.mrp | number:'1.0-0' }}</dd>
+				</div>
+				<div>
+					<dt>Price</dt>
+					<dd>₹{{ form.value.price | number:'1.0-0' }}</dd>
+				</div>
+				<div>
+					<dt>Inventory</dt>
+					<dd>{{ form.value.stock }} pcs</dd>
+				</div>
+			</dl>
+		</aside>
 
-		<div class="grid gap-6 md:grid-cols-3">
-			<label class="form-field">
-				<span>Price (₹)</span>
-				<input type="number" formControlName="price">
-			</label>
-			<label class="form-field">
-				<span>MRP (₹)</span>
-				<input type="number" formControlName="mrp">
-			</label>
-			<label class="form-field">
-				<span>Stock</span>
-				<input type="number" formControlName="stock">
-			</label>
-		</div>
+		<form [formGroup]="form" (ngSubmit)="save()" class="edit-form">
+			<section>
+				<h2>General details</h2>
+				<div class="grid two-cols">
+					<label class="form-field">
+						<span>Name</span>
+						<input type="text" formControlName="name">
+					</label>
+					<label class="form-field">
+						<span>Hero image URL</span>
+						<input type="text" formControlName="heroImage">
+					</label>
+				</div>
+			</section>
 
-		<label class="form-field">
-			<span>Hero image</span>
-			<input type="text" formControlName="heroImage">
-		</label>
+			<section>
+				<h2>Pricing & stock</h2>
+				<div class="grid three-cols">
+					<label class="form-field">
+						<span>Price (₹)</span>
+						<input type="number" formControlName="price">
+					</label>
+					<label class="form-field">
+						<span>MRP (₹)</span>
+						<input type="number" formControlName="mrp">
+					</label>
+					<label class="form-field">
+						<span>Stock</span>
+						<input type="number" formControlName="stock">
+					</label>
+				</div>
+			</section>
 
-		<label class="form-field">
-			<span>Description</span>
-			<textarea rows="4" formControlName="description"></textarea>
-		</label>
+			<section>
+				<h2>Description</h2>
+				<label class="form-field">
+					<span>Long description</span>
+					<textarea rows="5" formControlName="description"></textarea>
+				</label>
+			</section>
 
-		<div class="flex gap-3">
-			<button type="submit" [disabled]="submitting" class="px-6 py-3 rounded-2xl bg-slate-900 text-white shadow-lg disabled:opacity-50">
-				{{ submitting ? 'Saving...' : 'Save changes' }}
-			</button>
-			<a routerLink="/admin/products" class="px-6 py-3 rounded-2xl border border-slate-200">Back to list</a>
-		</div>
-	</form>
+			<div class="actions">
+				<button type="submit" [disabled]="submitting">
+					{{ submitting ? 'Saving...' : 'Save changes' }}
+				</button>
+				<a routerLink="/admin/products">Back to list</a>
+			</div>
+		</form>
+	</div>
 </section>
 
 <div *ngIf="!product" class="text-center py-16 text-slate-500">

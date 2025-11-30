@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AdminDataService, AdminProduct, ProductStatus } from '../../admin/services/admin-data.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-products',
@@ -14,12 +15,14 @@ export class ProductsComponent implements OnInit, OnDestroy {
   categories: string[] = [];
   categoryFilter = 'all';
   searchTerm = '';
+  includeInactive = false;
   viewMode: 'table' | 'gallery' = 'table';
   private subscriptions = new Subscription();
 
   constructor(
     private readonly adminData: AdminDataService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly notifications: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -36,19 +39,30 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  onStatusChange(product: AdminProduct, status: ProductStatus): void {
-    this.adminData.updateProduct(product.id, { status });
+  async onStatusChange(product: AdminProduct, status: ProductStatus): Promise<void> {
+    try {
+      await this.adminData.updateProduct(product.id, { status });
+      this.notifications.success('Status updated', `${product.name} is now ${status}.`);
+    } catch (error) {
+      this.notifications.error('Unable to update status');
+    }
   }
 
-  toggleFeatured(product: AdminProduct): void {
-    this.adminData.updateProduct(product.id, { featured: !product.featured });
+  async toggleFeatured(product: AdminProduct): Promise<void> {
+    try {
+      await this.adminData.updateProduct(product.id, { featured: !product.featured });
+      this.notifications.success('Visibility updated', `${product.name} feature badge refreshed.`);
+    } catch (error) {
+      this.notifications.error('Unable to update product');
+    }
   }
 
   applyFilters(): void {
     this.filteredProducts = this.products.filter(product => {
       const matchesCategory = this.categoryFilter === 'all' || product.category === this.categoryFilter;
       const matchesSearch = !this.searchTerm || product.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || product.sku.toLowerCase().includes(this.searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
+      const isVisible = this.includeInactive ? true : product.status !== 'inactive';
+      return matchesCategory && matchesSearch && isVisible;
     });
   }
 
@@ -58,5 +72,22 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   async addProduct(): Promise<void> {
     await this.router.navigate(['/admin/products/new']);
+  }
+
+  confirmDelete(product: AdminProduct): void {
+    const confirmed = window.confirm(`Delete ${product.name}? This action cannot be undone.`);
+    if (!confirmed) {
+      return;
+    }
+    void this.deleteProduct(product);
+  }
+
+  private async deleteProduct(product: AdminProduct): Promise<void> {
+    try {
+      await this.adminData.deleteProduct(product.id);
+      this.notifications.success('Product deleted', `${product.name} has been permanently removed.`);
+    } catch (error) {
+      this.notifications.error('Unable to delete product');
+    }
   }
 }

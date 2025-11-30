@@ -1,4 +1,13 @@
 import { Router } from 'express';
+import {
+	createProduct,
+	deleteProduct,
+	getProduct,
+	listProducts,
+	updateProduct
+} from '../controllers/admin/product.controller.js';
+import { listOrders, updateOrderStatus } from '../controllers/admin/order.controller.js';
+import { listUsers } from '../controllers/admin/user.controller.js';
 
 const router = Router();
 
@@ -32,5 +41,19 @@ router.post('/verify-password', (req, res) => {
 		message: 'Admin access granted.'
 	});
 });
+
+// Products
+router.get('/products', listProducts);
+router.get('/products/:id', getProduct);
+router.post('/products', createProduct);
+router.put('/products/:id', updateProduct);
+router.delete('/products/:id', deleteProduct);
+
+// Orders
+router.get('/orders', listOrders);
+router.patch('/orders/:id/status', updateOrderStatus);
+
+// Users
+router.get('/users', listUsers);
 
 export default router;

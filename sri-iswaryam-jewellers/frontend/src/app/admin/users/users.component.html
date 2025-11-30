@@ -1,1 +1,138 @@
-<p>users works!</p>
+<section class="users-shell" *ngIf="users.length; else emptyState">
+	<header class="page-header">
+		<div>
+			<p class="eyebrow">Client intelligence</p>
+			<h1>Loyalty health across the network</h1>
+			<p class="subtle">Search, segment and action customer journeys without leaving the command center.</p>
+		</div>
+		<div class="view-toggle">
+			<button (click)="viewMode = 'table'" [class.active]="viewMode === 'table'">Table</button>
+			<button (click)="viewMode = 'grid'" [class.active]="viewMode === 'grid'">Cards</button>
+		</div>
+	</header>
+
+	<div class="controls">
+		<div class="search">
+			<input type="search" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search by name, email or city" />
+		</div>
+		<div class="filters">
+			<label>
+				<span>Tier</span>
+				<select [(ngModel)]="tierFilter" (change)="applyFilters()">
+					<option value="all">All tiers</option>
+					<option *ngFor="let tier of tiers" [value]="tier">{{ tier }}</option>
+				</select>
+			</label>
+			<label>
+				<span>View</span>
+				<select [(ngModel)]="viewMode">
+					<option value="table">Table</option>
+					<option value="grid">Cards</option>
+				</select>
+			</label>
+		</div>
+	</div>
+
+	<div class="summary-grid">
+		<article>
+			<p>Active members</p>
+			<h2>{{ summary.activeClients }}</h2>
+			<small>Total in current view</small>
+		</article>
+		<article>
+			<p>Avg. orders</p>
+			<h2>{{ summary.avgOrders | number:'1.0-1' }}</h2>
+			<small>Per member</small>
+		</article>
+		<article>
+			<p>Lifetime value</p>
+			<h2>₹{{ summary.totalValue | number:'1.0-0' }}</h2>
+			<small>Across filtered users</small>
+		</article>
+		<article>
+			<p>Engaged today</p>
+			<h2>{{ summary.engagedToday }}</h2>
+			<small>Visited or shopped past 24h</small>
+		</article>
+	</div>
+
+	<div *ngIf="viewMode === 'table'" class="table-wrapper">
+		<table>
+			<thead>
+				<tr>
+					<th>Member</th>
+					<th>Tier</th>
+					<th>Orders</th>
+					<th>Lifetime value</th>
+					<th>Joined</th>
+					<th>Last active</th>
+					<th>Location</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let user of filteredUsers; trackBy: trackByUser">
+					<td>
+						<div class="member">
+							<div class="avatar">{{ user.name[0] }}</div>
+							<div>
+								<p>{{ user.name }}</p>
+								<small>{{ user.email }}</small>
+							</div>
+						</div>
+					</td>
+					<td>
+						<span class="tier" [attr.data-tier]="user.tier">{{ user.tier }}</span>
+					</td>
+					<td>{{ user.orders }}</td>
+					<td>₹{{ user.lifetimeValue | number:'1.0-0' }}</td>
+					<td>{{ user.joinedOn | date:'MMM d, y' }}</td>
+					<td>{{ user.lastActive | date:'MMM d, h:mm a' }}</td>
+					<td>{{ user.location }}</td>
+					<td>
+						<a [href]="'mailto:' + user.email" class="ghost">Message</a>
+					</td>
+				</tr>
+				<tr *ngIf="!filteredUsers.length">
+					<td colspan="8" class="empty">No users match this view.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div *ngIf="viewMode === 'grid'" class="cards-grid">
+		<article *ngFor="let user of filteredUsers; trackBy: trackByUser" class="user-card">
+			<div class="card-head">
+				<div>
+					<p class="label">{{ user.tier }} member</p>
+					<h3>{{ user.name }}</h3>
+					<p class="email">{{ user.email }}</p>
+				</div>
+				<span class="tier" [attr.data-tier]="user.tier">{{ user.tier }}</span>
+			</div>
+			<dl>
+				<div>
+					<dt>Orders</dt>
+					<dd>{{ user.orders }}</dd>
+				</div>
+				<div>
+					<dt>Lifetime value</dt>
+					<dd>₹{{ user.lifetimeValue | number:'1.0-0' }}</dd>
+				</div>
+				<div>
+					<dt>Last active</dt>
+					<dd>{{ user.lastActive | date:'MMM d, h:mm a' }}</dd>
+				</div>
+			</dl>
+			<div class="card-footer">
+				<p>City • {{ user.location }}</p>
+				<a [href]="'mailto:' + user.email">Send note</a>
+			</div>
+		</article>
+		<p *ngIf="!filteredUsers.length" class="empty">No users match this view.</p>
+	</div>
+</section>
+
+<ng-template #emptyState>
+	<div class="empty">No user records found.</div>
+</ng-template>

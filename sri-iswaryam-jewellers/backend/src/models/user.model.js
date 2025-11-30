@@ -32,6 +32,23 @@ const UserSchema = new Schema(
     lastLoginAt: {
       type: Date,
       default: null
+    },
+    tier: {
+      type: String,
+      enum: ['Platinum', 'Gold', 'Silver', 'Guest'],
+      default: 'Guest'
+    },
+    ordersCount: {
+      type: Number,
+      default: 0
+    },
+    lifetimeValue: {
+      type: Number,
+      default: 0
+    },
+    location: {
+      type: String,
+      default: ''
     }
   },
   {
@@ -46,6 +63,7 @@ UserSchema.methods.toSafeObject = function toSafeObject() {
     name: this.name,
     email: this.email,
     role: this.role,
+    tier: this.tier,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt
   };

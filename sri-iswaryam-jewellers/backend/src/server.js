@@ -9,6 +9,7 @@ import cartRoutes from './routes/cart.routes.js';
 import wishlistRoutes from './routes/wishlist.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import { connectDB } from './config/db.js';
+import { seedAdminData } from './data/seedAdmin.js';
 
 // Load environment variables
 dotenv.config();
@@ -209,6 +210,7 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     await connectDB();
+    await seedAdminData();
     app.listen(PORT, () => {
       console.log(`🚀 Sri Iswaryam Jewellers API running on http://localhost:${PORT}`);
       console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);

@@ -65,10 +65,21 @@
 			</label>
 		</div>
 
-		<label class="form-field">
-			<span>Tags</span>
-			<input type="text" formControlName="tags" placeholder="Wedding, Bestseller">
-		</label>
+		<div class="grid gap-6 md:grid-cols-2">
+			<label class="form-field">
+				<span>Tags</span>
+				<input type="text" formControlName="tags" placeholder="Wedding, Bestseller">
+			</label>
+			<label class="form-field">
+				<span>Status</span>
+				<select formControlName="status">
+					<option value="active">Active</option>
+					<option value="draft">Draft</option>
+					<option value="inactive">In active</option>
+					<option value="archived">Archived</option>
+				</select>
+			</label>
+		</div>
 
 		<label class="form-field">
 			<span>Description</span>

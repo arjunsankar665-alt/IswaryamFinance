@@ -55,7 +55,7 @@ export class AddComponent {
     try {
       const value = this.form.getRawValue();
       const { gallery, tags, ...rest } = value;
-      this.adminData.addProduct({
+      await this.adminData.addProduct({
         ...rest,
         gallery: this.splitCsv(gallery),
         tags: this.splitCsv(tags)

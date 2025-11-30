@@ -30,17 +30,20 @@ export class EditComponent implements OnInit {
     private readonly notifications: NotificationService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const productId = this.route.snapshot.paramMap.get('id');
     if (!productId) {
-      void this.router.navigate(['/admin/products']);
+      await this.router.navigate(['/admin/products']);
       return;
     }
-    this.product = this.adminData.getProductSnapshot(productId);
+    const cached = this.adminData.getProductFromCache(productId);
+    this.product = cached ?? (await this.adminData.fetchProduct(productId)) ?? undefined;
+
     if (!this.product) {
-      void this.router.navigate(['/admin/products']);
+      await this.router.navigate(['/admin/products']);
       return;
     }
+
     this.form.patchValue({
       name: this.product.name,
       price: this.product.price,
@@ -58,7 +61,7 @@ export class EditComponent implements OnInit {
     }
     this.submitting = true;
     try {
-      this.adminData.updateProduct(this.product.id, this.form.getRawValue());
+      await this.adminData.updateProduct(this.product.id, this.form.getRawValue());
       this.notifications.success('Product updated', `${this.form.value.name} refreshed successfully.`);
       await this.router.navigate(['/admin/products']);
     } finally {
