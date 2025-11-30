@@ -12,6 +12,8 @@ export interface StorefrontProduct {
   gallery?: ProductImage[];
   category: string;
   categorySlug?: string;
+  categoryLabel?: string;
+  heroImage?: string;
   metal?: string;
   price: number;
   originalPrice?: number;

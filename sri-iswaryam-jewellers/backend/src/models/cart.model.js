@@ -27,8 +27,5 @@ const CartSchema = new Schema(
     versionKey: false
   }
 );
-
-CartSchema.index({ user: 1 });
-
 const Cart = mongoose.models.Cart || mongoose.model('Cart', CartSchema);
 export default Cart;

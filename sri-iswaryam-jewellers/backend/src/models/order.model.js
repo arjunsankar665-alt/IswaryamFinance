@@ -8,7 +8,8 @@ const OrderItemSchema = new Schema(
     name: { type: String, required: true },
     quantity: { type: Number, required: true, min: 1 },
     price: { type: Number, required: true },
-    category: { type: String }
+    category: { type: String },
+    heroImage: { type: String }
   },
   { _id: false }
 );

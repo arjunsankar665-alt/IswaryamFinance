@@ -10,6 +10,7 @@ import { ProductImage, StorefrontProduct } from '../../shared/models/product.mod
 export class ProductService {
   private readonly baseUrl = `${environment.apiUrl}/products`;
   private readonly placeholderImage = 'assets/carousel/FirstImage.jpg';
+  private readonly assetBase = environment.apiUrl.replace(/\/api$/, '');
 
   constructor(private readonly http: HttpClient) {}
 
@@ -45,8 +46,9 @@ export class ProductService {
       return this.createEmptyProduct();
     }
 
-    const gallery = product.images ?? [];
-    const primaryImage = gallery[0]?.full || gallery[0]?.thumb || this.placeholderImage;
+    const gallery = (product.gallery ?? []).map(asset => this.createImageObject(asset));
+    const heroImage = this.resolveAssetUrl(product.heroImage) || gallery[0]?.full;
+    const primaryImage = heroImage || this.placeholderImage;
     const price = Number(product.price ?? 0);
     const originalPrice = this.resolveOriginalPrice(price, product);
     const discount = this.resolveDiscount(price, originalPrice, product);
@@ -59,9 +61,11 @@ export class ProductService {
       slug: product.slug ?? this.slugify(product.name ?? 'product'),
       name: product.name ?? 'Untitled Product',
       image: primaryImage,
+      heroImage,
       gallery,
       category: this.formatCategory(product.category ?? 'misc'),
       categorySlug,
+      categoryLabel: product.categoryName ?? this.formatCategory(product.category ?? 'misc'),
       metal: product.metal ?? 'Gold',
       price,
       originalPrice,
@@ -73,6 +77,22 @@ export class ProductService {
       inStock: product.inStock ?? true,
       isNew: product.isNew
     };
+  }
+
+  private createImageObject(pathValue?: string): ProductImage {
+    const full = this.resolveAssetUrl(pathValue) ?? this.placeholderImage;
+    return { full, thumb: full };
+  }
+
+  private resolveAssetUrl(pathValue?: string): string | undefined {
+    if (!pathValue) {
+      return undefined;
+    }
+    if (pathValue.startsWith('http')) {
+      return pathValue;
+    }
+    const normalized = pathValue.startsWith('/') ? pathValue : `/${pathValue}`;
+    return `${this.assetBase}${normalized}`;
   }
 
   private resolveOriginalPrice(price: number, product: ApiProduct): number | undefined {
@@ -152,8 +172,10 @@ interface ApiProduct {
   price?: number;
   originalPrice?: number;
   discount?: number;
-  images?: ProductImage[];
+  heroImage?: string;
+  gallery?: string[];
   category?: string;
+  categoryName?: string;
   rating?: number;
   reviewCount?: number;
   inStock?: boolean;

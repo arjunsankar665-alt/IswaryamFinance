@@ -8,6 +8,14 @@ import {
 } from '../controllers/admin/product.controller.js';
 import { listOrders, updateOrderStatus } from '../controllers/admin/order.controller.js';
 import { listUsers } from '../controllers/admin/user.controller.js';
+import {
+	createCategory,
+	deleteCategory,
+	listAdminCategories,
+	updateCategory
+} from '../controllers/admin/category.controller.js';
+import { imageUpload } from '../middleware/upload.middleware.js';
+import { handleImageUpload } from '../controllers/admin/upload.controller.js';
 
 const router = Router();
 
@@ -49,11 +57,20 @@ router.post('/products', createProduct);
 router.put('/products/:id', updateProduct);
 router.delete('/products/:id', deleteProduct);
 
+// Categories
+router.get('/categories', listAdminCategories);
+router.post('/categories', createCategory);
+router.put('/categories/:id', updateCategory);
+router.delete('/categories/:id', deleteCategory);
+
 // Orders
 router.get('/orders', listOrders);
 router.patch('/orders/:id/status', updateOrderStatus);
 
 // Users
 router.get('/users', listUsers);
+
+// Uploads
+router.post('/uploads/images', imageUpload.single('file'), handleImageUpload);
 
 export default router;
