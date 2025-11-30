@@ -46,6 +46,10 @@ export class AddComponent {
     private readonly notifications: NotificationService
   ) {}
 
+  get previewTags(): string[] {
+    return this.splitCsv(this.form.value.tags);
+  }
+
   async save(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

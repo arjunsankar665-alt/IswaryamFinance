@@ -29,6 +29,18 @@
 
       <!-- Product Grid -->
       <div class="flex-1">
+        <div *ngIf="isLoading" class="bg-white rounded-xl border border-dashed border-yellow-300 p-6 mb-6 flex items-center gap-3 text-yellow-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2" />
+          </svg>
+            <p class="font-medium">Loading live catalog, please hold on.</p>
+        </div>
+
+        <div *ngIf="!isLoading && loadError" class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6">
+          <p class="font-semibold">Could not load products</p>
+          <p class="text-sm mt-1">{{ loadError }}</p>
+        </div>
+
         <app-product-grid 
           [products]="products"
           (wishlistToggle)="onWishlistToggle($event)"

@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
-import { Product } from './components/product-grid/product-grid.component';
-import { FilterChangeEvent } from './components/filter-panel/filter-panel.component';
 import { AuthService } from '../../core/services/auth.service';
-import { Subscription } from 'rxjs';
 import { NotificationService } from '../../core/services/notification.service';
+import { ProductService } from '../../core/services/product.service';
+import { StorefrontProduct } from '../../shared/models/product.model';
+import { FilterChangeEvent } from './components/filter-panel/filter-panel.component';
 
 interface FilterState {
   category: string[];
@@ -17,23 +18,6 @@ interface FilterState {
   inStockOnly: boolean;
 }
 
-interface CatalogConfig {
-  name: string;
-  slug: string;
-  assets: string[];
-  metal: string | string[];
-  purity: string | string[];
-  weightRange: [number, number];
-  priceRange: [number, number];
-}
-
-const buildAssetPaths = (folder: string, prefix: string, start: number, end: number): string[] => {
-  const assets: string[] = [];
-  for (let i = start; i <= end; i++) {
-    assets.push(`assets/${folder}/${prefix}${i}.webp`);
-  }
-  return assets;
-};
 
 @Component({
   selector: 'app-product-list',
@@ -44,63 +28,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
   categoryName = '';
   totalProducts = 0;
   showMobileFilters = false;
+  isLoading = false;
+  loadError: string | null = null;
+  currentPage = 1;
+  totalPages = 1;
+  itemsPerPage = 12;
   
-  products: Product[] = [];
-  private allProducts: Product[] = [];
+  products: StorefrontProduct[] = [];
+  private allProducts: StorefrontProduct[] = [];
   private appliedFilters: FilterState = this.getInitialFilters();
   private readonly subscriptions = new Subscription();
   private routeCategory: string | null = null;
   private isAuthenticated = false;
-  currentPage = 1;
-  totalPages = 5;
-  itemsPerPage = 12;
-  private readonly catalogConfigs: CatalogConfig[] = [
-    {
-      name: 'Necklaces',
-      slug: 'necklaces',
-      assets: buildAssetPaths('Necklace', 'necklace', 1, 10),
-      metal: 'Gold',
-      purity: '22K',
-      weightRange: [18, 48],
-      priceRange: [98000, 325000]
-    },
-    {
-      name: 'Earrings',
-      slug: 'earrings',
-      assets: buildAssetPaths('Earrings', 'earrings', 1, 11),
-      metal: 'Gold',
-      purity: ['18K', '22K'],
-      weightRange: [6, 22],
-      priceRange: [38000, 145000]
-    },
-    {
-      name: 'Bangles',
-      slug: 'bangles',
-      assets: buildAssetPaths('Bangles', 'bangles', 1, 10),
-      metal: 'Gold',
-      purity: '22K',
-      weightRange: [22, 64],
-      priceRange: [125000, 385000]
-    },
-    {
-      name: 'Rings',
-      slug: 'rings',
-      assets: buildAssetPaths('Rings', 'ring', 1, 15),
-      metal: ['Gold', 'Rose Gold', 'Platinum'],
-      purity: ['18K', '22K', 'PT950'],
-      weightRange: [3, 18],
-      priceRange: [28000, 120000]
-    },
-    {
-      name: 'Special',
-      slug: 'special',
-      assets: buildAssetPaths('Special', 'item', 1, 8),
-      metal: ['Gold', 'Polki'],
-      purity: ['22K', '24K'],
-      weightRange: [42, 110],
-      priceRange: [215000, 520000]
-    }
-  ];
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -108,7 +47,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private readonly cartService: CartService,
     private readonly wishlistService: WishlistService,
     private readonly authService: AuthService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -150,9 +90,25 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   loadProducts(): void {
-    this.allProducts = this.catalogConfigs.flatMap((config) => this.createProductsFromConfig(config));
-    this.appliedFilters = this.getInitialFilters();
-    this.applyFilters();
+    this.isLoading = true;
+    this.loadError = null;
+
+    const loadSub = this.productService.getProducts().subscribe({
+      next: products => {
+        this.allProducts = products;
+        this.appliedFilters = this.getInitialFilters();
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: error => {
+        this.loadError = this.formatErrorMessage(error);
+        this.allProducts = [];
+        this.applyFilters();
+        this.isLoading = false;
+      }
+    });
+
+    this.subscriptions.add(loadSub);
   }
 
   onSortChange(sortBy: string): void {
@@ -186,7 +142,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  async onWishlistToggle(product: Product): Promise<void> {
+  async onWishlistToggle(product: StorefrontProduct): Promise<void> {
     if (!this.ensureAuthenticated()) {
       return;
     }
@@ -214,7 +170,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  async onAddToCart(product: Product): Promise<void> {
+  async onAddToCart(product: StorefrontProduct): Promise<void> {
     if (!this.ensureAuthenticated()) {
       return;
     }
@@ -235,7 +191,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  openQuickView(product: Product): void {
+  openQuickView(product: StorefrontProduct): void {
     console.log('Quick view:', product.name);
     // Implement quick view modal
   }
@@ -244,59 +200,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
     }
-  }
-
-  private createProductsFromConfig(config: CatalogConfig): Product[] {
-    const total = config.assets.length;
-    return config.assets.map((image, index) => {
-      const progress = total > 1 ? index / (total - 1) : 0;
-      const price = this.interpolateValue(config.priceRange, progress);
-      const offerApplies = index % 2 === 0;
-      const originalPrice = offerApplies ? Math.round(price * 1.12) : undefined;
-      const discount = offerApplies && originalPrice ? Math.max(3, Math.round((1 - price / originalPrice) * 100)) : undefined;
-      const weight = this.interpolateValue(config.weightRange, progress);
-      const descriptor = this.getCollectionDescriptor(index);
-
-      return {
-        id: `${config.slug}-${index + 1}`,
-        slug: this.slugify(`${config.slug}-${descriptor}-${index + 1}`),
-        name: this.formatProductName(config.name, index),
-        image,
-        category: config.name,
-        metal: this.resolveOption(config.metal, index),
-        price: this.normalizeCurrency(price),
-        originalPrice: originalPrice ? this.normalizeCurrency(originalPrice) : undefined,
-        discount,
-        weight: Math.round(weight * 10) / 10,
-        purity: this.resolveOption(config.purity, index),
-        rating: Number(Math.min(5, 4.2 + (index % 5) * 0.15).toFixed(1)),
-        reviews: 48 + index * 13,
-        inStock: index % 6 !== 0,
-        isNew: index >= total - 3
-      } as Product;
-    });
-  }
-
-  private resolveOption(option: string | string[], index: number): string {
-    return Array.isArray(option) ? option[index % option.length] : option;
-  }
-
-  private interpolateValue([min, max]: [number, number], progress: number): number {
-    return min + (max - min) * progress;
-  }
-
-  private normalizeCurrency(value: number): number {
-    return Math.round(value / 100) * 100;
-  }
-
-  private formatProductName(category: string, index: number): string {
-    const descriptor = this.getCollectionDescriptor(index);
-    return `${descriptor} ${category} ${index + 1}`;
-  }
-
-  private getCollectionDescriptor(index: number): string {
-    const collections = ['Heritage', 'Signature', 'Heirloom', 'Serenity', 'Aurora'];
-    return collections[index % collections.length];
   }
 
   private slugify(name: string): string {
@@ -310,14 +213,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.totalPages = Math.max(1, Math.ceil(this.totalProducts / this.itemsPerPage));
   }
 
-  private matchesFilters(product: Product): boolean {
-    if (this.routeCategory && this.slugify(product.category) !== this.routeCategory) {
+  private matchesFilters(product: StorefrontProduct): boolean {
+    const categorySlug = product.categorySlug ?? this.slugify(product.category);
+
+    if (this.routeCategory && categorySlug !== this.routeCategory) {
       return false;
     }
 
     if (this.appliedFilters.category.length) {
-      const slug = this.slugify(product.category);
-      if (!this.appliedFilters.category.includes(slug)) {
+      if (!this.appliedFilters.category.includes(categorySlug)) {
         return false;
       }
     }
@@ -350,6 +254,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   private matchesWeightRange(weight: number, range: string): boolean {
+    if (!Number.isFinite(weight)) {
+      return false;
+    }
+
     if (range.includes('+')) {
       const min = parseFloat(range);
       return weight >= min;

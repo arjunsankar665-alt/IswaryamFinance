@@ -1,23 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  image: string;
-  category: string;
-  metal?: string;
-  price: number;
-  originalPrice?: number;
-  discount?: number;
-  weight: number;
-  purity: string;
-  rating: number;
-  reviews: number;
-  inStock: boolean;
-  isNew?: boolean;
-  isWishlisted?: boolean;
-}
+import { StorefrontProduct } from '../../../../shared/models/product.model';
 
 @Component({
   selector: 'app-product-grid',
@@ -25,20 +7,20 @@ export interface Product {
   styleUrls: ['./product-grid.component.css']
 })
 export class ProductGridComponent {
-  @Input() products: Product[] = [];
-  @Output() wishlistToggle = new EventEmitter<Product>();
-  @Output() cartAdd = new EventEmitter<Product>();
-  @Output() quickViewOpen = new EventEmitter<Product>();
+  @Input() products: StorefrontProduct[] = [];
+  @Output() wishlistToggle = new EventEmitter<StorefrontProduct>();
+  @Output() cartAdd = new EventEmitter<StorefrontProduct>();
+  @Output() quickViewOpen = new EventEmitter<StorefrontProduct>();
 
-  addToWishlist(product: Product): void {
+  addToWishlist(product: StorefrontProduct): void {
     this.wishlistToggle.emit(product);
   }
 
-  addToCart(product: Product): void {
+  addToCart(product: StorefrontProduct): void {
     this.cartAdd.emit(product);
   }
 
-  quickView(product: Product): void {
+  quickView(product: StorefrontProduct): void {
     this.quickViewOpen.emit(product);
   }
 }

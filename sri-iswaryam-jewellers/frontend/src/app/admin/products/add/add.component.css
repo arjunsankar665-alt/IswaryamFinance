@@ -1,3 +1,175 @@
+.add-shell {
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+}
+
+.page-header {
+	display: flex;
+	justify-content: space-between;
+	gap: 1.5rem;
+	align-items: flex-start;
+}
+
+.page-header h1 {
+	margin: 0.5rem 0 0;
+	font-size: 2.75rem;
+	font-family: 'Playfair Display', serif;
+	color: #0f172a;
+}
+
+.page-header p {
+	margin: 0.35rem 0 0;
+	color: #475569;
+}
+
+.page-header .eyebrow {
+	text-transform: uppercase;
+	letter-spacing: 0.4em;
+	font-size: 0.75rem;
+	color: #f59e0b;
+	margin: 0;
+}
+
+.status-pill {
+	background: #f8fafc;
+	border-radius: 1.25rem;
+	padding: 1rem 1.25rem;
+	text-align: right;
+	border: 1px solid #e2e8f0;
+}
+
+.status-pill span {
+	display: block;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.3em;
+	color: #94a3b8;
+}
+
+.status-pill strong {
+	font-size: 1.1rem;
+	color: #0f172a;
+}
+
+.content-grid {
+	display: grid;
+	gap: 2rem;
+	grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+}
+
+.preview-card {
+	background: linear-gradient(165deg, #0f172a, #312e81);
+	color: #e2e8f0;
+	border-radius: 1.75rem;
+	padding: 1.5rem;
+	box-shadow: 0 25px 55px rgba(15, 23, 42, 0.45);
+}
+
+.preview-card .label {
+	text-transform: uppercase;
+	letter-spacing: 0.3em;
+	font-size: 0.7rem;
+	margin-bottom: 1rem;
+	color: rgba(226, 232, 240, 0.75);
+}
+
+.preview-card .image-wrap {
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 1.25rem;
+	padding: 1rem;
+	text-align: center;
+}
+
+.preview-card img {
+	width: 100%;
+	max-height: 220px;
+	object-fit: contain;
+}
+
+.preview-card .details {
+	margin-top: 1.5rem;
+}
+
+.preview-card h3 {
+	margin: 0;
+	font-size: 1.4rem;
+}
+
+.preview-card .sku {
+	margin: 0.35rem 0 0;
+	color: rgba(226, 232, 240, 0.7);
+	font-size: 0.85rem;
+}
+
+.preview-card .price {
+	margin: 1rem 0 0;
+	font-size: 1.4rem;
+	font-weight: 600;
+}
+
+.preview-card .price span {
+	display: block;
+	font-size: 0.85rem;
+	color: rgba(226, 232, 240, 0.6);
+}
+
+.preview-card ul {
+	list-style: none;
+	padding: 0;
+	margin: 1rem 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	font-size: 0.9rem;
+	color: rgba(226, 232, 240, 0.85);
+}
+
+.preview-card .tags {
+	margin-top: 1.25rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+}
+
+.preview-card .tags span {
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 999px;
+	padding: 0.3rem 0.9rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
+}
+
+.add-form {
+	background: #fff;
+	border-radius: 1.75rem;
+	padding: 2rem;
+	box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.add-form section h2 {
+	margin: 0 0 1rem;
+	font-size: 0.95rem;
+	text-transform: uppercase;
+	letter-spacing: 0.3em;
+	color: #94a3b8;
+}
+
+.grid.two-cols {
+	display: grid;
+	gap: 1.25rem;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.grid.three-cols {
+	display: grid;
+	gap: 1.25rem;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
 .form-field {
 	display: flex;
 	flex-direction: column;
@@ -19,7 +191,12 @@
 	padding: 0.9rem 1.1rem;
 	font-size: 0.95rem;
 	color: #0f172a;
+	background: #f8fafc;
 	transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field textarea {
+	resize: vertical;
 }
 
 .form-field input:focus,
@@ -28,8 +205,69 @@
 	outline: none;
 	border-color: #fbbf24;
 	box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+	background: #fff;
 }
 
 .form-field small {
 	color: #f97316;
+}
+
+.inline-toggle {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	margin-top: 1rem;
+	font-size: 0.9rem;
+	color: #475569;
+}
+
+.inline-toggle input[type='checkbox'] {
+	width: 1rem;
+	height: 1rem;
+}
+
+.actions {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.actions button {
+	border: none;
+	border-radius: 999px;
+	padding: 0.9rem 2.2rem;
+	font-weight: 600;
+	background: linear-gradient(135deg, #0f172a, #312e81);
+	color: #fff;
+	cursor: pointer;
+	box-shadow: 0 15px 40px rgba(15, 23, 42, 0.3);
+	transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.actions button:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.actions button:not(:disabled):hover {
+	transform: translateY(-1px);
+}
+
+.actions a {
+	border-radius: 999px;
+	padding: 0.9rem 1.8rem;
+	border: 1px solid #cbd5f5;
+	color: #0f172a;
+	text-decoration: none;
+}
+
+@media (max-width: 960px) {
+	.content-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.status-pill {
+		align-self: stretch;
+		text-align: left;
+	}
 }
