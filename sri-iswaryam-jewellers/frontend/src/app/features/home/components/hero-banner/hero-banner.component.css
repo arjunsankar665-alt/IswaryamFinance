@@ -5,9 +5,11 @@
 .hero {
 	position: relative;
 	overflow: hidden;
-	padding: 4rem 0 6.25rem;
+	display: flex;
+	align-items: center;
+	padding: clamp(3rem, 6vw, 4.5rem) 0 6.25rem;
 	color: #fff6ec;
-	min-height: 82vh;
+	min-height: calc(100vh - 72px);
 	background-color: #1a0602;
 	background-image: radial-gradient(circle at 5% 20%, rgba(255, 223, 188, 0.35), transparent 55%),
 		radial-gradient(circle at 85% 0%, rgba(255, 196, 145, 0.35), transparent 60%),
@@ -257,6 +259,7 @@
 
 @media (max-width: 640px) {
 	.hero {
+		align-items: flex-start;
 		padding-top: 3rem;
 	}
 

@@ -10,6 +10,7 @@ import cartRoutes from './routes/cart.routes.js';
 import wishlistRoutes from './routes/wishlist.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import catalogRoutes from './routes/catalog.routes.js';
+import liveRatesRoutes from './routes/live-rates.routes.js';
 import { connectDB } from './config/db.js';
 import { seedAdminData } from './data/seedAdmin.js';
 
@@ -39,6 +40,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', catalogRoutes);
+app.use('/api/live-rates', liveRatesRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

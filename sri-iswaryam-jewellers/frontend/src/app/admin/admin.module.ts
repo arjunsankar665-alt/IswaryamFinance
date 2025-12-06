@@ -14,6 +14,7 @@ import { EditComponent } from './products/edit/edit.component';
 import { BannersComponent } from './marketing/banners/banners.component';
 import { CouponsComponent } from './marketing/coupons/coupons.component';
 import { MenuManagerComponent } from './navigation/menu-manager/menu-manager.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { MenuManagerComponent } from './navigation/menu-manager/menu-manager.com
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    NgApexchartsModule
   ]
 })
 export class AdminModule { }

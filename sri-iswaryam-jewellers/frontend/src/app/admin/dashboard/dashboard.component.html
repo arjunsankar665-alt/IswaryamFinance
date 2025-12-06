@@ -20,6 +20,64 @@
 		</article>
 	</div>
 
+	<div class="grid gap-6 xl:grid-cols-3">
+		<article class="rounded-3xl border border-slate-100 bg-white shadow-sm p-6">
+			<div class="flex items-center justify-between mb-4">
+				<div>
+					<h2 class="text-xl font-semibold text-slate-900">Revenue cadence</h2>
+					<p class="text-sm text-slate-500">Last 6 months (₹)</p>
+				</div>
+				<span class="px-3 py-1 text-xs rounded-full bg-emerald-50 text-emerald-700">Live</span>
+			</div>
+			<apx-chart
+				[series]="revenueSeries"
+				[chart]="revenueChart"
+				[xaxis]="revenueXAxis"
+				[stroke]="revenueStroke"
+				[dataLabels]="revenueDataLabels"
+				[fill]="revenueFill"
+				[tooltip]="revenueTooltip"
+			></apx-chart>
+		</article>
+
+		<article class="rounded-3xl border border-slate-100 bg-white shadow-sm p-6">
+			<div class="flex items-center justify-between mb-4">
+				<div>
+					<h2 class="text-xl font-semibold text-slate-900">Category mix</h2>
+					<p class="text-sm text-slate-500">Top performing collections</p>
+				</div>
+				<a routerLink="/admin/products" class="text-sm font-medium text-amber-600 hover:text-amber-700">Catalogue</a>
+			</div>
+			<apx-chart
+				[series]="categorySeries"
+				[labels]="categoryLabels"
+				[chart]="categoryChart"
+				[legend]="categoryLegend"
+				[responsive]="categoryResponsive"
+				[colors]="categoryColors"
+			></apx-chart>
+		</article>
+
+		<article class="rounded-3xl border border-slate-100 bg-white shadow-sm p-6">
+			<div class="flex items-center justify-between mb-4">
+				<div>
+					<h2 class="text-xl font-semibold text-slate-900">Order status</h2>
+					<p class="text-sm text-slate-500">Pipeline health check</p>
+				</div>
+				<a routerLink="/admin/orders" class="text-sm font-medium text-amber-600 hover:text-amber-700">Queue</a>
+			</div>
+			<apx-chart
+				[series]="statusSeries"
+				[chart]="statusChart"
+				[xaxis]="statusXAxis"
+				[plotOptions]="statusPlotOptions"
+				[dataLabels]="statusDataLabels"
+				[colors]="statusColors"
+				[tooltip]="statusTooltip"
+			></apx-chart>
+		</article>
+	</div>
+
 	<div class="grid gap-6 lg:grid-cols-3">
 		<article class="lg:col-span-2 rounded-3xl bg-white border border-slate-100 shadow-sm">
 			<div class="p-6 border-b border-slate-100 flex items-center justify-between">

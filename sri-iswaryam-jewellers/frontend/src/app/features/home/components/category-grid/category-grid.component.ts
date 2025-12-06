@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { CategoryService, StorefrontCategory } from '../../../../core/services/category.service';
 
 interface CategoryCard {
   name: string;
@@ -7,6 +9,7 @@ interface CategoryCard {
   gallery: string[];
   accent: string;
   tagline: string;
+  description?: string;
 }
 
 @Component({
@@ -16,67 +19,51 @@ interface CategoryCard {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryGridComponent implements OnInit, OnDestroy {
-  readonly categories: CategoryCard[] = [
-    {
-      name: 'Necklaces',
-      slug: 'necklaces',
-      count: 10,
-      gallery: this.buildGallery('Necklace', 'necklace', 10),
-      accent: 'from-pink-500/80 to-yellow-400/80',
-      tagline: 'Temple to contemporary sets'
-    },
-    {
-      name: 'Earrings',
-      slug: 'earrings',
-      count: 11,
-      gallery: this.buildGallery('Earrings', 'earrings', 11),
-      accent: 'from-purple-500/80 to-rose-400/80',
-      tagline: 'Studs, chandeliers & jhumkas'
-    },
-    {
-      name: 'Bangles',
-      slug: 'bangles',
-      count: 10,
-      gallery: this.buildGallery('Bangles', 'bangles', 10),
-      accent: 'from-amber-500/80 to-red-400/80',
-      tagline: 'Heritage cuffs & daily stacks'
-    },
-    {
-      name: 'Rings',
-      slug: 'rings',
-      count: 15,
-      gallery: this.buildGallery('Rings', 'ring', 15),
-      accent: 'from-emerald-500/80 to-cyan-400/80',
-      tagline: 'Solitaire, cocktail & mangalsutra rings'
-    },
-    {
-      name: 'Special Editions',
-      slug: 'special',
-      count: 8,
-      gallery: this.buildGallery('Special', 'item', 8),
-      accent: 'from-slate-900/80 to-slate-600/80',
-      tagline: 'Limited-edition bridal heirlooms'
-    },
-    {
-      name: 'Bridal Suites',
-      slug: 'bridal',
-      count: 6,
-      gallery: this.buildGallery('Necklace', 'necklace', 6).map((src, idx) =>
-        idx % 2 === 0 ? src : `assets/Special/item${(idx % 8) + 1}.webp`
-      ),
-      accent: 'from-red-600/80 to-fuchsia-500/80',
-      tagline: 'Curated looks for the pheras'
-    }
-  ];
+  categories: CategoryCard[] = [];
+  private readonly meta: Record<string, Pick<CategoryCard, 'accent' | 'tagline'>> = {
+    necklaces: { accent: 'from-amber-400/80 via-rose-300/60 to-emerald-200/80', tagline: 'Temple to contemporary sets' },
+    earrings: { accent: 'from-violet-400/80 via-indigo-300/70 to-sky-200/80', tagline: 'Studs, chandeliers & jhumkas' },
+    bangles: { accent: 'from-orange-400/85 via-amber-300/70 to-yellow-200/85', tagline: 'Heritage cuffs & daily stacks' },
+    rings: { accent: 'from-emerald-500/80 via-teal-300/70 to-cyan-200/80', tagline: 'Solitaire, cocktail & mangalsutra rings' },
+    special: { accent: 'from-slate-900/85 via-slate-700/70 to-slate-500/70', tagline: 'Limited-edition bridal heirlooms' },
+    bridal: { accent: 'from-rose-500/85 via-pink-300/70 to-amber-200/85', tagline: 'Curated looks for the pheras' }
+  };
+  private readonly galleryLookup: Record<string, { folder: string; prefix: string; count: number }> = {
+    necklaces: { folder: 'Necklace', prefix: 'necklace', count: 10 },
+    earrings: { folder: 'Earrings', prefix: 'earrings', count: 11 },
+    bangles: { folder: 'Bangles', prefix: 'bangles', count: 10 },
+    rings: { folder: 'Rings', prefix: 'ring', count: 15 },
+    special: { folder: 'Special', prefix: 'item', count: 8 },
+    bridal: { folder: 'Necklace', prefix: 'necklace', count: 6 }
+  };
 
   private readonly frameMap = new Map<string, number>();
   private rotationHandle?: ReturnType<typeof setInterval>;
   private readonly rotationSpeed = 2600;
+  private subscriptions = new Subscription();
 
-  constructor(private readonly cdr: ChangeDetectorRef) {}
+  constructor(
+    private readonly cdr: ChangeDetectorRef,
+    private readonly categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
-    this.categories.forEach(category => this.frameMap.set(category.slug, 0));
+    this.subscriptions.add(
+      this.categoryService.categories$.subscribe((incoming) => {
+        const mapped = incoming.map((category) => this.toCard(category));
+        this.categories = mapped;
+        mapped.forEach(category => {
+          if (!this.frameMap.has(category.slug)) {
+            this.frameMap.set(category.slug, 0);
+          }
+        });
+        this.cdr.markForCheck();
+      })
+    );
+
+    // Kick off load
+    this.categoryService.preload().catch(() => undefined);
+
     this.rotationHandle = setInterval(() => {
       this.categories.forEach(category => {
         const gallery = category.gallery;
@@ -94,6 +81,7 @@ export class CategoryGridComponent implements OnInit, OnDestroy {
     if (this.rotationHandle) {
       clearInterval(this.rotationHandle);
     }
+    this.subscriptions.unsubscribe();
   }
 
   trackBySlug(_: number, category: CategoryCard): string {
@@ -109,7 +97,35 @@ export class CategoryGridComponent implements OnInit, OnDestroy {
     return gallery[frame % gallery.length];
   }
 
-  private buildGallery(folder: string, prefix: string, count: number): string[] {
-    return Array.from({ length: count }, (_, index) => `assets/${folder}/${prefix}${index + 1}.webp`);
+  private toCard(category: StorefrontCategory): CategoryCard {
+    const meta = this.meta[category.slug] || this.meta[category.slug.toLowerCase()] || {
+      accent: 'from-slate-800/85 via-slate-600/70 to-slate-400/70',
+      tagline: category.description || 'Discover handcrafted fine jewellery'
+    };
+
+    const gallery = category.heroImage
+      ? [category.heroImage]
+      : this.buildGallery(category.slug);
+
+    const existingCount = this.frameMap.get(category.slug);
+    if (existingCount === undefined) {
+      this.frameMap.set(category.slug, 0);
+    }
+
+    return {
+      name: category.name,
+      slug: category.slug,
+      count: (category as any).count ?? gallery.length,
+      gallery,
+      accent: meta.accent,
+      tagline: meta.tagline,
+      description: category.description
+    };
+  }
+
+  private buildGallery(slug: string): string[] {
+    const fallback = this.galleryLookup[slug] || { folder: 'Special', prefix: 'item', count: 8 };
+    const count = Math.max(fallback.count, 4);
+    return Array.from({ length: count }, (_, index) => `assets/${fallback.folder}/${fallback.prefix}${(index % fallback.count) + 1}.webp`);
   }
 }

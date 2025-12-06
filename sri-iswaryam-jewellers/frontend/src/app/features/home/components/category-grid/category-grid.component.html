@@ -15,12 +15,31 @@
         <div class="category-card__media" [ngStyle]="{ 'background-image': 'url(' + activeImage(category) + ')' }"></div>
         <div class="category-card__veil"></div>
         <div class="category-card__content">
-          <p class="text-xs uppercase tracking-[0.3em] text-white/80">{{ category.tagline }}</p>
-          <h3 class="text-2xl font-serif text-white mt-3 mb-1">{{ category.name }}</h3>
-          <div class="flex items-center gap-2 text-sm">
-            <span class="text-white font-medium">{{ category.count }} styles</span>
-            <span class="text-white/60">•</span>
-            <span class="text-white/80">Tap to explore</span>
+          <div class="category-card__chip-row">
+            <span class="category-card__chip">Signature edit</span>
+            <span class="category-card__styles">{{ category.count }} styles</span>
+          </div>
+          <div class="category-card__title-row">
+            <div>
+              <p class="category-card__eyebrow">{{ category.tagline }}</p>
+              <h3>{{ category.name }}</h3>
+            </div>
+            <span class="category-card__badge" aria-hidden="true">↗</span>
+          </div>
+          <p class="category-card__subtitle">Tap to explore handcrafted picks curated by our stylists.</p>
+          <div class="category-card__meta-grid">
+            <div>
+              <p>Fresh arrivals</p>
+              <small>Updated weekly</small>
+            </div>
+            <div>
+              <p>Ships in 5 days</p>
+              <small>Insured delivery</small>
+            </div>
+          </div>
+          <div class="category-card__cta">
+            <span>Browse collection</span>
+            <span class="category-card__cta-icon" aria-hidden="true">⟶</span>
           </div>
         </div>
         <div class="category-card__accent bg-gradient-to-br mix-blend-screen" [ngClass]="category.accent"></div>

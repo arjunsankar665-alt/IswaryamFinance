@@ -1,60 +1,77 @@
-.mega-menu {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	background: #fff;
-	border-radius: 1.25rem;
-	box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
-	padding: 1.5rem;
-	min-width: 480px;
-	transform-origin: top;
-	animation: fadeDown 150ms ease;
-	z-index: 40;
+.header-ticker {
+	background: linear-gradient(90deg, #78350f, #b45309, #d97706);
+	padding: 0.5rem 0;
+	box-shadow: inset 0 -1px rgba(255, 255, 255, 0.1);
 }
 
-.mega-menu__grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	gap: 1rem;
-}
-
-.mega-menu__item {
-	padding: 0.75rem 1rem;
-	border-radius: 0.9rem;
-	border: 1px solid #f1f5f9;
-	display: flex;
-	flex-direction: column;
-	gap: 0.25rem;
-	color: #0f172a;
-	transition: border-color 150ms ease, transform 150ms ease;
-}
-
-.mega-menu__item:hover {
-	border-color: #fbbf24;
-	transform: translateY(-2px);
-}
-
-.mega-menu__label {
+.header-ticker__location {
 	font-weight: 600;
+	letter-spacing: 0.1em;
 }
 
-.mega-menu__sub {
+.header-ticker__rate strong {
+	font-weight: 700;
+}
+
+.header-ticker__updated {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+}
+
+.brand-mark {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 50%;
+	box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+	border: 2px solid rgba(251, 191, 36, 0.2);
+}
+
+.account-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.15rem 0.2rem;
+	border-radius: 999px;
+	border: 1px solid rgba(15, 23, 42, 0.1);
+	background: #fff;
+	color: #0f172a;
 	font-size: 0.85rem;
-	color: #64748b;
+	font-weight: 600;
+	transition: border 150ms ease, box-shadow 150ms ease;
 }
 
-.mega-menu__empty {
-	color: #94a3b8;
-	font-size: 0.9rem;
+.account-trigger:hover,
+.account-trigger[aria-expanded='true'] {
+	border-color: rgba(251, 191, 36, 0.6);
+	box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
 }
 
-@keyframes fadeDown {
-	from {
-		opacity: 0;
-		transform: translateY(-5px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+.account-trigger__avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	background: linear-gradient(135deg, #f59e0b, #d97706);
+	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+	font-size: 0.95rem;
+}
+
+.header-ticker__status {
+	padding: 0.15rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	background: rgba(16, 185, 129, 0.25);
+	color: #f0fdf4;
+}
+
+.header-ticker__status--stale {
+	background: rgba(244, 63, 94, 0.35);
+	color: #fee2e2;
 }

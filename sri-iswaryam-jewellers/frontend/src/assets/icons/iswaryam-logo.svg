@@ -1,0 +1,40 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="iswaryamLogoTitle">
+  <title id="iswaryamLogoTitle">Sri Iswaryam Tree Mark</title>
+  <defs>
+    <linearGradient id="logo-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c1d12" />
+      <stop offset="1" stop-color="#3f0b06" />
+    </linearGradient>
+    <radialGradient id="logo-glow" cx="0.35" cy="0.25" r="0.75">
+      <stop offset="0" stop-color="#c58c5f" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#c58c5f" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="logo-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fef1c7" />
+      <stop offset="1" stop-color="#d9a441" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#logo-bg)" />
+  <circle cx="64" cy="52" r="46" fill="url(#logo-glow)" opacity="0.35" />
+  <g stroke="url(#logo-gold)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M64 96c-6-10-9-21-9-32 0-11 3-20 9-28 6 8 9 17 9 28 0 11-3 22-9 32z" />
+    <path d="M64 68c-6 0-16-5-20-13-3-5-3-11-3-16" />
+    <path d="M64 60c7 0 16-6 20-13 3-5 3-11 3-16" />
+    <path d="M64 78c-8 0-18-2-26-10" />
+    <path d="M64 78c8 0 18-2 26-10" />
+    <path d="M64 88c-6 0-14-2-20-8" />
+    <path d="M64 88c6 0 14-2 20-8" />
+    <path d="M64 100c-4 6-10 10-18 12" />
+    <path d="M64 100c4 6 10 10 18 12" />
+  </g>
+  <g fill="url(#logo-gold)">
+    <circle cx="44" cy="41" r="4" />
+    <circle cx="84" cy="41" r="4" />
+    <circle cx="34" cy="56" r="3" />
+    <circle cx="94" cy="56" r="3" />
+    <circle cx="50" cy="69" r="3" />
+    <circle cx="78" cy="69" r="3" />
+    <circle cx="58" cy="50" r="3" />
+    <circle cx="70" cy="50" r="3" />
+  </g>
+</svg>

@@ -1,12 +1,13 @@
 import { Component, Output, EventEmitter, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService, AuthUser } from '../../../core/services/auth.service';
 import { AccountMenuItem } from './account-dropdown/account-dropdown.component';
 import { CartService } from '../../../core/services/cart.service';
 import { WishlistService } from '../../../core/services/wishlist.service';
-import { CategoryService, StorefrontCategory } from '../../../core/services/category.service';
+import { CategoryService } from '../../../core/services/category.service';
 import { MenuService, StorefrontMenu } from '../../../core/services/menu.service';
+import { LiveRatesService } from '../../../core/services/live-rates.service';
 
 @Component({
   selector: 'app-header',
@@ -25,15 +26,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
   private subscriptions = new Subscription();
   readonly menus$ = this.menuService.menus$;
-  readonly categories$ = this.categoryService.categories$;
-  collectionsMenuOpen = false;
+  liveRates: { location: string; gold: number; silver: number; updatedAt: Date; stale: boolean } = {
+    location: 'Salem, Tamil Nadu',
+    gold: 12000,
+    silver: 78.7,
+    updatedAt: new Date(),
+    stale: true
+  };
+  private liveRateHandle?: ReturnType<typeof setInterval>;
 
   accountItems: AccountMenuItem[] = [
-    { icon: '📦', label: 'Orders & Returns', description: 'History, invoices, reorders', routerLink: '/account/orders' },
+    { icon: '📦', label: 'Orders & Returns', description: 'Invoices and exchanges', routerLink: '/account/orders' },
     { icon: '🎯', label: 'Track Order', description: 'Live courier updates', routerLink: '/account/order-tracking' },
+    { icon: '🧾', label: 'View Profile', description: 'Preferences & alerts', routerLink: '/account/profile' },
     { icon: '❤️', label: 'Wishlist', description: 'Saved favourites', routerLink: '/wishlist' },
-    { icon: '👤', label: 'Profile & Settings', description: 'Details and alerts', routerLink: '/account/profile' },
-    { icon: '💬', label: 'Customer Support', routerLink: '/support/contact-us' },
+    { icon: '📞', label: 'Contact Concierge', description: 'Call or WhatsApp us', action: 'contact' as const },
     { icon: '⏻', label: 'Log Out', action: 'logout' as const }
   ];
 
@@ -44,7 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 	private readonly cartService: CartService,
   private readonly wishlistService: WishlistService,
   private readonly categoryService: CategoryService,
-  private readonly menuService: MenuService
+  private readonly menuService: MenuService,
+  private readonly liveRatesService: LiveRatesService
   ) {
     this.subscriptions.add(
       this.cartService.itemCount$.subscribe((count) => (this.cartCount = count))
@@ -61,8 +69,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   navFallback: StorefrontMenu[] = [
-    { id: 'home', label: 'Home', slug: 'home', url: '/', display: 'link' },
-    { id: 'collections', label: 'Collections', slug: 'collections', url: '/collections', display: 'categories' },
     { id: 'necklaces', label: 'Necklaces', slug: 'necklaces', url: '/products/necklaces', display: 'link' },
     { id: 'bangles', label: 'Bangles', slug: 'bangles', url: '/products/bangles', display: 'link' },
     { id: 'earrings', label: 'Earrings', slug: 'earrings', url: '/products/earrings', display: 'link' },
@@ -75,6 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.categoryService.preload().catch(() => undefined),
       this.menuService.preload().catch(() => undefined)
     ]);
+    await this.refreshLiveRates();
+    this.liveRateHandle = setInterval(() => this.refreshLiveRates(), 180000);
   }
 
   onMenuClick(): void {
@@ -98,14 +106,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showAccountDropdown = !this.showAccountDropdown;
   }
 
-  openCollections(): void {
-    this.collectionsMenuOpen = true;
-  }
-
-  closeCollections(): void {
-    this.collectionsMenuOpen = false;
-  }
-
   closeAccountDropdown(): void {
     this.showAccountDropdown = false;
   }
@@ -116,6 +116,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return;
     }
     this.toggleAccountDropdown();
+  }
+
+  getUserInitial(user: AuthUser | null): string {
+    if (!user) {
+      return 'S';
+    }
+    const source = (user.name && user.name.trim()) || (user.email && user.email.trim()) || 'S';
+    return source.charAt(0).toUpperCase();
   }
 
   @HostListener('document:click', ['$event'])
@@ -149,5 +157,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    if (this.liveRateHandle) {
+      clearInterval(this.liveRateHandle);
+    }
+  }
+
+  private async refreshLiveRates(): Promise<void> {
+    try {
+      const rates = await this.liveRatesService.fetchRates();
+      this.liveRates = {
+        location: rates.location || this.liveRates.location,
+        gold: rates.goldPerGram ?? this.liveRates.gold,
+        silver: rates.silverPerGram ?? this.liveRates.silver,
+        updatedAt: new Date(rates.updatedAt),
+        stale: rates.stale
+      };
+    } catch (error) {
+      console.warn('Live rates update failed, falling back to cached value.', error);
+      this.liveRates = {
+        ...this.liveRates,
+        updatedAt: new Date(),
+        stale: true
+      };
+    }
   }
 }

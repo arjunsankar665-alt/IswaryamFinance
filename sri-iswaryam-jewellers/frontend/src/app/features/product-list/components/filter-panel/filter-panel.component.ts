@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface Category {
   id: string;
@@ -34,17 +34,25 @@ interface ActiveFilterTag {
 })
 export class FilterPanelComponent {
   @Output() filterChanged = new EventEmitter<FilterChangeEvent>();
+  private _categorySlug: string | null = null;
+  @Input() set categorySlug(value: string | null) {
+    this._categorySlug = value;
+    this.updateVisibleCategories();
+  }
+
   private static nextId = 0;
   readonly weightGroupName = `weight-${FilterPanelComponent.nextId++}`;
   private readonly numberFormatter = new Intl.NumberFormat('en-IN');
 
-  categories: Category[] = [
+  private readonly categories: Category[] = [
     { id: 'necklaces', name: 'Necklaces', count: 10 },
     { id: 'earrings', name: 'Earrings', count: 11 },
     { id: 'bangles', name: 'Bangles', count: 10 },
     { id: 'rings', name: 'Rings', count: 15 },
     { id: 'special', name: 'Special Editions', count: 8 }
   ];
+
+  visibleCategories: Category[] = [...this.categories];
 
   metalTypes: string[] = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'Polki'];
 
@@ -174,5 +182,20 @@ export class FilterPanelComponent {
 
   private formatNumber(value: number): string {
     return this.numberFormatter.format(value);
+  }
+
+  private updateVisibleCategories(): void {
+    if (this._categorySlug) {
+      this.visibleCategories = this.categories.filter(cat => cat.id === this._categorySlug);
+      if (!this.selectedFilters.category.includes(this._categorySlug)) {
+        const hadFilters = this.selectedFilters.category.length > 0;
+        this.selectedFilters.category = [];
+        if (hadFilters) {
+          this.filterChanged.emit({ type: 'category', values: [] });
+        }
+      }
+    } else {
+      this.visibleCategories = [...this.categories];
+    }
   }
 }

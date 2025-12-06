@@ -38,7 +38,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private allProducts: StorefrontProduct[] = [];
   private appliedFilters: FilterState = this.getInitialFilters();
   private readonly subscriptions = new Subscription();
-  private routeCategory: string | null = null;
+  routeCategory: string | null = null;
   private isAuthenticated = false;
 
   constructor(

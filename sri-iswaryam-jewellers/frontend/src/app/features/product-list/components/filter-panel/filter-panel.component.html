@@ -28,10 +28,10 @@
   <section class="filter-section">
     <div class="filter-section__header">
       <h4>Category</h4>
-      <span>{{ categories.length }} options</span>
+      <span>{{ visibleCategories.length }} option{{ visibleCategories.length === 1 ? '' : 's' }}</span>
     </div>
     <div class="space-y-2">
-      <label *ngFor="let cat of categories" class="filter-option" [class.filter-option--active]="isSelected('category', cat.id)">
+      <label *ngFor="let cat of visibleCategories" class="filter-option" [class.filter-option--active]="isSelected('category', cat.id)">
         <input type="checkbox" [checked]="isSelected('category', cat.id)" (change)="onFilterChange('category', cat.id)">
         <div>
           <p>{{ cat.name }}</p>

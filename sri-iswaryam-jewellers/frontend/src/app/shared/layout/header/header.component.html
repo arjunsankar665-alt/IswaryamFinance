@@ -1,5 +1,16 @@
 <!-- Main Header -->
 <header class="bg-white shadow-md sticky top-0 z-50">
+  <div class="header-ticker">
+    <div class="container mx-auto px-4 flex flex-wrap items-center gap-3 text-xs sm:text-sm text-white/90">
+      <span class="header-ticker__location">📍 {{ liveRates.location }}</span>
+      <span class="header-ticker__rate">Gold 22K: <strong>₹{{ liveRates.gold | number:'1.0-0' }}</strong>/g</span>
+      <span class="header-ticker__rate">Silver: <strong>₹{{ liveRates.silver | number:'1.1-1' }}</strong>/g</span>
+      <span class="header-ticker__status" [class.header-ticker__status--stale]="liveRates.stale">
+        {{ liveRates.stale ? 'Delayed feed' : 'Live feed' }}
+      </span>
+      <span class="ml-auto header-ticker__updated">Updated {{ liveRates.updatedAt | date:'shortTime' }}</span>
+    </div>
+  </div>
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Mobile Menu Button -->
@@ -12,45 +23,32 @@
       </button>
 
       <!-- Logo -->
-      <a routerLink="/" class="flex items-center gap-2">
-        <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-full flex items-center justify-center">
-          <span class="text-white font-bold text-lg md:text-xl">SI</span>
-        </div>
+      <a routerLink="/" class="flex items-center gap-3 min-w-0">
+        <img src="assets/icons/iswaryam-logo.jpg" alt="Sri Iswaryam Logo" class="brand-mark" loading="lazy" />
         <div class="hidden sm:block">
-          <h1 class="text-lg md:text-xl font-serif font-bold text-gray-800">Sri Iswaryam</h1>
-          <p class="text-xs text-yellow-600 -mt-1">Premium Jewellers</p>
+          <h1 class="text-lg md:text-xl font-serif font-bold text-gray-800 leading-tight">Sri Iswaryam</h1>
+          <p class="text-xs text-amber-600 tracking-[0.25em] uppercase">Premium Jewellers</p>
         </div>
       </a>
 
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center gap-1">
+        <a routerLink="/"
+           routerLinkActive="text-yellow-600 bg-yellow-50"
+           [routerLinkActiveOptions]="{ exact: true }"
+           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+          Home
+        </a>
+        <a routerLink="/products"
+           routerLinkActive="text-yellow-600 bg-yellow-50"
+           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+          All Products
+        </a>
+
         <ng-container *ngIf="(menus$ | async) as menus; else fallbackNav">
           <ng-container *ngFor="let link of menus">
-            <ng-container [ngSwitch]="link.display">
-              <div *ngSwitchCase="'categories'"
-                   class="relative"
-                   (mouseenter)="openCollections()"
-                   (mouseleave)="closeCollections()">
-                <a [routerLink]="link.url"
-                   class="px-3 py-2 text-sm font-medium flex items-center gap-1 text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
-                  {{ link.label }}
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </a>
-                <div class="mega-menu" *ngIf="collectionsMenuOpen">
-                  <div class="mega-menu__grid" *ngIf="(categories$ | async) as categories; else emptyCollections">
-                    <a *ngFor="let category of categories"
-                       [routerLink]="['/products', category.slug]"
-                       class="mega-menu__item">
-                      <span class="mega-menu__label">{{ category.name }}</span>
-                      <span class="mega-menu__sub">{{ category.description || 'Explore now' }}</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <a *ngSwitchDefault
-                 [routerLink]="link.url"
+            <ng-container *ngIf="link.display !== 'categories' && link.label !== 'Home' && link.label !== 'All Products' && link.label !== 'Collections' && link.slug !== 'collections'">
+              <a [routerLink]="link.url"
                  routerLinkActive="text-yellow-600 bg-yellow-50"
                  [routerLinkActiveOptions]="{ exact: link.url === '/' }"
                  class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
@@ -68,9 +66,6 @@
             {{ link.label }}
           </a>
         </ng-template>
-        <ng-template #emptyCollections>
-          <div class="mega-menu__empty">Categories will appear here once configured.</div>
-        </ng-template>
       </nav>
 
       <!-- Right Actions -->
@@ -83,36 +78,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
         </button>
-
-        <!-- Account -->
-        <ng-container *ngIf="(isAuthenticated$ | async); else guestMenu">
-          <div class="relative">
-            <button (click)="onAccountButtonClick()"
-                    class="p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
-                    aria-label="Account menu">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-            </button>
-            <app-account-dropdown
-              class="hidden sm:block"
-              *ngIf="showAccountDropdown"
-              [open]="showAccountDropdown"
-              [user]="(user$ | async) || null"
-              [items]="accountItems"
-              (select)="onAccountSelect($event)">
-            </app-account-dropdown>
-          </div>
-        </ng-container>
-        <ng-template #guestMenu>
-          <button (click)="openAuthModal()"
-                  class="p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
-                  aria-label="Login or signup">
-            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
-          </button>
-        </ng-template>
 
         <!-- Wishlist -->
           <ng-container *ngIf="(isAuthenticated$ | async); else wishlistGuest">
@@ -159,6 +124,42 @@
               <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
               </svg>
+            </button>
+          </ng-template>
+
+          <ng-container *ngIf="user$ | async as user; else guestAccount">
+            <div class="relative">
+              <button type="button"
+                      class="account-trigger"
+                      aria-haspopup="true"
+                      [attr.aria-expanded]="showAccountDropdown"
+                      (click)="onAccountButtonClick()">
+                <span class="account-trigger__avatar">
+                  {{ getUserInitial(user) }}
+                </span>
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <app-account-dropdown
+                [user]="user"
+                [items]="accountItems"
+                [open]="showAccountDropdown"
+                (select)="onAccountSelect($event)">
+              </app-account-dropdown>
+            </div>
+          </ng-container>
+          <ng-template #guestAccount>
+            <button (click)="openAuthModal()"
+                    class="account-trigger"
+                    aria-label="Sign in">
+              <span class="account-trigger__avatar">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1112 21a9 9 0 01-6.879-3.196z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </span>
+              <span class="text-xs font-medium text-gray-600">Sign in</span>
             </button>
           </ng-template>
       </div>
