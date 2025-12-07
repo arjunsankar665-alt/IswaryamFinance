@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
+  safelist: [
+    'w-5', 'h-5', 'sm:w-6', 'sm:h-6',
+    'text-gray-600', 'hover:text-[#4A2C2A]', 'hover:bg-amber-50',
+    'rounded-full', 'transition-all'
+  ],
   theme: {
     extend: {
       colors: {
