@@ -1,0 +1,8 @@
+{
+    "root": "dist/frontend",
+    "cleanUrls": true,
+    "redirects": [
+      { "source": "/**", "destination": "/index.html" }
+    ]
+  }
+  
