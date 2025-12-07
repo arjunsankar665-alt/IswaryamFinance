@@ -15,7 +15,7 @@
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Mobile Menu Button -->
       <button (click)="onMenuClick()" 
-              class="lg:hidden p-2 -ml-2 text-gray-600 hover:text-yellow-600 transition-colors"
+              class="lg:hidden p-2 -ml-2 text-gray-600 hover:text-[#4A2C2A] transition-colors"
               aria-label="Open menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -26,22 +26,22 @@
       <a routerLink="/" class="flex items-center gap-3 min-w-0">
         <img src="assets/icons/iswaryam-logo.jpg" alt="Sri Iswaryam Logo" class="brand-mark" loading="lazy" />
         <div class="hidden sm:block">
-          <h1 class="text-lg md:text-xl font-serif font-bold text-gray-800 leading-tight">Sri Iswaryam</h1>
-          <p class="text-xs text-amber-600 tracking-[0.25em] uppercase">Premium Jewellers</p>
+          <h1 class="text-lg md:text-xl font-serif font-bold text-[#4A2C2A] leading-tight">Sri Iswaryam</h1>
+          <p class="text-xs text-[#D4AF37] tracking-[0.25em] uppercase font-semibold">Premium Jewellers</p>
         </div>
       </a>
 
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center gap-1">
         <a routerLink="/"
-           routerLinkActive="text-yellow-600 bg-yellow-50"
+           routerLinkActive="text-[#4A2C2A] bg-amber-50"
            [routerLinkActiveOptions]="{ exact: true }"
-           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-lg transition-all">
           Home
         </a>
         <a routerLink="/products"
-           routerLinkActive="text-yellow-600 bg-yellow-50"
-           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+           routerLinkActive="text-[#4A2C2A] bg-amber-50"
+           class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-lg transition-all">
           All Products
         </a>
 
@@ -49,9 +49,9 @@
           <ng-container *ngFor="let link of menus">
             <ng-container *ngIf="link.display !== 'categories' && link.label !== 'Home' && link.label !== 'All Products' && link.label !== 'Collections' && link.slug !== 'collections'">
               <a [routerLink]="link.url"
-                 routerLinkActive="text-yellow-600 bg-yellow-50"
+                 routerLinkActive="text-[#4A2C2A] bg-amber-50"
                  [routerLinkActiveOptions]="{ exact: link.url === '/' }"
-                 class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+                 class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-lg transition-all">
                 {{ link.label }}
               </a>
             </ng-container>
@@ -60,9 +60,9 @@
         <ng-template #fallbackNav>
           <a *ngFor="let link of navFallback"
              [routerLink]="link.url"
-             routerLinkActive="text-yellow-600 bg-yellow-50"
+             routerLinkActive="text-[#4A2C2A] bg-amber-50"
              [routerLinkActiveOptions]="{ exact: link.url === '/' }"
-             class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all">
+             class="px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-lg transition-all">
             {{ link.label }}
           </a>
         </ng-template>
@@ -72,7 +72,7 @@
       <div class="flex items-center gap-1 sm:gap-2">
         <!-- Search -->
         <button (click)="toggleSearch()" 
-                class="p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
+                class="p-2 text-gray-600 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-full transition-all"
                 aria-label="Search">
           <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -82,20 +82,20 @@
         <!-- Wishlist -->
           <ng-container *ngIf="(isAuthenticated$ | async); else wishlistGuest">
             <a routerLink="/wishlist" 
-               class="relative p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
+               class="relative p-2 text-gray-600 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-full transition-all"
                aria-label="Wishlist">
           <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
           </svg>
           <span *ngIf="wishlistCount > 0" 
-                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                class="absolute -top-1 -right-1 w-5 h-5 bg-[#D4AF37] text-[#2D1B1A] text-xs rounded-full flex items-center justify-center font-bold">
             {{ wishlistCount }}
           </span>
             </a>
           </ng-container>
           <ng-template #wishlistGuest>
             <button (click)="openAuthModal()"
-                    class="relative p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
+                    class="relative p-2 text-gray-600 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-full transition-all"
                     aria-label="Login to view wishlist">
               <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
@@ -106,23 +106,23 @@
           <!-- Cart -->
           <ng-container *ngIf="(isAuthenticated$ | async); else cartGuest">
             <a routerLink="/cart" 
-               class="relative p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
+               class="relative p-2 text-gray-600 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-full transition-all"
                aria-label="Cart">
           <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
           <span *ngIf="cartCount > 0" 
-                class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-600 text-white text-xs rounded-full flex items-center justify-center">
+                class="absolute -top-1 -right-1 w-5 h-5 bg-[#D4AF37] text-[#2D1B1A] text-xs rounded-full flex items-center justify-center font-semibold">
             {{ cartCount }}
           </span>
             </a>
           </ng-container>
           <ng-template #cartGuest>
             <button (click)="openAuthModal()"
-                    class="relative p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-full transition-all"
+                    class="relative p-2 text-gray-600 hover:text-[#4A2C2A] hover:bg-amber-50 rounded-full transition-all"
                     aria-label="Login to view cart">
               <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
               </svg>
             </button>
           </ng-template>
@@ -168,12 +168,12 @@
 
   <!-- Search Bar (Expandable) -->
   <div *ngIf="isSearchOpen" 
-       class="border-t bg-gray-50 py-3 animate-slide-up">
+       class="border-t bg-amber-50/50 py-3 animate-slide-up">
     <div class="container mx-auto px-4">
       <div class="relative max-w-2xl mx-auto">
         <input type="text" 
                placeholder="Search for gold necklaces, diamond rings, bangles..." 
-               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none"
+               class="w-full pl-12 pr-4 py-3 border border-amber-200 rounded-full focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent outline-none bg-white"
                autofocus>
         <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>

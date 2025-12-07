@@ -3,21 +3,23 @@
 /* Custom theme colors */
 @layer base {
   :root {
-    /* Primary - Gold */
-    --color-primary: #D4AF37;
-    --color-primary-dark: #B8960C;
-    --color-primary-light: #F4D03F;
+    /* Primary - Rich Chocolate Brown (from jewelry image) */
+    --color-primary: #4A2C2A;
+    --color-primary-dark: #2D1B1A;
+    --color-primary-light: #6B4545;
     
-    /* Secondary - Deep Red */
-    --color-secondary: #8B0000;
-    --color-secondary-dark: #5C0000;
-    --color-secondary-light: #DC143C;
+    /* Secondary - Warm tones */
+    --color-secondary: #4A2C2A;
+    --color-secondary-dark: #2D1B1A;
+    --color-secondary-light: #6B4545;
     
-    /* Accent - Rose Gold */
-    --color-accent: #B76E79;
+    /* Accent - Brilliant Gold (for jewelry context) */
+    --color-accent: #D4AF37;
+    --color-accent-dark: #B8960C;
+    --color-accent-light: #F4D03F;
     
     /* Neutrals */
-    --color-background: #FFFEF7;
+    --color-background: #FFF9F0;
     --color-surface: #FFFFFF;
     --color-text: #1A1A1A;
     --color-text-muted: #6B7280;
@@ -25,48 +27,49 @@
     /* Status */
     --color-success: #10B981;
     --color-warning: #F59E0B;
-    --color-error: #EF4444;
+    --color-error: #DC2626;
   }
 }
 
 /* Custom utility classes */
 @layer components {
   .btn-primary {
-    @apply bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg 
-           transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95;
+    @apply bg-[#4A2C2A] hover:bg-[#2D1B1A] text-white font-semibold py-2 px-4 rounded-lg 
+           transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg;
   }
   
   .btn-secondary {
-    @apply bg-red-800 hover:bg-red-900 text-white font-semibold py-2 px-4 rounded-lg 
-           transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95;
+    @apply bg-[#D4AF37] hover:bg-[#B8960C] text-[#2D1B1A] font-semibold py-2 px-4 rounded-lg 
+           transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg;
   }
   
   .btn-outline {
-    @apply border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white 
+    @apply border-2 border-[#4A2C2A] text-[#4A2C2A] hover:bg-[#4A2C2A] hover:text-white 
            font-semibold py-2 px-4 rounded-lg transition-all duration-200 ease-in-out 
            transform hover:scale-105 active:scale-95;
   }
   
   .card-product {
     @apply bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out 
-           p-4 transform hover:-translate-y-1;
+           p-4 transform hover:-translate-y-1 border-t-4 border-[#D4AF37];
   }
   
   .card-hover {
-    @apply transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl;
+    @apply transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl 
+           hover:border-[#4A2C2A];
   }
   
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 
-           focus:border-transparent outline-none transition-all duration-200;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A2C2A] 
+           focus:border-[#4A2C2A] outline-none transition-all duration-200;
   }
   
   .badge-gold {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#D4AF37] text-[#2D1B1A] font-semibold;
   }
   
   .badge-sale {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4A2C2A] text-white;
   }
 
   /* Modal/Dialog transitions */
@@ -75,7 +78,7 @@
   }
   
   .modal-content {
-    @apply bg-white rounded-2xl shadow-2xl transform transition-all duration-300 ease-out;
+    @apply bg-white rounded-2xl shadow-2xl transform transition-all duration-300 ease-out border-t-4 border-[#D4AF37];
   }
   
   .modal-enter {
@@ -96,9 +99,9 @@
 
   /* Link hover effects */
   .link-gold {
-    @apply text-yellow-600 hover:text-yellow-700 transition-colors duration-200 
+    @apply text-[#4A2C2A] hover:text-[#D4AF37] transition-colors duration-200 
            relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 
-           after:bg-yellow-600 after:transition-all after:duration-300 hover:after:w-full;
+           after:bg-[#D4AF37] after:transition-all after:duration-300 hover:after:w-full;
   }
 
   /* Image hover zoom */
@@ -197,10 +200,14 @@
 /* Typography */
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif text-[#4A2C2A];
   }
   
   body {
-    @apply font-sans text-gray-900 bg-amber-50;
+    @apply font-sans text-gray-900 bg-[#FFF9F0];
+  }
+  
+  a {
+    @apply text-[#4A2C2A] hover:text-[#D4AF37] transition-colors duration-200;
   }
 }

@@ -3,3 +3,66 @@
 @tailwind utilities;
 
 /* You can add global styles to this file, and also import other style files */
+
+/* Global theme overrides with Rich Chocolate Brown #4A2C2A */
+@layer base {
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-amber-50;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#4A2C2A] rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#2D1B1A];
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-[#D4AF37] text-[#2D1B1A];
+  }
+  
+  ::-moz-selection {
+    @apply bg-[#D4AF37] text-[#2D1B1A];
+  }
+}
+
+/* Additional component styles */
+@layer components {
+  /* Navigation */
+  .nav-link {
+    @apply text-gray-700 hover:text-[#4A2C2A] transition-colors duration-200 font-medium;
+  }
+  
+  .nav-link-active {
+    @apply text-[#4A2C2A] font-semibold border-b-2 border-[#D4AF37];
+  }
+  
+  /* Headers */
+  .section-header {
+    @apply text-3xl font-bold text-[#4A2C2A] mb-6;
+  }
+  
+  /* Price tags */
+  .price-tag {
+    @apply text-[#D4AF37] font-bold text-xl;
+  }
+  
+  /* Active/Selected states */
+  .active,
+  .selected {
+    @apply bg-[#4A2C2A] text-white;
+  }
+  
+  /* Focus states */
+  .focus-primary:focus {
+    @apply ring-2 ring-[#4A2C2A] ring-offset-2;
+  }
+}
