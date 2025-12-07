@@ -23,7 +23,12 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:4200',
+  origin: [
+    'https://iswaryam-angular.onrender.com',
+    'https://www.iswaryamjewellers.com',
+    'http://localhost:4200'
+  ],
+  methods: ['GET','POST','PUT','DELETE'],
   credentials: true
 }));
 app.use(compression());
