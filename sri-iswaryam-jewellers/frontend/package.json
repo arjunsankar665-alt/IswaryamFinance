@@ -24,7 +24,7 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@sentry/angular": "^10.27.0",
-    "angular-google-tag-manager": "^1.11.0",
+    "angular-google-tag-manager": "^1.7.0",
     "apexcharts": "^3.53.1",
     "axios": "^1.13.2",
     "ng-apexcharts": "1.7.0",
