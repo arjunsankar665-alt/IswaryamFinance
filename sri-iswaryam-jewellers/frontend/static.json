@@ -1,14 +1,7 @@
 {
     "cleanUrls": true,
     "redirects": [
-      {
-        "source": "/",
-        "destination": "/home"
-      },
-      {
-        "source": "/**",
-        "destination": "/index.html"
-      }
+      { "source": "/**", "destination": "/index.html" }
     ]
   }
   
