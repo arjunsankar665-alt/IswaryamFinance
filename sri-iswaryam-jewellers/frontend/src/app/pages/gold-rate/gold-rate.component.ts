@@ -64,4 +64,16 @@ export class GoldRateComponent implements OnInit {
     const date = new Date(this.updatedAt);
     return date.toLocaleString(undefined, { hour: '2-digit', minute: '2-digit', hour12: true, month: 'short', day: 'numeric' });
   }
+
+  get goldStatusLabel(): string {
+    if (this.loading) return 'Loading';
+    if (this.goldPerGram === null) return 'Pending';
+    return this.stale ? 'Stale' : 'Live';
+  }
+
+  get silverStatusLabel(): string {
+    if (this.loading) return 'Loading';
+    if (this.silverPerGram === null) return 'Pending';
+    return this.stale ? 'Stale' : 'Live';
+  }
 }

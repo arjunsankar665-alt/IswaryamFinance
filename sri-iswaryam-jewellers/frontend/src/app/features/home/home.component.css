@@ -207,13 +207,15 @@
 .gold-coins-visual__card {
   position: relative;
   width: 100%;
-  max-width: 280px;
-  padding: 1.2rem 1.4rem;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 1.3rem 1.5rem;
   border-radius: 20px;
-  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.05), transparent 30%),
-              linear-gradient(170deg, rgba(47, 31, 27, 0.92) 0%, rgba(57, 37, 32, 0.92) 55%, rgba(63, 41, 36, 0.9) 100%);
-  border: 1px solid rgba(244, 208, 63, 0.24);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(40, 25, 20, 0.92) 0%, rgba(54, 34, 30, 0.9) 45%, rgba(68, 42, 36, 0.88) 100%),
+              radial-gradient(circle at 22% 18%, rgba(244, 208, 63, 0.14), transparent 34%);
+  border: 1px solid rgba(244, 208, 63, 0.32);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
   overflow: hidden;
   pointer-events: auto; /* re-enable interaction within the card */
 }
@@ -265,7 +267,9 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  margin: 1.2rem 0 0.8rem;
+  justify-content: center;
+  margin: 0.9rem 0 0.7rem;
+  transform: translateY(-4px);
 }
 
 .coin {
@@ -294,19 +298,22 @@
   font-size: 1.15rem;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
+  text-align: center;
 }
 
 .gold-coins-visual__text {
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.55;
-  margin-bottom: 0.9rem;
+  margin: 0 0 0.75rem;
+  text-align: center;
 }
 
 .gold-coins-visual__footer {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 .gold-coins-spotlight__grid {

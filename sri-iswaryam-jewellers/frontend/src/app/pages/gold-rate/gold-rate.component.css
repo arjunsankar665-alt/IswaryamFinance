@@ -213,6 +213,17 @@
   margin-bottom: 14px;
 }
 
+.rate-card .value--placeholder {
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.rate-card .hint {
+  margin: 0 0 6px;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
 .rate-card .skeleton {
   width: 140px;
   height: 34px;

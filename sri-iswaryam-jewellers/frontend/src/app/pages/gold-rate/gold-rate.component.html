@@ -36,14 +36,20 @@
             </div>
             <div class="icon">Au</div>
           </header>
-          <div class="value" *ngIf="goldPerGram !== null; else goldLoading">
-            ₹{{ goldPerGram | number:'1.0-2' }}
-          </div>
+          <ng-container *ngIf="!loading; else goldLoading">
+            <div class="value" *ngIf="goldPerGram !== null; else goldFallback">
+              ₹{{ goldPerGram | number:'1.0-2' }}
+            </div>
+            <ng-template #goldFallback>
+              <div class="value value--placeholder">Rate unavailable</div>
+              <p class="hint">We did not receive the gold price from the feed. Try refresh.</p>
+            </ng-template>
+          </ng-container>
           <ng-template #goldLoading>
             <div class="skeleton"></div>
           </ng-template>
           <footer>
-            <span class="badge" [class.stale]="stale">{{ stale ? 'Stale' : 'Live' }}</span>
+            <span class="badge" [class.stale]="stale || goldPerGram === null">{{ goldStatusLabel }}</span>
             <span class="timestamp">{{ updatedLabel }}</span>
           </footer>
         </article>
@@ -56,14 +62,20 @@
             </div>
             <div class="icon">Ag</div>
           </header>
-          <div class="value" *ngIf="silverPerGram !== null; else silverLoading">
-            ₹{{ silverPerGram | number:'1.0-2' }}
-          </div>
+          <ng-container *ngIf="!loading; else silverLoading">
+            <div class="value" *ngIf="silverPerGram !== null; else silverFallback">
+              ₹{{ silverPerGram | number:'1.0-2' }}
+            </div>
+            <ng-template #silverFallback>
+              <div class="value value--placeholder">Rate unavailable</div>
+              <p class="hint">We did not receive the silver price from the feed. Try refresh.</p>
+            </ng-template>
+          </ng-container>
           <ng-template #silverLoading>
             <div class="skeleton"></div>
           </ng-template>
           <footer>
-            <span class="badge" [class.stale]="stale">{{ stale ? 'Stale' : 'Live' }}</span>
+            <span class="badge" [class.stale]="stale || silverPerGram === null">{{ silverStatusLabel }}</span>
             <span class="timestamp">{{ updatedLabel }}</span>
           </footer>
         </article>

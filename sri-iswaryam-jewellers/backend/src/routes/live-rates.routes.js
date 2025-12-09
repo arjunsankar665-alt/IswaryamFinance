@@ -19,17 +19,20 @@ router.get('/', async (_req, res) => {
   try {
     const html = await fetchHtml(SOURCE_URL);
     const parsed = parseRates(html);
+    const gold = parsed.goldPerGram ?? cachedRates.goldPerGram ?? null;
+    const silver = parsed.silverPerGram ?? cachedRates.silverPerGram ?? null;
+    const isPartial = parsed.goldPerGram === null || parsed.silverPerGram === null;
 
     cachedRates = {
       location: LOCATION_LABEL,
-      goldPerGram: parsed.goldPerGram,
-      silverPerGram: parsed.silverPerGram,
+      goldPerGram: gold,
+      silverPerGram: silver,
       updatedAt: parsed.updatedAt,
       source: SOURCE_URL,
-      stale: false
+      stale: isPartial
     };
 
-    res.json({ success: true, data: cachedRates, stale: false });
+    res.json({ success: true, data: cachedRates, stale: isPartial });
   } catch (error) {
     const details = error instanceof Error ? error.message : 'Unknown error';
     console.error('Unable to refresh live rates:', details);
