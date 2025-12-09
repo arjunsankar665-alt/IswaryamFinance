@@ -200,11 +200,13 @@
 /* Typography */
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-[#4A2C2A];
+    font-family: var(--font-bagoss);
+    @apply text-[#4A2C2A];
   }
   
   body {
-    @apply font-sans text-gray-900 bg-[#FFF9F0];
+    font-family: var(--font-bagoss);
+    @apply text-gray-900 bg-[#FFF9F0];
   }
   
   a {
