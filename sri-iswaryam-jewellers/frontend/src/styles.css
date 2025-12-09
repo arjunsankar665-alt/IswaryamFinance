@@ -78,4 +78,24 @@
   .focus-primary:focus {
     @apply ring-2 ring-[#4A2C2A] ring-offset-2;
   }
+
+  /* Luxe page background */
+  .luxe-page {
+    @apply bg-gradient-to-b from-[#fdf8f3] via-white to-[#f4ece0];
+  }
+
+  /* Glass card */
+  .glass-card {
+    @apply bg-white/90 backdrop-blur rounded-3xl shadow-xl border border-amber-100/70;
+  }
+
+  /* Luxe button primary */
+  .btn-luxe {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-amber-700 text-white text-sm font-semibold shadow-md hover:bg-amber-600 transition-all;
+  }
+
+  /* Luxe button outline */
+  .btn-luxe-outline {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-amber-200 text-amber-700 text-sm font-semibold hover:bg-amber-50 transition-all;
+  }
 }

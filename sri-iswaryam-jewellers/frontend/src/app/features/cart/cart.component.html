@@ -1,15 +1,15 @@
-<section class="py-10 bg-gray-50 min-h-screen">
+<section class="py-12 bg-gradient-to-b from-[#fdf8f3] via-white to-[#f4ece0] min-h-screen">
 	<div class="container mx-auto px-4">
-		<div class="flex items-center justify-between mb-6">
+		<div class="flex items-center justify-between mb-8">
 			<div>
-				<p class="text-sm uppercase tracking-wide text-gray-500">Shopping bag</p>
-				<h1 class="text-3xl font-semibold text-gray-900">Your Cart</h1>
+				<p class="text-xs uppercase tracking-widest text-amber-700/80 font-medium">Shopping bag</p>
+				<h1 class="text-3xl font-bold text-[#4A2C2A]">Your Cart</h1>
 			</div>
 		</div>
 
 		<ng-container *ngIf="(isAuthenticated$ | async); else guestState">
 			<ng-container *ngIf="(cart$ | async) as cart">
-				<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:items-start">
 					<div class="lg:col-span-2 space-y-4">
 						<ng-container *ngIf="cart.items.length > 0; else emptyCart">
 							<app-cart-item
@@ -22,12 +22,20 @@
 							></app-cart-item>
 						</ng-container>
 						<ng-template #emptyCart>
-							<div class="bg-white rounded-2xl shadow-sm border border-dashed border-gray-200 p-10 text-center">
-								<p class="text-lg font-medium text-gray-800 mb-2">Your cart is empty</p>
-								<p class="text-gray-500 mb-6">Add products to place your first order.</p>
-								<a routerLink="/collections" class="inline-flex items-center px-5 py-2 rounded-full bg-gray-900 text-white text-sm font-medium">
-									Explore Collections
-								</a>
+							<div class="max-w-3xl mx-auto bg-white/90 backdrop-blur rounded-3xl border border-amber-100/70 shadow-xl p-12 text-center flex flex-col items-center gap-5">
+								<div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-200 to-amber-100 text-amber-800 flex items-center justify-center text-2xl shadow-inner">🛍️</div>
+								<div class="space-y-2">
+									<p class="text-2xl font-semibold text-gray-900">Your cart is empty</p>
+									<p class="text-gray-600">Curate your favourites and check out when you are ready.</p>
+								</div>
+								<div class="flex flex-wrap justify-center gap-3">
+									<a routerLink="/products" class="inline-flex items-center px-5 py-2.5 rounded-full bg-amber-700 text-white text-sm font-semibold shadow-md hover:bg-amber-600 transition">
+										Shop all products
+									</a>
+									<a routerLink="/collections" class="inline-flex items-center px-5 py-2.5 rounded-full border border-amber-200 text-amber-700 text-sm font-semibold hover:bg-amber-50 transition">
+										Explore collections
+									</a>
+								</div>
 							</div>
 						</ng-template>
 					</div>
@@ -48,10 +56,10 @@
 		</ng-container>
 
 		<ng-template #guestState>
-			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
-				<p class="text-lg font-semibold text-gray-900 mb-2">Sign in to access your cart</p>
+			<div class="bg-white/90 backdrop-blur rounded-3xl shadow-xl border border-amber-100/80 p-10 text-center">
+				<p class="text-xl font-semibold text-gray-900 mb-2">Sign in to access your cart</p>
 				<p class="text-gray-500 mb-6">Please login to view and manage items saved for you.</p>
-				<button class="px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-500 text-white font-semibold" (click)="promptLogin()">
+				<button class="px-6 py-2.5 rounded-full bg-amber-700 hover:bg-amber-600 text-white font-semibold shadow-md" (click)="promptLogin()">
 					Sign in to continue
 				</button>
 			</div>

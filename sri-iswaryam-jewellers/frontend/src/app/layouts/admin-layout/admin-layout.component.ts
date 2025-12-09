@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-admin-layout',
@@ -6,7 +6,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./admin-layout.component.css']
 })
 export class AdminLayoutComponent {
-  isSidebarOpen = true;
+  isSidebarOpen = false;
+  private isMobile = false;
+
+  constructor() {
+    this.checkMobile();
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkMobile();
+  }
+
+  private checkMobile(): void {
+    this.isMobile = window.innerWidth < 1024;
+    if (!this.isMobile) {
+      this.isSidebarOpen = true;
+    }
+  }
 
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -14,5 +31,11 @@ export class AdminLayoutComponent {
 
   closeSidebar(): void {
     this.isSidebarOpen = false;
+  }
+
+  onNavClick(): void {
+    if (this.isMobile) {
+      this.closeSidebar();
+    }
   }
 }

@@ -1,59 +1,59 @@
-<div class="min-h-screen bg-gray-100 lg:flex">
+<div class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-50 lg:flex">
   <!-- Mobile header -->
-  <header class="flex items-center justify-between lg:hidden px-4 py-3 bg-gray-900 text-white sticky top-0 z-40 shadow-md">
+  <header class="flex items-center justify-between lg:hidden px-4 py-3 bg-gradient-to-r from-[#1a0f0c] to-[#2D1B1A] text-white sticky top-0 z-40 shadow-lg">
     <div class="flex items-center gap-3">
-      <button type="button" (click)="toggleSidebar()" class="p-2 rounded-lg bg-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400" aria-label="Toggle navigation">
-        <span class="block w-5 h-0.5 bg-white mb-1"></span>
-        <span class="block w-5 h-0.5 bg-white mb-1"></span>
-        <span class="block w-5 h-0.5 bg-white"></span>
+      <button type="button" (click)="toggleSidebar()" class="p-2 rounded-lg bg-[#3d2520] hover:bg-[#4A2C2A] focus:outline-none focus:ring-2 focus:ring-amber-400 transition" aria-label="Toggle navigation">
+        <span class="block w-5 h-0.5 bg-amber-300 mb-1"></span>
+        <span class="block w-5 h-0.5 bg-amber-300 mb-1"></span>
+        <span class="block w-5 h-0.5 bg-amber-300"></span>
       </button>
       <div>
-        <p class="text-xs uppercase tracking-[0.35em] text-amber-400">Admin</p>
+        <p class="text-xs uppercase tracking-[0.35em] text-amber-400 font-medium">Admin</p>
         <p class="font-semibold leading-tight">Sri Iswaryam Jewellers</p>
       </div>
     </div>
-    <a routerLink="/home" class="text-sm text-amber-300 underline">View site</a>
+    <a routerLink="/home" class="text-sm text-amber-300 hover:text-amber-200 font-medium transition">View site</a>
   </header>
 
   <div class="flex min-h-screen w-full">
     <!-- Sidebar -->
-    <aside class="fixed inset-y-0 left-0 w-72 bg-gray-900 text-white transform transition-transform duration-200 ease-in-out z-50 lg:static lg:translate-x-0" [class.-translate-x-full]="!isSidebarOpen">
-      <div class="flex items-center justify-between px-4 py-5 border-b border-gray-800">
+    <aside class="fixed inset-y-0 left-0 w-72 bg-gradient-to-b from-[#1a0f0c] to-[#120906] text-white transform transition-transform duration-300 ease-in-out z-50 lg:static lg:translate-x-0 shadow-2xl" [class.-translate-x-full]="!isSidebarOpen">
+      <div class="flex items-center justify-between px-4 py-5 border-b border-amber-900/30">
         <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-amber-400">Admin</p>
-          <h2 class="text-xl font-bold">Control Room</h2>
+          <p class="text-xs uppercase tracking-[0.35em] text-amber-400 font-medium">Admin</p>
+          <h2 class="text-xl font-bold text-amber-50">Control Room</h2>
         </div>
-        <button type="button" (click)="closeSidebar()" class="p-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400 lg:hidden" aria-label="Close navigation">
+        <button type="button" (click)="closeSidebar()" class="p-2 rounded-lg hover:bg-[#2d1a14] focus:outline-none focus:ring-2 focus:ring-amber-400 lg:hidden text-amber-300 transition" aria-label="Close navigation">
           ✕
         </button>
       </div>
       <nav class="mt-2 px-2 space-y-1">
-        <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
-        <a routerLink="/admin/products" routerLinkActive="active" class="nav-link">Products</a>
-        <a routerLink="/admin/orders" routerLinkActive="active" class="nav-link">Orders</a>
-        <a routerLink="/admin/inventory" routerLinkActive="active" class="nav-link">Inventory</a>
-        <a routerLink="/admin/users" routerLinkActive="active" class="nav-link">Users</a>
-        <a routerLink="/admin/reports" routerLinkActive="active" class="nav-link">Reports</a>
-        <a routerLink="/admin/navigation/menus" routerLinkActive="active" class="nav-link">Menu Master</a>
+        <a routerLink="/admin/dashboard" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Dashboard</a>
+        <a routerLink="/admin/products" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Products</a>
+        <a routerLink="/admin/orders" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Orders</a>
+        <a routerLink="/admin/inventory" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Inventory</a>
+        <a routerLink="/admin/users" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Users</a>
+        <a routerLink="/admin/reports" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Reports</a>
+        <a routerLink="/admin/navigation/menus" routerLinkActive="active" (click)="onNavClick()" class="nav-link">Menu Master</a>
       </nav>
     </aside>
 
-    <div class="flex-1 flex flex-col lg:ml-72 min-h-screen">
+    <div class="flex-1 flex flex-col min-h-screen">
       <!-- Desktop top bar -->
-      <div class="hidden lg:flex items-center justify-between px-8 py-5 bg-white shadow-sm border-b border-gray-100">
+      <div class="hidden lg:flex items-center justify-between px-8 py-5 bg-white/95 backdrop-blur shadow-sm border-b border-amber-100/50">
         <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-amber-500">Admin Console</p>
-          <h1 class="text-2xl font-serif text-gray-900">Sri Iswaryam Jewellers</h1>
+          <p class="text-xs uppercase tracking-[0.35em] text-amber-600 font-medium">Admin Console</p>
+          <h1 class="text-2xl font-serif text-[#4A2C2A]">Sri Iswaryam Jewellers</h1>
         </div>
-        <a routerLink="/home" class="text-sm text-amber-600 hover:text-amber-700 font-medium">Back to site</a>
+        <a routerLink="/home" class="text-sm text-amber-700 hover:text-amber-600 font-semibold transition">Back to site</a>
       </div>
 
-      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-amber-50/30">
         <router-outlet></router-outlet>
       </main>
     </div>
   </div>
 
   <!-- Mobile overlay -->
-  <div class="fixed inset-0 bg-black/40 z-40 lg:hidden" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" *ngIf="isSidebarOpen" (click)="closeSidebar()"></div>
 </div>

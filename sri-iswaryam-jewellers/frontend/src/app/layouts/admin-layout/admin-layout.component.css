@@ -1,20 +1,30 @@
 .nav-link {
-	display: block;
-	padding: 0.75rem 1rem;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.85rem 1rem;
 	border-radius: 0.75rem;
-	color: #e2e8f0;
+	color: rgba(251, 243, 219, 0.85);
 	font-weight: 600;
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition: all 0.2s ease;
+	border-left: 3px solid transparent;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+	background-color: rgba(180, 83, 9, 0.15);
+	color: #fef3c7;
+	border-left-color: rgba(245, 158, 11, 0.5);
+}
+
 .nav-link.active {
-	background-color: #111827;
-	color: #f8fafc;
+	background: linear-gradient(90deg, rgba(180, 83, 9, 0.25) 0%, rgba(180, 83, 9, 0.1) 100%);
+	color: #fcd34d;
+	border-left-color: #f59e0b;
 }
 
 @media (max-width: 1023px) {
 	.nav-link {
-		padding: 0.85rem 1rem;
+		padding: 1rem 1rem;
+		font-size: 0.95rem;
 	}
 }

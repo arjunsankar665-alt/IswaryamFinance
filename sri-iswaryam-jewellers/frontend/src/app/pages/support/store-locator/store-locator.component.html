@@ -130,7 +130,7 @@
               </div>
               <div>
                 <h3 class="font-semibold text-gray-800">Contact</h3>
-                <p class="text-gray-600">{{ selectedStore.phone }}</p>
+                <p class="text-gray-600">{{ selectedStore.phone }}<span *ngIf="selectedStore.altPhone"> / {{ selectedStore.altPhone }}</span></p>
                 <p class="text-gray-600">{{ selectedStore.email }}</p>
               </div>
             </div>

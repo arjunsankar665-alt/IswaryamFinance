@@ -1,0 +1,408 @@
+.gold-coins-spotlight {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3.2rem, 6vw, 5.2rem) 0;
+  background: radial-gradient(circle at 18% 22%, rgba(244, 208, 63, 0.08), transparent 42%),
+              radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.05), transparent 46%),
+              linear-gradient(140deg, #160d0a 0%, #24130e 32%, #2d1a14 62%, #1c0f0c 100%);
+  color: #fefdfb;
+}
+
+.gold-coins-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 38% 58%, rgba(244, 208, 63, 0.12), transparent 46%),
+              radial-gradient(circle at 70% 68%, rgba(255, 214, 142, 0.08), transparent 52%),
+              repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0, rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 12px);
+  opacity: 0.7;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  filter: blur(3px);
+}
+
+.gold-coins-spotlight__bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 35% 60%, rgba(244, 208, 63, 0.08), transparent 40%),
+              radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.06), transparent 45%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.gold-coins-spotlight__panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: clamp(1.4rem, 3vw, 2.4rem);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.gold-coins-spotlight__copy {
+  max-width: 640px;
+  font-family: var(--font-bagoss);
+  position: relative;
+  z-index: 2; /* keep CTAs clickable over visuals */
+  backdrop-filter: blur(2px);
+}
+
+.gold-coins-spotlight__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(244, 208, 63, 0.12);
+  border: 1px solid rgba(244, 208, 63, 0.3);
+  color: #F4D03F;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+
+.gold-coins-spotlight__title {
+  font-size: clamp(2.1rem, 4vw, 3.05rem);
+  line-height: 1.1;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.gold-coins-spotlight__subtitle {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+  max-width: 560px;
+}
+
+.gold-coins-spotlight__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(244, 208, 63, 0.25);
+  color: #fefdfb;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+
+.gold-coins-spotlight__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.1rem;
+  position: relative;
+  z-index: 3; /* ensure CTAs sit above visuals */
+  align-items: center;
+}
+
+.gold-coins-spotlight__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: all 200ms ease;
+  font-family: var(--font-bagoss);
+  border: 1px solid transparent;
+}
+
+.gold-coins-spotlight__cta--primary {
+  background: linear-gradient(135deg, #e2c157 0%, #f6df92 45%, #e2c157 100%);
+  color: #21140f;
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.46);
+}
+
+.gold-coins-spotlight__cta--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 38px rgba(212, 175, 55, 0.6);
+}
+
+.gold-coins-spotlight__cta--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(244, 208, 63, 0.5);
+  color: #fefdfb;
+  backdrop-filter: blur(4px);
+}
+
+.gold-coins-spotlight__cta--secondary:hover {
+  background: rgba(244, 208, 63, 0.16);
+  border-color: rgba(244, 208, 63, 0.7);
+  transform: translateY(-2px);
+}
+
+.gold-coins-spotlight__cta--ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #fefdfb;
+}
+
+.gold-coins-spotlight__cta--ghost:hover {
+  border-color: rgba(244, 208, 63, 0.6);
+  color: #F4D03F;
+  transform: translateY(-2px);
+}
+
+.gold-coins-spotlight__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.9rem;
+}
+
+.stat-block {
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(244, 208, 63, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.stat-block__value {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.stat-block__label {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.gold-coins-visual {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none; /* prevent the visual from blocking hero CTAs */
+}
+
+.gold-coins-visual__glow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(244, 208, 63, 0.22) 0%, rgba(244, 208, 63, 0) 70%);
+  filter: blur(18px);
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.gold-coins-visual__card {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  padding: 1.2rem 1.4rem;
+  border-radius: 20px;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.05), transparent 30%),
+              linear-gradient(170deg, rgba(47, 31, 27, 0.92) 0%, rgba(57, 37, 32, 0.92) 55%, rgba(63, 41, 36, 0.9) 100%);
+  border: 1px solid rgba(244, 208, 63, 0.24);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  pointer-events: auto; /* re-enable interaction within the card */
+}
+
+.gold-coins-visual__card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(244, 208, 63, 0.1) 0%, rgba(244, 208, 63, 0) 45%),
+              linear-gradient(300deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 42%);
+  pointer-events: none;
+}
+
+.gold-coins-visual__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(244, 208, 63, 0.16);
+  border: 1px solid rgba(244, 208, 63, 0.35);
+  color: #F4D03F;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.gold-coins-visual__rings {
+  position: absolute;
+  inset: -30% -35% auto auto;
+  opacity: 0.2;
+  transform: rotate(-6deg);
+}
+
+.gold-coins-visual__ring {
+  display: block;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 208, 63, 0.18);
+}
+
+.gold-coins-visual__ring--accent {
+  position: absolute;
+  inset: 18px;
+  border-color: rgba(244, 208, 63, 0.35);
+}
+
+.gold-coins-visual__stack {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 1.2rem 0 0.8rem;
+}
+
+.coin {
+  display: inline-block;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fdf7e5 0%, #f5e3b8 100%);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.36), inset 0 2px 8px rgba(255, 255, 255, 0.5);
+  border: 2.5px solid rgba(255, 255, 255, 0.28);
+  filter: saturate(1.08);
+  object-fit: cover;
+  object-position: center;
+  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 320ms ease;
+}
+
+.coin--back { transform: translateY(10px) scale(0.92); opacity: 0.74; }
+.coin--mid { transform: translateY(5px) scale(0.96); opacity: 0.88; }
+.coin--front { transform: translateY(0); }
+
+.gold-coins-visual__stack:hover .coin--front { transform: translateY(-4px) scale(1.04); box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42); }
+.gold-coins-visual__stack:hover .coin--mid { transform: translateY(2px) scale(0.98); }
+.gold-coins-visual__stack:hover .coin--back { transform: translateY(14px) scale(0.9); }
+
+.gold-coins-visual__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.gold-coins-visual__text {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+  margin-bottom: 0.9rem;
+}
+
+.gold-coins-visual__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.gold-coins-spotlight__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.gold-coins-card {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(244, 208, 63, 0.2);
+  border-radius: 20px;
+  padding: 1.8rem 1.5rem;
+  text-align: left;
+  transition: all 260ms cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-bagoss);
+  min-height: 195px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-coins-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(244, 208, 63, 0.5) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.gold-coins-card:hover {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-color: rgba(244, 208, 63, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+}
+
+.gold-coins-card:hover::before {
+  opacity: 1;
+}
+
+.gold-coins-card__icon {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(244, 208, 63, 0.18) 0%, rgba(244, 208, 63, 0.1) 100%);
+  color: #F4D03F;
+  border: 1.5px solid rgba(244, 208, 63, 0.32);
+  box-shadow: 0 4px 16px rgba(244, 208, 63, 0.12);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.gold-coins-card:hover .gold-coins-card__icon {
+  transform: scale(1.08);
+  box-shadow: 0 6px 22px rgba(244, 208, 63, 0.22);
+}
+
+.gold-coins-card__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.gold-coins-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.55rem;
+}
+
+.gold-coins-card__text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 900px) {
+  .gold-coins-visual__card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .gold-coins-spotlight__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gold-coins-spotlight__cta {
+    width: 100%;
+  }
+}

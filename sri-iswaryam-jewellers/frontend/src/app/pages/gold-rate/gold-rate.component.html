@@ -1,0 +1,73 @@
+<section class="gold-rate-page">
+  <div class="hero-card">
+    <div class="hero-text">
+      <p class="eyebrow">Live Pricing</p>
+      <h1>Today's gold & silver rates</h1>
+      <p class="lede">Accurate, real-time bullion pricing sourced from our live feed. Updated automatically.</p>
+      <div class="actions">
+        <button class="primary" (click)="loadRates()" [disabled]="loading">
+          <span *ngIf="!loading">Refresh rates</span>
+          <span *ngIf="loading">Refreshing…</span>
+        </button>
+        <a routerLink="/" class="ghost">Back to home</a>
+      </div>
+      <div class="meta" *ngIf="updatedAt">
+        <span>Last updated: {{ updatedLabel }}</span>
+        <span class="dot" aria-hidden="true">•</span>
+        <span>Source: {{ source || 'Live feed' }}</span>
+      </div>
+      <div class="status" *ngIf="stale">
+        <span class="pill warning">Stale data</span>
+        <span class="hint">We’re showing the last known rates while we reconnect.</span>
+      </div>
+      <div class="status" *ngIf="error">
+        <span class="pill danger">Error</span>
+        <span class="hint">{{ error }}</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="gradient-circle"></div>
+      <div class="cards">
+        <article class="rate-card gold" aria-label="Gold rate">
+          <header>
+            <div>
+              <p class="label">Gold</p>
+              <p class="sub">24K per gram</p>
+            </div>
+            <div class="icon">Au</div>
+          </header>
+          <div class="value" *ngIf="goldPerGram !== null; else goldLoading">
+            ₹{{ goldPerGram | number:'1.0-2' }}
+          </div>
+          <ng-template #goldLoading>
+            <div class="skeleton"></div>
+          </ng-template>
+          <footer>
+            <span class="badge" [class.stale]="stale">{{ stale ? 'Stale' : 'Live' }}</span>
+            <span class="timestamp">{{ updatedLabel }}</span>
+          </footer>
+        </article>
+
+        <article class="rate-card silver" aria-label="Silver rate">
+          <header>
+            <div>
+              <p class="label">Silver</p>
+              <p class="sub">Per gram</p>
+            </div>
+            <div class="icon">Ag</div>
+          </header>
+          <div class="value" *ngIf="silverPerGram !== null; else silverLoading">
+            ₹{{ silverPerGram | number:'1.0-2' }}
+          </div>
+          <ng-template #silverLoading>
+            <div class="skeleton"></div>
+          </ng-template>
+          <footer>
+            <span class="badge" [class.stale]="stale">{{ stale ? 'Stale' : 'Live' }}</span>
+            <span class="timestamp">{{ updatedLabel }}</span>
+          </footer>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

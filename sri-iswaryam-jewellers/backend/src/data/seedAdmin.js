@@ -90,7 +90,7 @@ export async function seedAdminData() {
     await Order.create({
       orderNumber: 'ORD-10245',
       customerName: 'Lakshmi R.',
-      customerEmail: 'lakshmi@sriswaryam.com',
+      customerEmail: 'veeranvinothsankar@gmail.com',
       channel: 'Web',
       status: 'processing',
       total,

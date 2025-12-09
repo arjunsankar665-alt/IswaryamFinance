@@ -8,6 +8,7 @@ interface Store {
   state: string;
   pincode: string;
   phone: string;
+  altPhone?: string;
   email: string;
   mapUrl: string;
   timing: string;
@@ -36,8 +37,9 @@ export class StoreLocatorComponent implements OnInit {
       city: 'Chennai',
       state: 'Tamil Nadu',
       pincode: '600017',
-      phone: '+91 44 2815 1234',
-      email: 'tnagar@sriiswaryam.com',
+      phone: '+91 88258 11040',
+      altPhone: '+91 99941 19700',
+      email: 'veeranvinothsankar@gmail.com',
       mapUrl: 'https://maps.google.com/?q=13.0339,80.2264',
       timing: 'Mon-Sun: 10:00 AM - 9:00 PM',
       services: ['Gold', 'Diamond', 'Silver', 'Exchange', 'Customization'],
@@ -50,8 +52,9 @@ export class StoreLocatorComponent implements OnInit {
       city: 'Chennai',
       state: 'Tamil Nadu',
       pincode: '600040',
-      phone: '+91 44 2616 5678',
-      email: 'annanagar@sriiswaryam.com',
+      phone: '+91 88258 11040',
+      altPhone: '+91 99941 19700',
+      email: 'veeranvinothsankar@gmail.com',
       mapUrl: 'https://maps.google.com/?q=13.0850,80.2101',
       timing: 'Mon-Sun: 10:00 AM - 9:00 PM',
       services: ['Gold', 'Diamond', 'Silver', 'Exchange'],
@@ -64,8 +67,9 @@ export class StoreLocatorComponent implements OnInit {
       city: 'Coimbatore',
       state: 'Tamil Nadu',
       pincode: '641002',
-      phone: '+91 422 254 7890',
-      email: 'rspuram@sriiswaryam.com',
+      phone: '+91 88258 11040',
+      altPhone: '+91 99941 19700',
+      email: 'veeranvinothsankar@gmail.com',
       mapUrl: 'https://maps.google.com/?q=11.0168,76.9558',
       timing: 'Mon-Sun: 10:30 AM - 8:30 PM',
       services: ['Gold', 'Diamond', 'Customization'],
@@ -78,8 +82,9 @@ export class StoreLocatorComponent implements OnInit {
       city: 'Madurai',
       state: 'Tamil Nadu',
       pincode: '625001',
-      phone: '+91 452 234 5678',
-      email: 'madurai@sriiswaryam.com',
+      phone: '+91 88258 11040',
+      altPhone: '+91 99941 19700',
+      email: 'veeranvinothsankar@gmail.com',
       mapUrl: 'https://maps.google.com/?q=9.9252,78.1198',
       timing: 'Mon-Sun: 10:00 AM - 9:00 PM',
       services: ['Gold', 'Silver', 'Temple Jewellery', 'Exchange'],

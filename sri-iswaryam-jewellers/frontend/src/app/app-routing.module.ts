@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { ContactUsComponent } from './pages/support/contact-us/contact-us.component';
+import { FaqComponent } from './pages/support/faq/faq.component';
 import { AdminAccessComponent } from './pages/admin-access/admin-access.component';
 
 const routes: Routes = [
@@ -55,6 +56,10 @@ const routes: Routes = [
         loadChildren: () => import('./features/offers/offers.module').then(m => m.OffersModule) 
       },
       { 
+        path: 'gold-rate', 
+        loadChildren: () => import('./pages/gold-rate/gold-rate.module').then(m => m.GoldRateModule) 
+      },
+      { 
         path: 'loyalty', 
         loadChildren: () => import('./features/loyalty/loyalty.module').then(m => m.LoyaltyModule),
         canActivate: [authGuard]
@@ -70,6 +75,14 @@ const routes: Routes = [
       {
         path: 'support/contact-us',
         component: ContactUsComponent
+      },
+      {
+        path: 'contact',
+        component: ContactUsComponent
+      },
+      {
+        path: 'faq',
+        component: FaqComponent
       },
       {
         path: 'admin-access',

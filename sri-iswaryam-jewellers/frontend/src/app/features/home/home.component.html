@@ -1,4 +1,107 @@
 <app-hero-banner></app-hero-banner>
 <app-showcase-carousel></app-showcase-carousel>
+
+<section class="gold-coins-spotlight">
+  <div class="gold-coins-spotlight__bg"></div>
+  <div class="container mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+    <div class="gold-coins-spotlight__panel">
+      <div class="gold-coins-spotlight__copy">
+        <span class="gold-coins-spotlight__badge">Gold Coins</span>
+        <h2 class="gold-coins-spotlight__title">24K hallmarked coins for gifting or stacking</h2>
+        <p class="gold-coins-spotlight__subtitle">
+          BIS-certified coins with assay cards, live-rate transparency, and elegant gift-ready packaging.
+        </p>
+
+        <div class="gold-coins-spotlight__meta">
+          <span class="meta-chip">BIS 24K 999</span>
+          <span class="meta-chip">Tamper-proof assay</span>
+          <span class="meta-chip">Buyback friendly</span>
+        </div>
+
+        <div class="gold-coins-spotlight__actions">
+          <a [routerLink]="['/products']" [queryParams]="{category: 'gold-coins'}" class="gold-coins-spotlight__cta gold-coins-spotlight__cta--primary">
+            Shop gold coins
+          </a>
+          <a routerLink="/gold-rate" class="gold-coins-spotlight__cta gold-coins-spotlight__cta--secondary">
+            View live pricing
+          </a>
+        </div>
+      </div>
+
+      <div class="gold-coins-visual">
+        <div class="gold-coins-visual__glow"></div>
+        <div class="gold-coins-visual__card">
+          <div class="gold-coins-visual__badge">24K</div>
+          <div class="gold-coins-visual__rings">
+            <span class="gold-coins-visual__ring"></span>
+            <span class="gold-coins-visual__ring gold-coins-visual__ring--accent"></span>
+          </div>
+          <div class="gold-coins-visual__stack">
+            <img src="assets/Coins/10%20gram.webp" alt="10 gram gold coin" class="coin coin--back">
+            <img src="assets/Coins/5%20gram.webp" alt="5 gram gold coin" class="coin coin--mid">
+            <img src="assets/Coins/1%20gram.webp" alt="1 gram gold coin" class="coin coin--front">
+          </div>
+          <h3 class="gold-coins-visual__title">Hallmarked coins</h3>
+          <p class="gold-coins-visual__text">Live-rate linked pricing with transparent making charges and assured buyback support.</p>
+          <div class="gold-coins-visual__footer">
+            <span class="meta-chip">Real-time rates</span>
+            <span class="meta-chip">Insured delivery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gold-coins-spotlight__grid">
+      <div class="gold-coins-card">
+        <div class="gold-coins-card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v5.25M3 8.25c0 1.885 3.134 3.75 7 3.75S17 10.135 17 8.25M3 8.25v5.5C3 15.635 6.134 17.5 10 17.5c.886 0 1.733-.084 2.521-.24M17 8.25V3M17 8.25c0 1.214-.86 2.32-2.293 3.063" />
+          </svg>
+        </div>
+        <h3 class="gold-coins-card__title">Weights for every plan</h3>
+        <p class="gold-coins-card__text">
+          Build your stack from 1g to 50g options. Mix sizes for gifts, milestones, or long-term saving.
+        </p>
+      </div>
+
+      <div class="gold-coins-card">
+        <div class="gold-coins-card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        </div>
+        <h3 class="gold-coins-card__title">Assay-sealed purity</h3>
+        <p class="gold-coins-card__text">
+          Every piece arrives sealed with a BIS hallmark, unique serial number, and printed purity certificate.
+        </p>
+      </div>
+
+      <div class="gold-coins-card">
+        <div class="gold-coins-card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.318 5H6.682a2.25 2.25 0 00-2.25 2.25v9.75A2.25 2.25 0 006.682 19.25h10.636a2.25 2.25 0 002.25-2.25V7.25A2.25 2.25 0 0017.318 5h-2.636m-5.364 0V4.25a2.25 2.25 0 114.5 0V5m-4.5 0h4.5" />
+          </svg>
+        </div>
+        <h3 class="gold-coins-card__title">Gift-ready curation</h3>
+        <p class="gold-coins-card__text">
+          Velvet boxes, greeting cards, and scratch-resistant capsules keep each coin pristine for gifting.
+        </p>
+      </div>
+
+      <div class="gold-coins-card">
+        <div class="gold-coins-card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.5h16.5m-16.5 15h16.5M5.25 9.75h13.5m-13.5 4.5h13.5" />
+          </svg>
+        </div>
+        <h3 class="gold-coins-card__title">Transparent pricing</h3>
+        <p class="gold-coins-card__text">
+          Live-rate visibility and clear making charges, plus easy buyback guidance when you are ready to liquidate.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <app-trending-products></app-trending-products>
 <app-trust-highlights></app-trust-highlights>
