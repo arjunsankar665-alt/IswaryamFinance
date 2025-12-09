@@ -26,7 +26,9 @@ app.use(cors({
   origin: [
     'https://iswaryam-angular.onrender.com',
     'https://www.iswaryamjewellers.com',
-    'http://localhost:4200'
+    'https://sri-iswaryam.onrender.com',
+    'http://localhost:4200',
+    'http://localhost:4300'
   ],
   methods: ['GET','POST','PUT','DELETE'],
   credentials: true

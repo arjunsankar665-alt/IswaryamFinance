@@ -1,5 +1,6 @@
 import express from 'express';
 import https from 'https';
+import http from 'http';
 
 const router = express.Router();
 const SOURCE_URL = process.env.LIVE_RATES_URL || 'https://www.livechennai.com/gold_rate_salem.asp';
@@ -38,8 +39,19 @@ router.get('/', async (_req, res) => {
 
 function fetchHtml(url) {
   return new Promise((resolve, reject) => {
-    https
-      .get(url, (response) => {
+    const client = url.startsWith('https') ? https : http;
+    const request = client.get(
+      url,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-IN,en;q=0.9',
+          'Cache-Control': 'no-cache'
+        },
+        timeout: 8000
+      },
+      (response) => {
         if (response.statusCode && response.statusCode >= 400) {
           reject(new Error(`Source responded with status ${response.statusCode}`));
           response.resume();
@@ -49,8 +61,14 @@ function fetchHtml(url) {
         const chunks = [];
         response.on('data', (chunk) => chunks.push(chunk));
         response.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-      })
-      .on('error', (err) => reject(err));
+      }
+    );
+
+    request.on('timeout', () => {
+      request.destroy(new Error('Upstream request timed out'));
+    });
+
+    request.on('error', (err) => reject(err));
   });
 }
 

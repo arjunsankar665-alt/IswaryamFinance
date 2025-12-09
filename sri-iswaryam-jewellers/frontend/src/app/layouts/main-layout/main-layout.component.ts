@@ -20,20 +20,33 @@ export class MainLayoutComponent implements OnDestroy {
       )
       .subscribe(() => {
         this.isMobileNavOpen = false;
+        this.setBodyScrollLock(false);
       });
   }
 
   onToggleMobileNav(): void {
     this.isMobileNavOpen = !this.isMobileNavOpen;
+    this.setBodyScrollLock(this.isMobileNavOpen);
   }
 
   closeMobileNav(): void {
     this.isMobileNavOpen = false;
+    this.setBodyScrollLock(false);
   }
 
   ngOnDestroy(): void {
+    this.setBodyScrollLock(false);
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private setBodyScrollLock(lock: boolean): void {
+    const body = document.body;
+    if (lock) {
+      body.classList.add('overflow-hidden');
+    } else {
+      body.classList.remove('overflow-hidden');
+    }
   }
 
 }

@@ -135,14 +135,38 @@ export class AddComponent implements OnDestroy {
       const { gallery, tags, ...rest } = value;
       await this.adminData.addProduct({
         ...rest,
+        sku: value.sku.toUpperCase(),
+        price: Number(value.price) || 0,
+        mrp: Number(value.mrp) || 0,
+        stock: Number(value.stock) || 0,
+        weight: Number(value.weight) || 0,
         gallery: this.splitCsv(gallery),
         tags: this.splitCsv(tags)
       });
       this.notifications.success('Product created', `${value.name} is now live in the catalogue.`);
       await this.router.navigate(['/admin/products']);
+    } catch (error) {
+      this.notifications.error('Unable to save product', this.extractErrorMessage(error));
     } finally {
       this.submitting = false;
     }
+  }
+
+  private extractErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    if (error && typeof error === 'object') {
+      const httpError = error as { error?: { message?: string }; message?: string };
+      return httpError.error?.message || httpError.message || 'Please try again.';
+    }
+
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    return 'Please try again.';
   }
 
   private splitCsv(value?: string | null): string[] {

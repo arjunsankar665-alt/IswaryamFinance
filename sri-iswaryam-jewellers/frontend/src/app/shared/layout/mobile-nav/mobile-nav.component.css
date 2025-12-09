@@ -1,0 +1,15 @@
+.mobile-nav {
+	box-shadow: 0 25px 65px rgba(0, 0, 0, 0.25);
+}
+
+.mobile-nav a {
+	text-decoration: none;
+}
+
+.mobile-nav nav a {
+	border-left: 4px solid transparent;
+}
+
+.mobile-nav nav a.router-link-active {
+	border-color: #d97706;
+}

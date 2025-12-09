@@ -1,0 +1,20 @@
+.nav-link {
+	display: block;
+	padding: 0.75rem 1rem;
+	border-radius: 0.75rem;
+	color: #e2e8f0;
+	font-weight: 600;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+	background-color: #111827;
+	color: #f8fafc;
+}
+
+@media (max-width: 1023px) {
+	.nav-link {
+		padding: 0.85rem 1rem;
+	}
+}
