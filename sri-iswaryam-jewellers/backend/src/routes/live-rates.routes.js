@@ -12,16 +12,24 @@ let cachedRates = {
   silverPerGram: 78.7,
   updatedAt: new Date().toISOString(),
   source: SOURCE_URL,
-  stale: true
+  stale: true,
+  deltaGold: null,
+  deltaSilver: null
 };
 
 router.get('/', async (_req, res) => {
   try {
     const html = await fetchHtml(SOURCE_URL);
     const parsed = parseRates(html);
-    const gold = parsed.goldPerGram ?? cachedRates.goldPerGram ?? null;
-    const silver = parsed.silverPerGram ?? cachedRates.silverPerGram ?? null;
+    const previousGold = cachedRates.goldPerGram ?? null;
+    const previousSilver = cachedRates.silverPerGram ?? null;
+
+    const gold = parsed.goldPerGram ?? previousGold;
+    const silver = parsed.silverPerGram ?? previousSilver;
     const isPartial = parsed.goldPerGram === null || parsed.silverPerGram === null;
+
+    const deltaGold = computeDelta(gold, previousGold);
+    const deltaSilver = computeDelta(silver, previousSilver);
 
     cachedRates = {
       location: LOCATION_LABEL,
@@ -29,7 +37,9 @@ router.get('/', async (_req, res) => {
       silverPerGram: silver,
       updatedAt: parsed.updatedAt,
       source: SOURCE_URL,
-      stale: isPartial
+      stale: isPartial,
+      deltaGold,
+      deltaSilver
     };
 
     res.json({ success: true, data: cachedRates, stale: isPartial });
@@ -119,6 +129,13 @@ function findLiveChennaiGold(html) {
     return looseVal;
   }
 
+  // Newer markup: look for "24K" or "22K" row labels near per-gram values
+  const labelled = section.match(/24k[^\d]{0,20}([\d,.]+)/i) || section.match(/22k[^\d]{0,20}([\d,.]+)/i);
+  const labelledVal = toNumber(labelled?.[1]);
+  if (Number.isFinite(labelledVal) && labelledVal > 0) {
+    return labelledVal;
+  }
+
   return null;
 }
 
@@ -165,6 +182,11 @@ function divideSafe(value, divisor) {
 
 function pickFirstValid(values, max = 200000) {
   return values.find((value) => Number.isFinite(value) && value > 0 && value < max) ?? null;
+}
+
+function computeDelta(current, previous) {
+  if (!Number.isFinite(current) || !Number.isFinite(previous)) return null;
+  return Number((current - previous).toFixed(2));
 }
 
 export default router;
