@@ -1,5 +1,5 @@
 export const environment = {
 	production: false,
-	apiUrl: 'https://sri-iswaryam.onrender.com/api'
-	// apiUrl: 'http://localhost:5000/api'
+	// apiUrl: 'https://sri-iswaryam.onrender.com/api'
+	apiUrl: 'http://localhost:5000/api'
 };

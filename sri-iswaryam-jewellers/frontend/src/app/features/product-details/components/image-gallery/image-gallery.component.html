@@ -16,11 +16,12 @@
          (click)="toggleZoom()"
          (mousemove)="onMouseMove($event)"
          (mouseleave)="onMouseLeave()">
-      <img [src]="images[selectedIndex]?.full" 
-           [alt]="images[selectedIndex]?.alt"
-           [style.transform]="isZoomed ? 'scale(2)' : 'scale(1)'"
-           [style.transform-origin]="zoomOrigin"
-           class="w-full h-full object-cover transition-transform duration-200">
+  <img [src]="images[selectedIndex].full" 
+       [alt]="images[selectedIndex].alt"
+       [style.transform]="isZoomed ? 'scale(2)' : 'scale(1)'"
+       [style.transform-origin]="zoomOrigin"
+       class="w-full h-full object-cover transition-transform duration-200">
+
       
       <!-- Zoom Icon -->
       <div *ngIf="!isZoomed" class="absolute bottom-4 right-4 bg-white/80 p-2 rounded-full">
